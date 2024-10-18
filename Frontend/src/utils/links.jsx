@@ -1,17 +1,17 @@
-// import React from 'react';
+import React from 'react';
 
-// import { IoBarChartSharp } from 'react-icons/io5';
-// import { MdQueryStats } from 'react-icons/md';
-// import { FaWpforms } from 'react-icons/fa';
-// import { ImProfile } from 'react-icons/im';
-// import { MdAdminPanelSettings } from 'react-icons/md';
+import { IoBarChartSharp } from 'react-icons/io5';
+import { MdQueryStats } from 'react-icons/md';
+import { FaWpforms } from 'react-icons/fa';
+import { ImProfile } from 'react-icons/im';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
-// const links = [
-//     { text: 'Thêm công việc', path: '.', icon: <FaWpforms /> },
-//     { text: 'Các công việc', path: 'all-jobs', icon: <MdQueryStats /> },
-//     { text: 'Thống kê', path: 'stats', icon: <IoBarChartSharp /> },
-//     { text: 'Hồ sơ', path: 'profile', icon: <ImProfile /> },
-//     { text: 'Quản trị viên', path: 'admin', icon: <MdAdminPanelSettings /> },
-// ];
+const links = [
+    { text: 'Lịch trình', path: '.', icon: <FaWpforms /> },
+    { text: 'Công ty dọn dẹp', path: 'company', icon: <MdQueryStats /> },
+    { text: 'Lịch sử', path: 'history', icon: <IoBarChartSharp /> },
+    { text: 'Thông tin cá nhân', path: 'profile', icon: <ImProfile /> },
+    { text: 'Đăng xuất', path: 'logout', icon: <LogoutOutlinedIcon /> },
+];
 
-// export default links;
+export default links;
