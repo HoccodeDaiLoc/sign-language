@@ -5,6 +5,7 @@ import { FaArrowRight } from "react-icons/fa";
 import logo_company from "../assets/images/logo_company.png";
 import locationAPI from "../api/locationAPI";
 import "./CleaningCompany.scss";
+import { Link, NavLink } from 'react-router-dom';
 const CleaningCompany = () => {
   const [provinces, setProvinces] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState("");
@@ -154,10 +155,12 @@ const CleaningCompany = () => {
                   </div>
                   <hr className="hos-line" />
                   <div className="button-detail">
+                  <Link to='/detailcompany' className='member-btn'>                       
                     <Button variant="outlined" className="btn_detail">
                       Xem chi tiết
                       <FaArrowRight />
                     </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>

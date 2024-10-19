@@ -11,6 +11,7 @@ import {
   Logout,
   CleaningCompany,
   History,
+  DetailCompany,
 } from "./pages";
 
 
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path : 'detailcompany',
+        element :<DetailCompany/>
       },
       {
         path: "dashboard",
