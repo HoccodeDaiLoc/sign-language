@@ -8,19 +8,12 @@ const DashboardContext = createContext();
 
 
 
-const DashboardLayout = ({ isDarkThemeEnabled }) => {
+const DashboardLayout = () => {
     // temp
     const user = { name: 'Hồ Văn Thảo' };
 
     const [showSidebar, setShowSidebar] = useState(false);
-    const [isDarkTheme, setIsDarkTheme] = useState(isDarkThemeEnabled);
 
-    const toggleDarkTheme = () => {
-        const newDarkTheme = !isDarkTheme;
-        setIsDarkTheme(newDarkTheme);
-        document.body.classList.toggle('dark-theme', newDarkTheme);
-        localStorage.setItem('darkTheme', newDarkTheme);
-    };
 
     const toggleSidebar = () => {
         setShowSidebar(!showSidebar);
@@ -35,8 +28,6 @@ const DashboardLayout = ({ isDarkThemeEnabled }) => {
             value={{
                 user,
                 showSidebar,
-                isDarkTheme,
-                toggleDarkTheme,
                 toggleSidebar,
                 logoutUser,
             }}
