@@ -1,34 +1,46 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { HomeLayout, Landing, Register, Login, DashboardLayout, Error, Schedule, Profile, Logout, CleaningCompany, History } from './pages'
+import {
+  HomeLayout,
+  Landing,
+  Register,
+  Login,
+  DashboardLayout,
+  Error,
+  Schedule,
+  Profile,
+  Logout,
+  CleaningCompany,
+  History,
+} from "./pages";
 
 const checkDefaultTheme = () => {
-  const isDarkTheme = localStorage.getItem('darkTheme') === 'true';
-  document.body.classList.toggle('dark-theme', isDarkTheme);
+  const isDarkTheme = localStorage.getItem("darkTheme") === "true";
+  document.body.classList.toggle("dark-theme", isDarkTheme);
   return isDarkTheme;
-}
+};
 
 const isDarkThemeEnabled = checkDefaultTheme();
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <HomeLayout />,
     errorElement: <Error />,
     children: [
       {
         index: true,
-        element: <Landing />
+        element: <Landing />,
       },
       {
-        path: 'register',
+        path: "register",
         element: <Register />,
       },
       {
-        path: 'login',
+        path: "login",
         element: <Login />,
       },
       {
-        path: 'dashboard',
+        path: "dashboard",
         element: <DashboardLayout isDarkThemeEnabled={isDarkThemeEnabled} />,
         children: [
           {
@@ -36,29 +48,28 @@ const router = createBrowserRouter([
             element: <Schedule />,
           },
           {
-            path: 'company',
+            path: "company",
             element: <CleaningCompany />,
           },
           {
-            path: 'history',
+            path: "history",
             element: <History />,
           },
           {
-            path: 'profile',
+            path: "profile",
             element: <Profile />,
           },
           {
-            path: 'logout',
+            path: "logout",
             element: <Logout />,
           },
         ],
       },
-
-    ]
+    ],
   },
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />
+  return <RouterProvider router={router} />;
 };
-export default App; 
+export default App;
