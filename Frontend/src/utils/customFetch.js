@@ -1,6 +1,32 @@
 import axios from 'axios';
-const customFetch = axios.create({
-    baseURL: '/api/v1',
-});
+import queryString from 'query-string';
 
-export default customFetch;
+const axiosClient = {
+  application: axios.create({
+    baseURL: "https://api.themoviedb.org/3",
+
+    headers: {
+      'content-type': 'application/json',
+    },
+    paramsSerializer: (params) => queryString.stringify(params),
+  }),
+
+  applicationNoAuth: axios.create({
+    baseURL: "https://api.themoviedb.org/3",
+
+    headers: {
+      'content-type': 'application/json',
+    },
+    paramsSerializer: (params) => queryString.stringify(params),
+  }),
+
+  formData: axios.create({
+    baseURL: "https://api.themoviedb.org/3",
+
+    headers: {
+      'content-type': 'multipart/form-data',
+    },
+  }),
+};
+
+export default axiosClient;
