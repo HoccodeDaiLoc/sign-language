@@ -1,22 +1,25 @@
 import styled from 'styled-components';
-import image from '../images/imagelogin.png'; // Thay đổi đường dẫn tới hình ảnh của bạn
 
 const Wrapper = styled.section`
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
   align-items: center;
-  background-image: url(${image}); /* Đặt hình ảnh làm nền */
-  background-size: cover;
-  background-position: center;
 
-  .login-container {
+  .left-side {
+    padding: 2rem;
+  }
 
-    border-radius: 10px;
+  .right-side {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFF8F8; 
   }
 
   .form {
-    border-top: 5px solid #102C57; /* Thay đổi màu sắc */
+    max-width: 400px;
+    border-top: 5px solid #102C57; 
   }
 
   h4 {
@@ -32,14 +35,14 @@ const Wrapper = styled.section`
 
   .btn {
     margin-top: 1rem;
-    background-color: #102C57; /* Thay đổi màu nền */
-    color: white; /* Thay đổi màu chữ */
+    background-color: #102C57; 
+    color: white; 
     border: none;
     padding: 0.75rem 1.5rem;
     cursor: pointer;
     font-size: 1rem;
     border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Thêm hiệu ứng transition */
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   .btn-block {
@@ -48,15 +51,22 @@ const Wrapper = styled.section`
   }
 
   .btn:hover {
-    background-color: white; /* Thay đổi màu nền khi hover */
-    color: #102C57; /* Thay đổi màu chữ khi hover */
-    border: 1px solid #102C57; /* Thêm border khi hover */
+    background-color: #FFF8F8; 
+    color: #102C57; 
+    border: 1px solid #102C57; 
   }
 
   .member-btn {
-    color: #102C57; /* Thay đổi màu sắc */
+    color: #1679AB; 
     letter-spacing: var(--letter-spacing);
     margin-left: 0.25rem;
+  }
+
+  .login-image {
+    width: 100%; 
+    height: 100vh; 
+    object-fit: cover; 
+    border-radius: 5px;
   }
 
   .remember-forgot {
@@ -77,7 +87,7 @@ const Wrapper = styled.section`
   }
 
   .forgot-password {
-    color: #102C57; /* Thay đổi màu sắc */
+    color: #102C57; 
     font-size: 0.9rem;
     text-decoration: none;
   }

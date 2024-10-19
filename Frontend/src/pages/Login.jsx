@@ -6,11 +6,11 @@ import image from '../assets/images/imagelogin.png'; // Thay đổi đường d�
 const Login = () => {
     return (
         <Wrapper>
-            <div className='login-container'>
+            <div className='left-side'>
                 <form className='form'>
                     <h4>Đăng nhập</h4>
-                    <FormRow type='email' name='email' defaultValue='hovanthao0611cs@gmail.com' />
-                    <FormRow type='password' name='Mật khẩu' defaultValue='Vanthao123@' />
+                    <FormRow type='email' name='email' placeholder='Nhập email của bạn' />
+                    <FormRow type='password' name='Mật khẩu' placeholder='**********' />
 
                     <div className='remember-forgot'>
                         <label>
@@ -33,6 +33,9 @@ const Login = () => {
                         </Link>
                     </p>
                 </form>
+            </div>
+            <div className='right-side'>
+                <img src={image} alt='Login' className='login-image' />
             </div>
         </Wrapper>
     );
