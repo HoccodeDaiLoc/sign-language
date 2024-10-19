@@ -1,5 +1,4 @@
 import React from 'react';
-import './Landing.css';
 import deservebetter from '../assets/images/Deservebetter.png';
 import timelanding from '../assets/images/timelanding.png';
 import image1 from '../assets/images/image-1.svg';
