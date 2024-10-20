@@ -33,10 +33,7 @@ const router = createBrowserRouter([
         path: "login",
         element: <Login />,
       },
-      {
-        path : 'detailcompany',
-        element :<DetailCompany/>
-      },
+    
       {
         path: "dashboard",
         element: <DashboardLayout />,
@@ -60,6 +57,10 @@ const router = createBrowserRouter([
           {
             path: "logout",
             element: <Logout />,
+          },
+          {
+            path : 'detailcompany',
+            element :<DetailCompany/>
           },
         ],
       },
