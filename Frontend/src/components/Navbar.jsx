@@ -14,7 +14,7 @@ const Navbar = () => {
                 </button>
                 <div>
                     <Logo />
-                    <h4 className='logo-text'>dashboard</h4>
+                    <h4 className='logo-text'>Sign Language</h4>
                 </div>
                 <div className='btn-container'>
                     <LogoutContainer />

@@ -24,7 +24,8 @@ const Wrapper = styled.section`
 }
 
 .logo-img {
-    height: 58px;
+    height: 60px;
+    width: 170px;
 }
 
 .header-text {

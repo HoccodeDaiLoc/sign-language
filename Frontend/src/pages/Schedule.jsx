@@ -1,7 +1,7 @@
 const Schedule = () => {
     return (
         <div>
-            Lịch trình
+            Video Call
         </div>
     );
 }

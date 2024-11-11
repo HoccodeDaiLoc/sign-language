@@ -10,7 +10,7 @@ const DashboardContext = createContext();
 
 const DashboardLayout = () => {
     // temp
-    const user = { name: 'Hồ Văn Thảo' };
+    const user = { name: 'Ho Xuan Thanh' };
 
     const [showSidebar, setShowSidebar] = useState(false);
 

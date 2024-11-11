@@ -11,7 +11,7 @@ import {
   Logout,
   CleaningCompany,
   History,
-  DetailCompany,
+
 } from "./pages";
 
 
@@ -58,10 +58,7 @@ const router = createBrowserRouter([
             path: "logout",
             element: <Logout />,
           },
-          {
-            path : 'detailcompany',
-            element :<DetailCompany/>
-          },
+          
         ],
       },
     ],
