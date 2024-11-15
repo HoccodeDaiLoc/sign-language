@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Wrapper = styled.section`
   border-radius: var(--border-radius);
@@ -21,7 +21,12 @@ const Wrapper = styled.section`
   }
   .form-center {
     display: grid;
-    row-gap: 1rem;
+    row-gap: 0.5rem;
+  }
+  .form-center button {
+    align-self: end;
+    height: 35px;
+    margin-top: 1rem;
   }
   .form-btn {
     align-self: end;
@@ -39,6 +44,9 @@ const Wrapper = styled.section`
   @media (min-width: 1120px) {
     .form-center {
       grid-template-columns: 1fr 1fr 1fr;
+    }
+    .form-center button {
+      margin-top: 0;
     }
   }
 `;
