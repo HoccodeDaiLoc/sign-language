@@ -1,35 +1,38 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import "./Schedule.scss";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Schedule = () => {
 
-    // const webcamRef = useRef(null); 
+    const webcamRef = useRef(null); 
 
-    // useEffect(() => {
-    //     navigator.mediaDevices
-    //         .getUserMedia({ video: true })
-    //         .then((stream) => {
-    //             console.log("Webcam stream: ", stream); 
-    //             if (webcamRef.current) {
-    //                 webcamRef.current.srcObject = stream;
-    //             }
-    //         })
-    //         .catch((err) => {
-    //             console.error("Error accessing webcam: ", err); 
-    //         });
-    // }, []);
-    
+    useEffect(() => {
+        navigator.mediaDevices
+            .getUserMedia({ video: true })
+            .then((stream) => {
+                console.log("Webcam stream: ", stream);  // Thêm dòng này để kiểm tra stream
+                if (webcamRef.current) {
+                    webcamRef.current.srcObject = stream;
+                }
+            })
+            .catch((err) => {
+                console.error("Error accessing webcam: ", err); 
+            });
+    }, []);
 
     return (
         <div className="container">
             <div className="video-call-section">
                 <div className="video-container">
-                      {/* Video chính (webcam) */}
-                      {/* <video className="main-video" ref={webcamRef} autoPlay muted></video> */}
-                    
+                    {/* Video chính (webcam) */}
+                    <video 
+                        className="main-video" 
+                        ref={webcamRef} 
+                        autoPlay 
+                        muted 
+                    ></video>
+
                     {/* Thumbnails khác */}
-                    <video className="main-video" autoPlay></video>
                     <div className="participants">
                         <div className="thumbnail">
                             <i 
