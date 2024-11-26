@@ -1,17 +1,17 @@
-import { FormRow } from '../components';
-import Wrapper from '../assets/wrappers/RegisterAndLoginPage';
+import { FormRow } from '../../components';
+import Wrapper from '../../assets/wrappers/RegisterAndLoginPage';
 import { Link, NavLink } from 'react-router-dom';
-import image from '../assets/images/imagelogin.png'; // Thay đổi đường dẫn tới hình ảnh của bạn
-
+import image from '../../assets/images/imagelogin.png'; // Thay đổi đường dẫn tới hình ảnh của bạn
+import BackButton from '../../components/common/BackButton';
 const Login = () => {
     return (
         <Wrapper>
-            <div className='left-side'>
+            <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "column" }} className='left-side'>
+                <BackButton size={"40px"}></BackButton>
                 <form className='form'>
                     <h4>Đăng nhập</h4>
                     <FormRow type='email' name='email' placeholder='Nhập email của bạn' />
                     <FormRow type='password' name='Mật khẩu' placeholder='**********' />
-
                     <div className='remember-forgot'>
                         <label>
                             <input type='checkbox' /> Nhớ mật khẩu
@@ -20,7 +20,6 @@ const Login = () => {
                             Quên mật khẩu?
                         </Link>
                     </div>
-
                     <NavLink to='/dashboard'>
                         <button type='submit' className='btn btn-block'>
                             Đăng nhập
@@ -41,3 +40,5 @@ const Login = () => {
     );
 };
 export default Login;
+
+
