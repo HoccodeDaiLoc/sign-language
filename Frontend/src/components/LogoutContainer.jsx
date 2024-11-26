@@ -2,16 +2,16 @@ import { FaUserCircle, FaCaretDown } from 'react-icons/fa';
 import Wrapper from '../assets/wrappers/LogoutContainer';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import hook điều hướng
-import { useDashboardContext } from '../pages/DashboardLayout';
+import { useDashboardContext } from '../layout/DashboardLayout';
 
 const LogoutContainer = () => {
     const [showLogout, setShowLogout] = useState(false);
     const { user, logoutUser } = useDashboardContext();
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     const handleLogout = () => {
-        logoutUser(); 
-        navigate('/login'); 
+        logoutUser();
+        navigate('/login');
     };
 
     return (
@@ -30,10 +30,10 @@ const LogoutContainer = () => {
                 <FaCaretDown />
             </button>
             <div className={showLogout ? 'dropdown show-dropdown' : 'dropdown'}>
-                <button 
-                    type='button' 
-                    className='dropdown-btn' 
-                    onClick={handleLogout} 
+                <button
+                    type='button'
+                    className='dropdown-btn'
+                    onClick={handleLogout}
                 >
                     Đăng xuất
                 </button>

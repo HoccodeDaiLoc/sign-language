@@ -1,11 +1,9 @@
-import React from 'react';
-import deservebetter from '../assets/images/Deservebetter.png';
+import deservebetter from '../../assets/images/Deservebetter.png';
 // import timelanding from '../assets/images/timelanding.png';
-import image1 from '../assets/images/image-1.svg';
-import image2 from '../assets/images/image-2.svg';
+import image1 from '../../assets/images/image-1.svg';
 import { Link } from 'react-router-dom';
 import { FaEnvelope, FaMapMarkerAlt, FaFacebook, FaYoutube, FaInstagram } from 'react-icons/fa';
-import Wrapper from '../assets/wrappers/LandingPage';
+import Wrapper from '../../assets/wrappers/LandingPage';
 
 
 const Landing = () => {
@@ -13,8 +11,8 @@ const Landing = () => {
     <Wrapper>
       <div className="landing-container">
         <header className="landing-header">
-        <img src={deservebetter} alt="deservebetter" className="logo-img"  /> 
-         
+          <img src={deservebetter} alt="deservebetter" className="logo-img" />
+
           <div className="landing-doublebutton">
             <Link to='/register' className='header-button register-link'>
               Đăng ký
@@ -27,7 +25,7 @@ const Landing = () => {
         <img src={image1} alt="Main" className="main-img" />
 
 
-        
+
         <footer className="landing-footer">
           <div className="footer-content">
             <div className="footer-section about">

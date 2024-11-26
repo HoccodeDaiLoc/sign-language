@@ -72,7 +72,7 @@ const Schedule = () => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            icon: <i className="fas fa-phone" style={{color:"#2e55af"}} ></i>,
+            icon: <i className="fas fa-phone" style={{ color: "#2e55af" }} ></i>,
         });
         setIsConfirmingEndCall(false); // Đóng hộp thoại
     };
@@ -92,7 +92,7 @@ const Schedule = () => {
                             <i
                                 className="fas fa-user"
                                 style={{
-                                    color: "#67aaad",
+                                    color: "#102C57",
                                     fontSize: "110px",
                                     marginLeft: "30px",
                                     marginTop: "10px",
@@ -130,12 +130,14 @@ const Schedule = () => {
                                 ></i>
                             )}
                             <div
-                            style={{  maxWidth: "70%",  // Giới hạn chiều rộng của tin nhắn
-                                wordWrap: "break-word",  // Ngắt dòng khi từ quá dài
-                                wordBreak: "break-word",  // Chia từ dài nếu cần
-                                overflowWrap: "break-word",  // Hỗ trợ ngắt từ dài
-                                marginBottom: "10px", }}
-                            className="message-content">
+                                style={{
+                                    maxWidth: "70%",  // Giới hạn chiều rộng của tin nhắn
+                                    wordWrap: "break-word",  // Ngắt dòng khi từ quá dài
+                                    wordBreak: "break-word",  // Chia từ dài nếu cần
+                                    overflowWrap: "break-word",  // Hỗ trợ ngắt từ dài
+                                    marginBottom: "10px",
+                                }}
+                                className="message-content">
                                 <p>{msg.content}</p>
                                 <span style={{ fontSize: "12px", color: "#ccd6dd" }}>{msg.time}</span>
                             </div>
@@ -166,7 +168,7 @@ const Schedule = () => {
                 open={isConfirmingEndCall}
                 onClose={() => setIsConfirmingEndCall(false)}
             >
-                <DialogTitle style={{color:"#0fc6de"}} >Xác nhận kết thúc cuộc gọi</DialogTitle>
+                <DialogTitle style={{ color: "#0fc6de" }} >Xác nhận kết thúc cuộc gọi</DialogTitle>
                 <DialogContent>
                     <Typography>Bạn có chắc chắn muốn kết thúc cuộc gọi không?</Typography>
                 </DialogContent>
@@ -174,7 +176,7 @@ const Schedule = () => {
                     <Button onClick={() => setIsConfirmingEndCall(false)} color="gray">
                         Hủy
                     </Button>
-                    <Button style={{color:"white",background:"#0fc6de"}} onClick={handleEndCall}  variant="contained">
+                    <Button style={{ color: "white", background: "#0fc6de" }} onClick={handleEndCall} variant="contained">
                         Xác nhận
                     </Button>
                 </DialogActions>

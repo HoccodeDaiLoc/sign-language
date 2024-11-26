@@ -6,10 +6,10 @@ import {
   Login,
   DashboardLayout,
   Error,
-  Schedule,
+  CallVideo,
   Profile,
   Logout,
-  CleaningCompany,
+  UploadVideo,
   History,
 
 } from "./pages";
@@ -33,18 +33,18 @@ const router = createBrowserRouter([
         path: "login",
         element: <Login />,
       },
-    
+
       {
         path: "dashboard",
         element: <DashboardLayout />,
         children: [
           {
             index: true,
-            element: <Schedule />,
+            element: <CallVideo />,
           },
           {
-            path: "company",
-            element: <CleaningCompany />,
+            path: "upload",
+            element: <UploadVideo />,
           },
           {
             path: "history",
@@ -58,7 +58,7 @@ const router = createBrowserRouter([
             path: "logout",
             element: <Logout />,
           },
-          
+
         ],
       },
     ],
