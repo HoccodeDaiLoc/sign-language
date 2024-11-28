@@ -1,11 +1,11 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from "@mui/material";
 import "./Schedule.scss";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Schedule = () => {
+const UserCall = () => {
     const webcamRef = useRef(null);
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState("");
@@ -185,4 +185,4 @@ const Schedule = () => {
     );
 };
 
-export default Schedule;
+export default UserCall;

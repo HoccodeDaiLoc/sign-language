@@ -1,7 +1,7 @@
 import Wrapper from '../assets/wrappers/Navbar';
 import { FaAlignLeft } from 'react-icons/fa';
 import Logo from './common/Logo';
-import { useDashboardContext } from '../layout/DashboardLayout';
+import { useDashboardContext } from '../layouts/UserLayout';
 import LogoutContainer from './LogoutContainer';
 
 const Navbar = () => {

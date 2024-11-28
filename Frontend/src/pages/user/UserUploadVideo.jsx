@@ -1,5 +1,4 @@
 import { Upload, Button, Form, Row, Col, Flex } from "antd";
-import FormItem from "antd/es/form/FormItem";
 import SearchBarTransition from "../../components/common/SearchBarTransition";
 import colors from "../../constants/Colors";
 import { useState } from "react";
@@ -7,7 +6,7 @@ import Title from "antd/es/typography/Title";
 import '../../assets/css/antd_css.css'
 import { FaArrowDown } from "react-icons/fa";
 
-const UploadVideo = () => {
+const UserUploadVideo = () => {
 
   const [videoSrc, setVideoSrc] = useState("");
 
@@ -120,4 +119,4 @@ const UploadVideo = () => {
   );
 };
 
-export default UploadVideo;
+export default UserUploadVideo;

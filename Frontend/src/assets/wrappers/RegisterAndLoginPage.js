@@ -7,11 +7,17 @@ const Wrapper = styled.section`
   align-items: center;
 
   .left-side {
-    padding: 2rem;
+    padding: 0 2rem;
+    display: flex;
+    flex:0 0 50%;
+    height:"100%";
   }
 
   .right-side {
     display: flex;
+    height:100vh;
+
+    flex:0 0 50%;
     justify-content: center;
     align-items: center;
     background-color: #FFF8F8; 
@@ -64,7 +70,7 @@ const Wrapper = styled.section`
 
   .login-image {
     width: 100%; 
-    height: 100vh; 
+    height: 100%; 
     object-fit: cover; 
     border-radius: 5px;
   }

@@ -8,7 +8,7 @@ const DashboardContext = createContext();
 
 
 
-const DashboardLayout = () => {
+const UserLayout = () => {
     // temp
     const user = { name: 'Ho Xuan Thanh' };
 
@@ -50,4 +50,4 @@ const DashboardLayout = () => {
 
 export const useDashboardContext = () => useContext(DashboardContext);
 
-export default DashboardLayout;
+export default UserLayout;
