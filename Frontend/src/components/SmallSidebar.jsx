@@ -1,7 +1,7 @@
 import Wrapper from '../assets/wrappers/SmallSidebar';
 import { FaTimes } from 'react-icons/fa';
 import Logo from './common/Logo';
-import { useDashboardContext } from '../layout/DashboardLayout';
+import { useDashboardContext } from '../layouts/UserLayout';
 import NavLinks from './NavLinks';
 
 const SmallSidebar = () => {

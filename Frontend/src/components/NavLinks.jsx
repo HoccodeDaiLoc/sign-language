@@ -1,5 +1,4 @@
-import { Logout } from '../pages';
-import { useDashboardContext } from '../layout/DashboardLayout';
+import { useDashboardContext } from '../layouts/UserLayout';
 import links from '../utils/links';
 import { NavLink } from 'react-router-dom';
 

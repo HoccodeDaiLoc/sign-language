@@ -2,7 +2,7 @@ import Wrapper from "../../assets/wrappers/DashboardFormPage";
 import { useState } from 'react';
 import { FormRow } from "../../components";
 
-function Profile() {
+function UserProfile() {
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -65,4 +65,4 @@ function Profile() {
         </Wrapper>
     )
 }
-export default Profile;
+export default UserProfile;

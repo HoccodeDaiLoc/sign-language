@@ -3,10 +3,12 @@ import { setCredentials, logOut } from '../auth/authSlice'
 
 const baseQuery = fetchBaseQuery({
     baseUrl: "http://localhost:3000",
+    timeout: 60000,
     credentials: "include",//cookies được gửi đi với Mỗi query
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token;
         if (token) {
+            console.log("token", token)
             headers.set("authorization", `Bearer ${token}`)
         }
         return headers;

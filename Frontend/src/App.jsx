@@ -1,10 +1,7 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { routes } from './routes/routes.jsx'; // import routes từ file routes.js
-
-const router = createBrowserRouter(routes); // sử dụng routes từ file riêng
+import AppRoutes from "./routes/AppRoute.jsx";
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return <AppRoutes></AppRoutes>;
 };
 
 export default App;

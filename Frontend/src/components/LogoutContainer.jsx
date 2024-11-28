@@ -2,7 +2,7 @@ import { FaUserCircle, FaCaretDown } from 'react-icons/fa';
 import Wrapper from '../assets/wrappers/LogoutContainer';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import hook điều hướng
-import { useDashboardContext } from '../layout/DashboardLayout';
+import { useDashboardContext } from '../layouts/UserLayout';
 
 const LogoutContainer = () => {
     const [showLogout, setShowLogout] = useState(false);
@@ -11,7 +11,7 @@ const LogoutContainer = () => {
 
     const handleLogout = () => {
         logoutUser();
-        navigate('/login');
+        navigate('/');
     };
 
     return (

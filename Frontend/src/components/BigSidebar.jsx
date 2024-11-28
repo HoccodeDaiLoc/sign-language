@@ -1,7 +1,7 @@
 import NavLinks from './NavLinks';
 import Logo from './common/Logo';
 import Wrapper from '../assets/wrappers/BigSidebar';
-import { useDashboardContext } from '../layout/DashboardLayout';
+import { useDashboardContext } from '../layouts/UserLayout';
 
 const BigSidebar = () => {
     const { showSidebar } = useDashboardContext();
