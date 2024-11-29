@@ -10,7 +10,7 @@ export default defineConfig({
     port: 3001, // Đặt cổng tùy chỉnh tại đây
     proxy: {
       '/api': {
-        target: 'http://localhost:5100/api',
+        target: 'http://localhost:3000/v1/api',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

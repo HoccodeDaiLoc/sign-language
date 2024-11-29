@@ -1,20 +1,20 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 import { useSelector } from "react-redux";
-import { selectCurrentToken } from '../auth/authSlice';
+import { selectCurrentAccessToken, selectCurrentUser } from '../auth/authSlice';
 
 export default function ProtectedRoute({ allowedRole }) {
-    const token = useSelector(selectCurrentToken);
-    const location = useLocation();
-    const { auth } = useAuth();
-    console.log(location);
-    console.log(token);
-    console.log(auth)
+    const AccessToken = useSelector(selectCurrentAccessToken);
+    const currentUser = useSelector(selectCurrentUser);
+    const location = useLocation()
+    console.log("currentAccessToken", AccessToken)
+
     return (
-        token ? auth?.roles?.find(role => allowedRole?.includes(role))
-            ? <Outlet /> : auth?.user
-                ? <Navigate to="/unauthorized" state={{ from: location }} replace />
-                : <Navigate to="/login" state={{ from: location }} replace />
+        AccessToken && currentUser.role === "user" ? <Outlet />
             : <Navigate to="/unauthorized" state={{ from: location }} replace />
+        // AccessToken ? auth?.roles?.find(role => allowedRole?.includes(role))
+        // ? <Outlet /> : auth?.user
+        //     ? <Navigate to="/unauthorized" state={{ from: location }} replace />
+        //     : <Navigate to="/login" state={{ from: location }} replace />
+        // : <Navigate to="/unauthorized" state={{ from: location }} replace />
     )
 }

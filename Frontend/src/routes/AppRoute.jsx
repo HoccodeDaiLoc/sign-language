@@ -6,31 +6,28 @@ import HomeLayout from "../layouts/HomeLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import { routes } from "./routes";
 import AdminLayout from "../layouts/AdminLayout";
-import { AuthProvider } from "../context/authProvider";
 
 export default function AppRoutes() {
     return (
         <BrowserRouter>
-            <AuthProvider>
-                <ScrollTop />
-                <Routes>
-                    <Route path="/" element={<HomeLayout />}>
-                        {renderRoute(routes.common)}
-                    </Route>
+            <ScrollTop />
+            <Routes>
+                <Route path="/" element={<HomeLayout />}>
+                    {renderRoute(routes.common)}
+                </Route>
 
-                    <Route path="/user" element={<UserLayout />}>
-                        <Route element={<ProtectedRoute allowedRoles={[ROLE_USER]} />}>
-                            {renderRoute(routes.user)}
-                        </Route>
+                <Route path="/user" element={<UserLayout />}>
+                    <Route element={<ProtectedRoute allowedRoles={[ROLE_USER]} />}>
+                        {renderRoute(routes.user)}
                     </Route>
+                </Route>
 
-                    <Route path="/admin" element={<AdminLayout />}>
-                        <Route element={<ProtectedRoute allowedRoles={[ROLE_ADMIN]} />}>
-                            {renderRoute(routes.admin)}
-                        </Route>
+                <Route path="/admin" element={<AdminLayout />}>
+                    <Route element={<ProtectedRoute allowedRoles={[ROLE_ADMIN]} />}>
+                        {renderRoute(routes.admin)}
                     </Route>
-                </Routes>
-            </AuthProvider>
+                </Route>
+            </Routes>
         </BrowserRouter>
     );
 }

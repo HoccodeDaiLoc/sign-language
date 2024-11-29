@@ -5,26 +5,30 @@ import { Link, useNavigate } from "react-router-dom";
 import image from "../../assets/images/imagelogin.png";
 import BackButton from "../../components/common/BackButton";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "../../auth/authSlice";
-import { useLoginMutation } from "../../auth/authApiSlice";
+import apiClient from '../../api/apiClient';
+import { login } from "../../auth/authSlice";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const [errMsg, setErrMsg] = useState('')
-
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-    const [login, { isLoading }] = useLoginMutation();
     const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
         try {
-            const userData = await login({ email, password }).unwrap();
-            console.log("userdata", userData);
-            dispatch(setCredentials({ ...userData, email }));
+            const response = await apiClient.post("/login",
+                { email, password });
+            console.log(response)
+            const accessToken = response.data.metadata.token.accessToken;
+            const refreshToken = response.data.metadata.token.refreshToken;
+            const user = response.data.metadata.user;
+            const role = response.data.metadata.user.role;
+            dispatch(login({ accessToken, refreshToken, user, role }));
             navigate("/user/home");
         } catch (err) {
             if (!err?.originalStatus) {
