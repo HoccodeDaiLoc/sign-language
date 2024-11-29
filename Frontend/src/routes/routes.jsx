@@ -3,7 +3,7 @@ import Landing from "../pages/guest/Landing.jsx";
 import Register from "../pages/guest/Register.jsx";
 import Login from "../pages/guest/Login.jsx";
 import Error from "../pages/Error.jsx";
-import UserHome from "../pages/user/UserHome.jsx";
+import UsercHome from "../pages/user/UserHome.jsx";
 import UserCall from "../pages/user/UserCall.jsx";
 import UserProfile from "../pages/user/UserProfile.jsx";
 import UserUploadVideo from "../pages/user/UserUploadVideo.jsx";
@@ -33,10 +33,10 @@ export const routes = {
         }
     ],
     user: [
-        {
-            path: "/user/home",
-            element: <UserHome />
-        },
+        // {
+        //     path: "/user/home",
+        //     element: <UserHome />
+        // },
         {
             path: "/user/call",
             element: <UserCall />,

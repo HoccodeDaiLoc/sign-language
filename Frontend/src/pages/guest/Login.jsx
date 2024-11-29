@@ -29,7 +29,7 @@ const Login = () => {
             const user = response.data.metadata.user;
             const role = response.data.metadata.user.role;
             dispatch(login({ accessToken, refreshToken, user, role }));
-            navigate("/user/home");
+            navigate("/user/call");
         } catch (err) {
             if (!err?.originalStatus) {
                 // isLoading: true until timeout occurs

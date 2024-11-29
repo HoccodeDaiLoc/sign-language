@@ -1,0 +1,44 @@
+/* /* .react-datepicker-wrapper,
+.react-datepicker__input-container,
+.react-datepicker__input-container input {
+  display: block;
+  width: 100%;
+}
+/* Example: Customize the input field */
+.react-datepicker__input-container input {
+  border: 1px solid var(--grey-300);
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-size: 16px;
+  height: 35px;
+}
+
+/* Example: Customize the calendar popup */
+.react-datepicker__triangle {
+  display: none;
+}
+
+.react-datepicker {
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.react-datepicker__header {
+  background-color: #4caf50;
+  color: white;
+}
+
+.react-datepicker__day {
+  background-color: white;
+  color: #333;
+}
+
+.react-datepicker__day:hover {
+  background-color: #f0f0f0;
+}
+.react-datepicker-wrapper,
+.react-datepicker__input-container,
+.react-datepicker__input-container input {
+  display: block;
+  width: 100%;
+}
