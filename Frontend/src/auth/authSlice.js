@@ -1,31 +1,37 @@
 import { createSlice } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
+
 // Array<number>.reduce(callbackfn: (previousValue: number, currentValue: number,
 //      currentIndex: number, array: number[]) => number)
+
+const initialState = {
+    user: null, isAuthenticated: false,
+};
 const authSlice = createSlice({
     name: "auth",
-    initialState: {
-        user: null, token: null, isAuthenticated: false,
-    },
+    initialState,
     reducers: {
-        setCredentials: (state, action) => {
-            const { user, accessToken } = action.payload;
-            state.user = user;
-            state.token = accessToken;
+        login(state, action) {
+            state.user = action.payload.user;
+            state.role = action.payload.role;
             state.isAuthenticated = true;
-
+            Cookies.set("accessToken", action.payload.accessToken);
+            Cookies.set('refreshToken', action.payload.refreshToken);
+            console.log("action", action)
         },
-        logOut: (state, action) => {
+        logOut: (state) => {
             state.user = null;
-            state.token = null;
+            state.role = null;
             state.isAuthenticated = false;
-
+            Cookies.remove('accessToken');
+            Cookies.remove('refreshToken');
         }
     }
 })
 
-export const { setCredentials, logOut } = authSlice.actions;
+export const { login, logOut } = authSlice.actions;
 
 export default authSlice.reducer;
 
 export const selectCurrentUser = (state) => state.auth.user;
-export const selectCurrentToken = (state) => state.auth.token;
+export const selectCurrentAccessToken = () => Cookies.get("accessToken");
