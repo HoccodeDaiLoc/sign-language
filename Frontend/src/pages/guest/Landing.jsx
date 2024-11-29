@@ -23,9 +23,6 @@ const Landing = () => {
           </div>
         </header>
         <img src={image1} alt="Main" className="main-img" />
-
-
-
         <footer className="landing-footer">
           <div className="footer-content">
             <div className="footer-section about">

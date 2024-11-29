@@ -9,8 +9,11 @@ export default function ProtectedRoute({ allowedRole }) {
     console.log("currentAccessToken", AccessToken)
 
     return (
-        AccessToken && currentUser.role === "user" ? <Outlet />
-            : <Navigate to="/unauthorized" state={{ from: location }} replace />
+        AccessToken && currentUser.role === "user"
+            ? <Outlet />
+            : AccessToken
+                ? <Navigate to="/unauthorized" state={{ from: location }} replace />
+                : <Navigate to="/login" state={{ from: location }} replace />
         // AccessToken ? auth?.roles?.find(role => allowedRole?.includes(role))
         // ? <Outlet /> : auth?.user
         //     ? <Navigate to="/unauthorized" state={{ from: location }} replace />
