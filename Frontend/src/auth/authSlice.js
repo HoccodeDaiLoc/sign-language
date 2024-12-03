@@ -5,19 +5,19 @@ import Cookies from 'js-cookie';
 //      currentIndex: number, array: number[]) => number)
 
 const initialState = {
-    user: null, isAuthenticated: false,
+    user: null, isAuthenticated: false
 };
 const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
         login(state, action) {
+            console.log("action", action)
             state.user = action.payload.user;
             state.role = action.payload.role;
             state.isAuthenticated = true;
             Cookies.set("accessToken", action.payload.accessToken);
             Cookies.set('refreshToken', action.payload.refreshToken);
-            console.log("action", action)
         },
         logOut: (state) => {
             state.user = null;
