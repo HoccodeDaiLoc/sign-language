@@ -33,10 +33,10 @@ export const routes = {
         }
     ],
     user: [
-        {
-            path: "/user/home",
-            element: <UserHome />
-        },
+        // {
+        //     path: "/user/home",
+        //     element: <UserHome />
+        // },
         {
             path: "/user/call",
             element: <UserCall />,
