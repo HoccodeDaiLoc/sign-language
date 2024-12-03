@@ -231,7 +231,7 @@ const UserCall = () => {
                                 <ListItemText primary={user.name}  style={{marginLeft:"10px" ,marginTop:"25px"}}/>
                                 <i className="fas fa-phone" style={{ fontSize: "22px", color: "#4CAF50" ,marginTop:"11px" }}></i>
                                 <i class="fa-brands fa-rocketchat" style={{ fontSize: "22px", color: "#1e70b8" ,marginLeft :"20px",marginTop:"11px" }}></i>
-
+                               {/* chat */}
 
                             </ListItem>
                         ))}
