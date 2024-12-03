@@ -1,5 +1,5 @@
 const colors = {
-    primary: '#4A75F7',
+    primary: '#102c57',
     secondary: '#65A9FB',
     success: '#52c41a',
     danger: '#f5222d',
@@ -15,6 +15,7 @@ const colors = {
     textSecondary: '#969AA0',
     border: '#d9d9d9',
     borderlight: "#DDDFDD",
+
     highlight: '#FFCA42',
     shadow: 'rgba(0, 0, 0, 0.1)',
     gradientStart: '#E3EEFF',

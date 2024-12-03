@@ -26,7 +26,6 @@ const Register = () => {
                 email, username, password, gender, dateOfBirth: formattedDateOfBirth,
             });
             if (response.status === 201) {
-                ///thông báo thành công chi
                 navigate("/login")
             }
             console.log("Response:", response);

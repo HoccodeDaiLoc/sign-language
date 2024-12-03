@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { store } from '../utils/store'
 
-// Tạo instance của Axios
 const axiosClient = axios.create({
     baseURL: 'http://localhost:3000/v1/api',
     withCredentials: true,
@@ -15,6 +15,10 @@ axiosClient.interceptors.request.use(
         const token = Cookies.get('accessToken');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
+        }
+        const state = store.getState();
+        if (state.auth && state.auth.user) {
+            config.headers["x-client-id"] = state.auth.user._id;
         }
         return config;
     },
@@ -33,11 +37,12 @@ axiosClient.interceptors.response.use(
             originalRequest._retry = true;
             try {
                 const refreshToken = Cookies.get('refreshToken');
-                const { data } = await axios.post('/refresh', {
+                const { data } = await axios.post('/get-access-token', {
                     token: refreshToken,
                 });
                 Cookies.set('accessToken', data.accessToken);
                 axios.defaults.headers.Authorization = `Bearer ${data.accessToken}`;
+
                 return axiosClient(originalRequest);
             } catch (err) {
                 console.error('Refresh token failed:', err);

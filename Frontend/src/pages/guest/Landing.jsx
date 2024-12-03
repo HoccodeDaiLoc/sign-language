@@ -4,23 +4,28 @@ import image1 from '../../assets/images/image-1.svg';
 import { Link } from 'react-router-dom';
 import { FaEnvelope, FaMapMarkerAlt, FaFacebook, FaYoutube, FaInstagram } from 'react-icons/fa';
 import Wrapper from '../../assets/wrappers/LandingPage';
-
-
+import { store } from '../../utils/store'
 const Landing = () => {
+  const auth = store.getState().auth.isAuthenticated;
   return (
     <Wrapper>
       <div className="landing-container">
         <header className="landing-header">
           <img src={deservebetter} alt="deservebetter" className="logo-img" />
+          {auth
+            ? <Link to='/' className='header-button'>
+              Đăng xuất
+            </Link> : <div className="landing-doublebutton">
+              <Link to='/register' className='header-button register-link'>
+                Đăng ký
+              </Link>
+              <Link to='/login' className='header-button'>
+                Đăng nhập
+              </Link>
+            </div>
 
-          <div className="landing-doublebutton">
-            <Link to='/register' className='header-button register-link'>
-              Đăng ký
-            </Link>
-            <Link to='/login' className='header-button'>
-              Đăng nhập
-            </Link>
-          </div>
+          }
+
         </header>
         <img src={image1} alt="Main" className="main-img" />
         <footer className="landing-footer">

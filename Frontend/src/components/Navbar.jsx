@@ -1,8 +1,8 @@
 import Wrapper from '../assets/wrappers/Navbar';
 import { FaAlignLeft } from 'react-icons/fa';
-import Logo from './common/Logo';
 import { useDashboardContext } from '../layouts/UserLayout';
 import LogoutContainer from './LogoutContainer';
+import SearchBarTransition from './common/SearchBarTransition';
 
 const Navbar = () => {
     const { toggleSidebar } = useDashboardContext();
@@ -12,9 +12,8 @@ const Navbar = () => {
                 <button type='button' className='toggle-btn' onClick={toggleSidebar}>
                     <FaAlignLeft />
                 </button>
-                <div>
-                    <Logo />
-                    <h4 className='logo-text'>Sign Language <i class="fa-solid fa-ear-deaf"></i></h4>
+                <div style={{ width: "80%" }}>
+                    <SearchBarTransition size="80%"></SearchBarTransition>
                 </div>
                 <div className='btn-container'>
                     <LogoutContainer />
