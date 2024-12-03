@@ -32,11 +32,14 @@
 }
 
 .thumbnail {
-  background-color: #ffff;
-  width: 150px;
-  height: 120px;
+  background-color: #aab2c2;
+  width: 270px;
+  height: 200px;
   margin-bottom: 10px;
   border-radius: 5px;
+  margin-left: 600px;
+  position: relative; 
+  z-index: 2;     
 }
 
 .controls {
@@ -172,7 +175,7 @@
 }
 
 .control-button:hover {
-  background-color: #7b5a47;
+  background-color: #102c57;
 }
 
 .end-call {
