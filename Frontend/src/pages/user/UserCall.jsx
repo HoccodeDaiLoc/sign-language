@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from "@mui/material";
-import "./Schedule.scss";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, List, ListItem, ListItemText } from "@mui/material";
+import './Schedule.scss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,7 +10,14 @@ const UserCall = () => {
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState("");
     const [isCameraOn, setIsCameraOn] = useState(true);
-    const [isConfirmingEndCall, setIsConfirmingEndCall] = useState(false); // State kiểm soát hộp thoại
+    const [isConfirmingEndCall, setIsConfirmingEndCall] = useState(false);
+    const [isUsersDialogOpen, setIsUsersDialogOpen] = useState(false); // Trạng thái mở/đóng dialog người dùng online
+    const [onlineUsers, setOnlineUsers] = useState([ // Danh sách người dùng giả lập
+        { id: 1, name: "Ho Xuan Thanh" },
+        { id: 2, name: "Nguyen Cong Phuong" },
+        { id: 3, name: "Nguyen Quang Hai" },
+        { id: 4, name: "Ho Tan Tai" }
+    ]);
 
     useEffect(() => {
         if (isCameraOn) {
@@ -60,10 +67,12 @@ const UserCall = () => {
     };
 
     const confirmEndCall = () => {
-        setIsConfirmingEndCall(true); // Mở hộp thoại
+        setIsConfirmingEndCall(true);
     };
 
     const handleEndCall = () => {
+        setIsCameraOn(false);
+
         toast.info("Cuộc gọi đã được kết thúc!", {
             position: "top-center",
             autoClose: 3000,
@@ -72,35 +81,73 @@ const UserCall = () => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            icon: <i className="fas fa-phone" style={{ color: "#2e55af" }} ></i>,
+            icon: <i className="fas fa-phone" style={{ color: "#2e55af" }}></i>,
         });
-        setIsConfirmingEndCall(false); // Đóng hộp thoại
+
+        setIsConfirmingEndCall(false);
+    };
+
+    const openUsersDialog = () => {
+        setIsUsersDialogOpen(true); 
+    };
+
+    const closeUsersDialog = () => {
+        setIsUsersDialogOpen(false); 
     };
 
     return (
         <div className="container">
             <div className="video-call-section">
-                <div className="video-container">
-                    <video
-                        className="main-video"
-                        ref={webcamRef}
-                        autoPlay
-                        muted
-                    ></video>
-                    <div className="participants">
-                        <div className="thumbnail">
+                <div className="video-container" style={{ position: "relative" }}>
+                    <div className="thumbnail" style={{ background: "#fafafa" }}>
+                        {!isCameraOn ? (
                             <i
                                 className="fas fa-user"
                                 style={{
-                                    color: "#102C57",
-                                    fontSize: "110px",
-                                    marginLeft: "30px",
-                                    marginTop: "10px",
+                                    color: "#102c57",
+                                    fontSize: "190px",
+                                    position: "absolute",
+                                    top: "50%",
+                                    left: "50%",
+                                    transform: "translate(-50%, -50%)",
+                                    zIndex: 3,
                                 }}
                             ></i>
-                        </div>
+                        ) : (
+                            <video
+                                className="main-video"
+                                ref={webcamRef}
+                                autoPlay
+                                muted
+                                style={{
+                                    display: isCameraOn ? "block" : "none",
+                                    width: "270px",
+                                    height: "200px",
+                                    objectFit: "cover",
+                                    borderRadius: "5px",
+                                    position: "absolute",
+                                    top: "50%",
+                                    left: "50%",
+                                    transform: "translate(-50%, -50%)",
+                                    zIndex: 2,
+                                }}
+                            ></video>
+                        )}
                     </div>
+                    <img
+                        src="https://img.freepik.com/free-vector/man-headphone-avatar-call-center_18591-16552.jpg?size=338&ext=jpg"
+                        alt="User Avatar"
+                        style={{
+                            width: "870px",
+                            height: "490px",
+                            marginLeft: "0px",
+                            marginTop: "-210px",
+                            position: "relative",
+                            zIndex: 1,
+                        }}
+                    />
                 </div>
+
                 <div className="controls">
                     <button className="control-button" onClick={toggleCamera}>
                         <i className={`fas ${isCameraOn ? "fa-video" : "fa-video-slash"}`}></i>
@@ -108,7 +155,9 @@ const UserCall = () => {
                     <button className="control-button end-call" onClick={confirmEndCall}>
                         <i className="fas fa-phone"></i>
                     </button>
-                    <button className="control-button"><i className="fas fa-cog"></i></button>
+                    <button className="control-button" onClick={openUsersDialog}>
+                        <i className="fas fa-user-friends"></i> {/* Biểu tượng bạn bè hoặc người thân */}
+                    </button>
                 </div>
             </div>
 
@@ -131,10 +180,10 @@ const UserCall = () => {
                             )}
                             <div
                                 style={{
-                                    maxWidth: "70%",  // Giới hạn chiều rộng của tin nhắn
-                                    wordWrap: "break-word",  // Ngắt dòng khi từ quá dài
-                                    wordBreak: "break-word",  // Chia từ dài nếu cần
-                                    overflowWrap: "break-word",  // Hỗ trợ ngắt từ dài
+                                    maxWidth: "70%",
+                                    wordWrap: "break-word",
+                                    wordBreak: "break-word",
+                                    overflowWrap: "break-word",
                                     marginBottom: "10px",
                                 }}
                                 className="message-content">
@@ -163,22 +212,47 @@ const UserCall = () => {
 
             <ToastContainer />
 
-            {/* Hộp thoại xác nhận */}
+            {/* Dialog danh sách người dùng */}
+            <Dialog
+                open={isUsersDialogOpen}
+                onClose={closeUsersDialog}
+                maxWidth="xs"
+                fullWidth
+            >
+                <DialogTitle style={{ color: "#0fc6de" ,marginLeft:"75px" }}>Người dùng đang online</DialogTitle>
+                <DialogContent>
+                    <List>
+                        {onlineUsers.map((user) => (
+                            <ListItem key={user.id} >
+                                <div style={{ display: "flex", alignItems: "center" ,marginTop :"10px"}}>
+                                <i className="fas fa-user" style={{ fontSize: "30px", position: "relative" , color: "#102c57"}}></i>
+                                <i className="fas fa-check-circle" style={{ color: "green", marginTop :"20px", fontSize: "12px"}}></i>
+                                </div>
+                                <ListItemText primary={user.name}  style={{marginLeft:"10px" ,marginTop:"25px"}}/>
+                                <i className="fas fa-phone" style={{ fontSize: "22px", color: "#4CAF50" ,marginTop:"11px" }}></i>
+                                <i class="fa-brands fa-rocketchat" style={{ fontSize: "22px", color: "#1e70b8" ,marginLeft :"20px",marginTop:"11px" }}></i>
+                             {/* chat */}
+
+                            </ListItem>
+                        ))}
+                    </List>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={closeUsersDialog} color="gray">Đóng</Button>
+                </DialogActions>
+            </Dialog>
+
             <Dialog
                 open={isConfirmingEndCall}
                 onClose={() => setIsConfirmingEndCall(false)}
             >
-                <DialogTitle style={{ color: "#0fc6de" }} >Xác nhận kết thúc cuộc gọi</DialogTitle>
+                <DialogTitle style={{ color: "#0fc6de" }}>Xác nhận kết thúc cuộc gọi</DialogTitle>
                 <DialogContent>
                     <Typography>Bạn có chắc chắn muốn kết thúc cuộc gọi không?</Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setIsConfirmingEndCall(false)} color="gray">
-                        Hủy
-                    </Button>
-                    <Button style={{ color: "white", background: "#0fc6de" }} onClick={handleEndCall} variant="contained">
-                        Xác nhận
-                    </Button>
+                    <Button onClick={() => setIsConfirmingEndCall(false)} color="gray">Hủy</Button>
+                    <Button style={{ color: "white", background: "#0fc6de" }} onClick={handleEndCall} variant="contained">Xác nhận</Button>
                 </DialogActions>
             </Dialog>
         </div>
