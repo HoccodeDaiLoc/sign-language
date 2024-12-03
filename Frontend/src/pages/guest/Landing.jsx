@@ -6,7 +6,7 @@ import { FaEnvelope, FaMapMarkerAlt, FaFacebook, FaYoutube, FaInstagram } from '
 import Wrapper from '../../assets/wrappers/LandingPage';
 import { store } from '../../utils/store'
 const Landing = () => {
-  const auth = store.getState().auth.isAuthenticated;
+  const auth = store.getState().isAuthenticated;
   return (
     <Wrapper>
       <div className="landing-container">

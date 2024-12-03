@@ -10,9 +10,8 @@ import ToastUtil from '../utils/notiUtils';
 const DashboardContext = createContext();
 const UserLayout = () => {
     const [errMsg, setErrMsg] = useState("");
-
     const dispatch = useDispatch();
-    const user = store.getState().auth.user;
+    const user = store.getState().user;
     console.log("user", user)
     const navigate = useNavigate()
 
