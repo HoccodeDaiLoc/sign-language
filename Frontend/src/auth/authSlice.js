@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
+import { REHYDRATE } from "redux-persist";
+import { store } from '../utils/store';
 
 // Array<number>.reduce(callbackfn: (previousValue: number, currentValue: number,
 //      currentIndex: number, array: number[]) => number)
@@ -26,6 +28,13 @@ const authSlice = createSlice({
             Cookies.remove('accessToken');
             Cookies.remove('refreshToken');
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(REHYDRATE, (state) => {
+            if (state.user) {
+                state.isAuthenticated = true;
+            }
+        })
     }
 })
 
@@ -33,5 +42,5 @@ export const { login, logOut } = authSlice.actions;
 
 export default authSlice.reducer;
 
-export const selectCurrentUser = (state) => state.auth.user;
+export const selectCurrentUser = () => store.getState().user;
 export const selectCurrentAccessToken = () => Cookies.get("accessToken");

@@ -17,8 +17,8 @@ axiosClient.interceptors.request.use(
             config.headers.Authorization = `Bearer ${token}`;
         }
         const state = store.getState();
-        if (state.auth && state.auth.user) {
-            config.headers["x-client-id"] = state.auth.user._id;
+        if (state.isAuthenticated && state.user) {
+            config.headers["x-client-id"] = state.user._id;
         }
         return config;
     },

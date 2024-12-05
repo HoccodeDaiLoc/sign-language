@@ -2,10 +2,14 @@ import { useState } from "react";
 import Wrapper from "../assets/wrappers/LogoutContainer";
 import Modal from "../components/common/Modal";
 import { useDashboardContext } from "../layouts/UserLayout";
-import logoutSVG from "../assets/svg/signout.svg"
-import personSVG from "../assets/svg/person.svg"
-import settingSVG from "../assets/svg/setting.svg"
-import themeSVG from "../assets/svg/water.svg"
+import logoutSVG from "../assets/svg/signout.svg";
+import personSVG from "../assets/svg/person.svg";
+import settingSVG from "../assets/svg/setting.svg";
+import themeSVG from "../assets/svg/water.svg";
+import languageSVG from "../assets/svg/language.svg";
+
+
+import "../assets/css/logout_container.css";
 
 const LogoutContainer = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,59 +21,58 @@ const LogoutContainer = () => {
 
     return (
         <Wrapper>
-            <button
-                type="button"
-                className="btn logout-btn"
-                style={{ width: "2.5rem", height: "2.5rem", borderRadius: "50%" }}
+            <div
                 onClick={() => setIsModalOpen(true)}
             >
-                <img src={user.avatar ?? { personSVG }} alt="avatar" className="img" />
-            </button>
+                <img style={{ width: "2.5rem", height: "2.5rem", cursor: "pointer" }} src={user.avatar ?? personSVG} alt="avatar" className="img" />
+            </div>
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <div style={{
-                        display: "flex", flexDirection: "column",
-                        padding: "0.5rem", borderBottom: "0.1rem solid #e5e7eb", justifyContent: "center", alignItems: "center"
-                    }}>
-                        <img style={{ width: "4rem", height: "4rem" }} src={user.avatar}></img>
-                        <p style={{ padding: "0.5rem", fontWeight: "bold" }}>{user.username}</p>
-                        <p style={{}}>{user.role}</p>
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <img src={user.avatar ?? personSVG} alt="user avatar" />
+                        <p>{user.username}</p>
                     </div>
-                    <div>
-                        <div style={{ display: "flex", flexDirection: "column", padding: "1rem 0.5rem", borderBottom: "0.3px solid #e5e7eb" }}>
-                            <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center" }}>
-                                <img style={{ width: "2rem", height: "2rem" }} src={personSVG}></img>
 
-                                <p style={{ padding: "0.5rem", fontWeight: "500px" }} >Thông tin cá nhân</p>
+                    <div className="menu-item" style={{ borderBottom: "1px solid #e5e7eb", padding: " 0.5rem" }}>
+                        <div className="menu-item-container">
+                            <img src={personSVG} alt="personal info" />
+                            <p>Thông tin cá nhân</p>
+                        </div>
+                    </div>
+                    <div style={{ marginTop: "0.5rem" }}>
+                        <div className="menu-item">
+                            <div className="menu-item-container">
+                                <img src={settingSVG} alt="settings" />
+                                <p>Cài đặt</p>
+                            </div>
+                        </div>
+
+                        <div className="menu-item">
+                            <div className="menu-item-container">
+                                <img src={themeSVG} alt="theme" />
+                                <p>Đổi màu chủ đề</p>
+                            </div>
+                        </div>
+
+                        <div className="menu-item">
+                            <div className="menu-item-container">
+
+                                <img src={languageSVG} alt="languageSVG" />
+                                <p>Chọn ngôn ngữ</p>
+                            </div>
+
+                        </div>
+                        <div onClick={handleLogout} className="menu-item">
+                            <div className="menu-item-container">
+                                <img src={logoutSVG} alt="logout" />
+                                <p>Đăng xuất</p>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", padding: "0.5rem" }}>
-
-                            <img style={{ width: "2rem", height: "2rem" }} src={settingSVG}></img>
-
-                            <p style={{ padding: "0.5rem", fontWeight: "500px" }} >Cài đặt</p>
-
-                        </div>
-                        <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", padding: "0.5rem" }}>
-                            <img style={{ width: "2rem", height: "2rem" }} src={themeSVG}></img>
-                            <p style={{ padding: "0.5rem", fontWeight: "500px" }} >Đổi màu chủ đề</p>
-                        </div>
-                        <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", padding: "0.5rem" }}>
-                            <p style={{ padding: "0.5rem", fontWeight: "500px" }} >Chọn ngôn ngữ</p>
-                        </div>
-                    </div>
-                    <div
-                        onClick={handleLogout}
-                        style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", padding: "0.5rem" }}>
-                        <img style={{ width: "2rem", height: "2rem" }} src={logoutSVG}></img>
-                        <p style={{ padding: "0.5rem", fontWeight: "500px" }} > Đăng xuất</p>
-                    </div>
                 </div>
 
-            </Modal>
+            </Modal >
         </Wrapper >
     );
 };
