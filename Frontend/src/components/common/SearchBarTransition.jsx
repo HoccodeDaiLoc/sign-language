@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import RightArrow from '../../assets/svg/right-arrow.svg'
 import "../../assets/css/SearchBarTransition.css"; // Import file CSS
 
 const SearchBarTransition = ({ size, placeholder }) => {
@@ -62,26 +63,29 @@ const SearchBarTransition = ({ size, placeholder }) => {
                     onChange={(e) => setQuery(e.target.value)}
                     value={query}
                 />
-                {query.length >= 3 && (
-                    <div className="search-results">
-                        <span className="results-header">
-                            <p style={{ fontSize: "large" }}>Ngôn Ngữ kí hiệu</p>
-                        </span>
-                        {searchResults.length === 0 ? (
-                            <span className="no-results">
-                                <p style={{ fontSize: "medium" }}>Không tìm thấy ngôn ngữ kí hiệu này</p>
+                {query.length >= 0 && (
+                    <div className="search-results-container">
+                        <div className="search-results">
+                            <span className="results-header">
+                                <p style={{ fontSize: "large" }}>Ngôn Ngữ kí hiệu</p>
+                                <img style={{ width: "2rem", height: "2rem" }} src={RightArrow}></img>
                             </span>
-                        ) : (
-                            searchResults.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="search-item"
-                                >
-                                    <div>{item.title}</div>
-                                    <div>{item.id}</div>
-                                </div>
-                            ))
-                        )}
+                            {searchResults.length === 0 ? (
+                                <span className="no-results">
+                                    <p style={{ fontSize: "medium" }}>Không tìm thấy ngôn ngữ kí hiệu này</p>
+                                </span>
+                            ) : (
+                                searchResults.map((item) => (
+                                    <div
+                                        key={item.id}
+                                        className="search-item"
+                                    >
+                                        <div>{item.title}</div>
+                                        <div>{item.id}</div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
                     </div>
                 )}
             </div>
