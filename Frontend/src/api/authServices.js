@@ -1,13 +1,12 @@
 // authService.js
 import apiClient from "./apiClient";
-import { logOut, login } from "../auth/authSlice";
+import { logOut, login } from "../features/authSlice";
 
 const authServices = {
     login: async (credentials, dispatch) => {
         try {
             const { email, password } = credentials;
             const response = await apiClient.post("/login", { email, password });
-
             if (response.status === 200) {
                 const { token, user } = response.data.metadata;
                 const { accessToken, refreshToken } = token;

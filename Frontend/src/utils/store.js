@@ -1,5 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '../auth/authSlice';
+import authReducer from '../features/authSlice';
+import themeReducer from '../features/themeSlice';
+
 import storage from 'redux-persist/lib/storage';
 import { persistStore, persistReducer } from 'redux-persist';
 
@@ -7,11 +9,14 @@ const persistConfig = {
     key: "root",
     storage,
 }
-
-const persistedReducer = persistReducer(persistConfig, authReducer);
+const persistedThemeReducer = persistReducer(persistConfig, themeReducer)
+const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 
 export const store = configureStore({
-    reducer: persistedReducer,
+    reducer: {
+        auth: persistedAuthReducer,
+        theme: persistedThemeReducer
+    },
     devTools: import.meta.env.NODE_ENV !== "production",
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

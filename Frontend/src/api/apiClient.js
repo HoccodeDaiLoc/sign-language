@@ -16,9 +16,9 @@ axiosClient.interceptors.request.use(
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
-        const state = store.getState();
-        if (state.isAuthenticated && state.user) {
-            config.headers["x-client-id"] = state.user._id;
+        const stateAuth = store.getState().auth;
+        if (stateAuth.isAuthenticated && stateAuth.user) {
+            config.headers["x-client-id"] = stateAuth.user._id;
         }
         return config;
     },
@@ -28,24 +28,27 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
     (response) => response,
     async (error) => {
-        const originalRequest = error.config;
+        const originalRequest = error.config;//lưu lỗi vào request
+        console.log(originalRequest)
         if (
             error.response &&
-            error.response.status === 401 &&
-            !originalRequest._retry
+            error.response.status === 400
+            && !originalRequest._retry
         ) {
             originalRequest._retry = true;
             try {
                 const refreshToken = Cookies.get('refreshToken');
-                const { data } = await axios.post('/get-access-token', {
-                    token: refreshToken,
+                console.log(refreshToken)
+                const { data } = await axiosClient.post('/get-access-token', {
+                    refreshToken: refreshToken,
                 });
+                console.log(data)
                 Cookies.set('accessToken', data.accessToken);
                 axios.defaults.headers.Authorization = `Bearer ${data.accessToken}`;
-
                 return axiosClient(originalRequest);
-            } catch (err) {
-                console.error('Refresh token failed:', err);
+            }
+            catch (err) {
+                console.log('Condition not met', error.response.status, originalRequest._retry);
                 // Xử lý logout
             }
         }

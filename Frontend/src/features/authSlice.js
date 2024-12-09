@@ -42,5 +42,5 @@ export const { login, logOut } = authSlice.actions;
 
 export default authSlice.reducer;
 
-export const selectCurrentUser = () => store.getState().user;
+export const selectCurrentUser = () => store.getState().auth.user;
 export const selectCurrentAccessToken = () => Cookies.get("accessToken");

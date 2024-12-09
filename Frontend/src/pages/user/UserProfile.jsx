@@ -1,68 +1,65 @@
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
 import { useState } from 'react';
-import { FormRow } from "../../components";
+import { useForm } from "react-hook-form";
+import userServices from '../../api/userServices'
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../features/authSlice";
+import ToastUtil from "../../utils/notiUtils";
 
 function UserProfile() {
-
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [location, setLocation] = useState('');
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!name || !email || !lastName || !location) {
-            return;
+    const currentUser = useSelector(selectCurrentUser);
+    const [errMsg, setErrMsg] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const { register, handleSubmit, formState: { errors }, } = useForm();
+    console.log("user", currentUser)
+    const onSubmit = async (id) => {
+        setIsLoading(true);
+        const result = await userServices.updateUser(id);
+        console.log(result);
+        setIsLoading(false);
+        if (result.success) {
+            ToastUtil.success("Lưu thông tin thành công");
+        } else {
+            ToastUtil.error("Có lỗi đã xảy ra");
+            setErrMsg(result.error);
         }
-
     }
 
     return (
         <Wrapper>
-            <form className="form" onSubmit={handleSubmit} >
+            <form className="form" onSubmit={handleSubmit(onSubmit)} >
                 <h3 style={{ marginLeft: "300px" }}> Thông tin cá nhân</h3> <br />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <FormRow
-                        type='Họ tên'
-                        name='Họ tên'
-                        placeholder="Ho Xuan"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                    <input
+                        className="form-input p-3"
+                        placeholder="username"
+                        {...register("username", { required: "UserName is required" })}
                     />
-                    <FormRow
-                        labelText='Tên'
-                        type='text'
-                        name='Tên '
-                        placeholder="Thanh"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                    />
-                    <FormRow
-                        type='email'
-                        name='email'
-                        value={email}
-                        placeholder="hothanh0812@gmail.com"
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <FormRow
-                        type='text'
-                        name='Địa chỉ'
-                        value={location}
-                        placeholder="151 Âu cơ ,Hòa Khánh,Đà Nẵng "
-                        onChange={(e) => setLocation(e.target.value)}
-                    />
-                    <button
-                        className='btn btn-block'
-                        type='submit'
-
-                        style={{ padding: '10px 24px', fontSize: '18px', marginTop: "20px" }}
-                    >
-                        Save changes
-                    </button>
-
+                    {errors.username && <p className="error-message">{errors.email.message}</p>}
                 </div>
+                <div className="form-row">
+                    <input
+                        className="form-input p-3"
+                        placeholder="Email"
+                        {...register("email", { required: "Email is required" })}
+                    />
+                    {errors.email && <p className="error-message">{errors.email.message}</p>}
+                </div>
+                {/* <div className="form-row">
+                    <input
+                        className="form-input p-3"
+                        placeholder="Email"
+                        {...register("email", { required: "Email is required" })}
+                    />
+                    {errors.email && <p className="error-message">{errors.email.message}</p>}
+                </div> */}
+                <button type="submit" className="btn-submit btn" disabled={isLoading}>
+                    {isLoading ? "Đang xử lý..." : "Lưu thông tin"}
+                </button>
+                {errMsg && <p className="error-message">{errMsg}</p>}
+
             </form>
-        </Wrapper>
+        </Wrapper >
     )
 }
 export default UserProfile;

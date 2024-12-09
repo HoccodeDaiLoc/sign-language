@@ -63,7 +63,7 @@ const SearchBarTransition = ({ size, placeholder }) => {
                     onChange={(e) => setQuery(e.target.value)}
                     value={query}
                 />
-                {query.length >= 0 && (
+                {query.length >= 1 && active && (
                     <div className="search-results-container">
                         <div className="search-results">
                             <span className="results-header">
