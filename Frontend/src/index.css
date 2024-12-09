@@ -77,7 +77,7 @@ html {
 
   --dark-mode-bg-color: #333;
   --dark-mode-text-color: #f0f0f0;
-  --dark-mode-bg-secondary-color: #3f3f3f;
+  --dark-mode-bg-secondary-color: hsl(179, 23%, 40%);
   --dark-mode-text-secondary-color: var(--grey-300);
 
   --background-color: var(--grey-50);

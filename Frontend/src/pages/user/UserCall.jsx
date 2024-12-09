@@ -175,6 +175,8 @@ const UserCall = () => {
                                         marginTop: "18px",
                                         position: "relative",
                                         left: "20px",
+                                        color: "#102c57",
+                                        marginLeft: "-12px",
                                     }}
                                 ></i>
                             )}
