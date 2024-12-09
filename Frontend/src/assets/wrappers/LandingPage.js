@@ -46,9 +46,6 @@ const Wrapper = styled.section`
     border-radius: 30px;
 }
 
-.register-link {
-    margin-right: 1rem;
-}
 
 .main-img {
     width: 100%;
@@ -148,45 +145,8 @@ const Wrapper = styled.section`
     width: 80%;
 }
 
-.landing-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 20px 0;
-    border-radius: 10px;
-    font-family: Arial, sans-serif;
-}
 
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    gap: 20px; 
-}
 
-.footer-section {
-    flex: 1; 
-    margin: 0; 
-}
-
-.footer-section.about {
-    flex: 3; 
-}
-
-.footer-section.logo {
-    flex: 1; 
-}
-
-.footer-section h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-.footer-section p {
-    font-size: 1em;
-    margin-bottom: 10px;
-}
 
 .contact span {
     display: flex;
@@ -205,44 +165,6 @@ const Wrapper = styled.section`
     text-decoration: underline;
 }
 
-.footer-section ul {
-    list-style: none;
-    padding: 0;
-}
 
-.footer-section ul li {
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center;
-}
-
-.footer-section ul li a {
-    color: #fff;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.footer-section ul li a:hover {
-    text-decoration: underline;
-}
-
-.footer-bottom {
-    text-align: center;
-    margin-top: 20px;
-    padding-top: 10px;
-    border-top: 1px solid #102C57;
-}
-
-.footer-bottom p {
-    font-size: 0.9em;
-}
-
-/* Thêm khoảng cách giữa icon và text */
-.contact span svg,
-.footer-section ul li a svg {
-    margin-right: 8px;
-    /* Điều chỉnh khoảng cách tùy ý */
-}
 `;
 export default Wrapper;

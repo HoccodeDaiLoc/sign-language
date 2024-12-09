@@ -17,7 +17,29 @@ const Wrapper = styled.section`
     width: 100%;
   }
   .form-row {
-    margin-bottom: 0;
+    margin-bottom: 15px;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 12px;
+  }
+  .btn-submit {
+    padding: 12px;
+    background-color: #102c57;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
   }
   .form-center {
     display: grid;

@@ -1,105 +1,127 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.section`
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 1fr; 
+  display: flex;
+  flex-direction: column;
   align-items: center;
-
-  .left-side {
-    padding: 0 2rem;
-    display: flex;
-    flex:0 0 50%;
-    height:"100%";
+  justify-content: center;
+  height: 120vh;
+    width: 100%;
+  position: relative;
+  .textunderline {
+    color: hsl(212, 100%, 48%);
   }
 
-  .right-side {
-    display: flex;
-    height:100vh;
-
-    flex:0 0 50%;
-    justify-content: center;
-    align-items: center;
-    background-color: #FFF8F8; 
-  }
-
-  .form {
-    max-width: 400px;
-    border-top: 5px solid #102C57; 
-  }
-
-  h4 {
-    text-align: center;
-    margin-bottom: 1.38rem;
-  }
-
-  p {
-    margin-top: 1rem;
-    text-align: center;
-    line-height: 1.5;
-  }
-
-  .btn {
-    margin-top: 1rem;
-    background-color: #102C57; 
-    color: white; 
-    border: none;
-    padding: 0.75rem 1.5rem;
+  .textunderline:hover {
     cursor: pointer;
-    font-size: 1rem;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    text-decoration: underline;
   }
 
-  .btn-block {
-    display: block;
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height:100%;
+  }
+  .login-form {
+    display: flex;
+    flex-direction: column;
     width: 100%;
   }
-
-  .btn:hover {
-    background-color: #FFF8F8; 
-    color: #102C57; 
-    border: 1px solid #102C57; 
+  .form-container{
+    width: 30%;
+  }
+  .form-row {
+    margin-bottom: 15px;
   }
 
-  .member-btn {
-    color: #1679AB; 
-    letter-spacing: var(--letter-spacing);
-    margin-left: 0.25rem;
-  }
-
-  .login-image {
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
+  .form-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
     border-radius: 5px;
   }
 
-  .remember-forgot {
+  .error-message {
+    color: red;
+    font-size: 12px;
+  }
+
+  .btn-submit {
+    padding: 12px;
+    background-color: #102c57;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  .social-login {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0.5rem;
+    flex-direction: column;
+    margin-top: 20px;
   }
 
-  .remember-forgot label {
+  .social-btn {
     display: flex;
     align-items: center;
-    font-size: 0.9rem;
+    justify-content: center;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: pointer;
   }
 
-  .remember-forgot input[type='checkbox'] {
-    margin-right: 0.5rem;
+  .social-btn img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
   }
 
-  .forgot-password {
-    color: #102C57; 
-    font-size: 0.9rem;
-    text-decoration: none;
+  .register-link {
+    width:100%;
+    border: solid 1px #eaeaea;
+    height:15%;
+    margin-top: 20px;
   }
 
-  .forgot-password:hover {
-    text-decoration: underline;
+
+
+  @media (max-width: 768px) {
+    .login-container {
+      width: 80%;
+    }
+    .form-container{
+    width: 100%;
+  }
+    .login-form {
+      width: 100%;
+    }
+
+    .social-login {
+      width: 100%;
+    }
+
+    .social-btn {
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+  }
+
+  @media (max-width: 1024px) {
+    .login-container {
+      width: 70%;
+    }
+    .form-container{
+    width: 80%;
+  }
+
   }
 `;
 

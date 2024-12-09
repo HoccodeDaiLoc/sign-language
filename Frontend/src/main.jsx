@@ -9,7 +9,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
       {/* delay render UI util the persisted data is available */}
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={<>loading</>} persistor={persistor}>
         <App />
       </PersistGate>
     </Provider>

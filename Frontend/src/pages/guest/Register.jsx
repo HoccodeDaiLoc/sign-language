@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import "../../assets/css/react_datepicker.css";
-import image from '../../assets/images/imagelogin.png';
 import "react-datepicker/dist/react-datepicker.css";
 import apiClient from '../../api/apiClient';
 
@@ -26,7 +25,7 @@ const Register = () => {
                 email, username, password, gender, dateOfBirth: formattedDateOfBirth,
             });
             if (response.status === 201) {
-                navigate("/login")
+                // navigate("/login")
             }
             console.log("Response:", response);
         } catch (error) {
@@ -36,7 +35,7 @@ const Register = () => {
 
     return (
         <Wrapper>
-            <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "column" }} className='left-side'>
+            <div style={{ display: "flex", justifyContent: "space-between", flexDirection: "column" }} >
                 <form className='form' onSubmit={handleSubmit(onSubmit)}>
                     <Logo />
                     <h4>Đăng ký</h4>
@@ -98,15 +97,13 @@ const Register = () => {
                     <input type='submit' className='btn btn-block' />
                     <p>
                         Bạn đã có tài khoản?
-                        <Link to='/login' className='member-btn'>
+                        <Link to='/' className='member-btn'>
                             Đăng nhập
                         </Link>
                     </p>
                 </form>
             </div>
-            <div className='right-side'>
-                <img src={image} alt='Login' className='login-image' />
-            </div>
+
         </Wrapper>
     );
 };

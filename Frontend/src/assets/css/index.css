@@ -149,6 +149,7 @@ h5 {
  */
 
 .text {
+  font-size: 1rem;
   margin-bottom: 1.5rem;
   max-width: 40em;
 }
@@ -257,13 +258,12 @@ button:disabled {
   border: 1px solid var(--grey-300);
   color: var(--text-color);
 }
-.form-input,
 .form-select,
 .form-btn {
   height: 35px;
 }
 .form-row {
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 }
 
 .form-textarea {

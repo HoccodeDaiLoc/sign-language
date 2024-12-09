@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectCurrentAccessToken, selectCurrentUser } from '../auth/authSlice';
+import { selectCurrentAccessToken, selectCurrentUser } from '../features/authSlice';
 
 export default function ProtectedRoute({ allowedRoles }) {
     const AccessToken = useSelector(selectCurrentAccessToken);

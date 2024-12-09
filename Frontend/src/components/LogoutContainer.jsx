@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Wrapper from "../assets/wrappers/LogoutContainer";
 import Modal from "../components/common/Modal";
 import { useDashboardContext } from "../layouts/UserLayout";
@@ -7,24 +7,36 @@ import personSVG from "../assets/svg/person.svg";
 import settingSVG from "../assets/svg/setting.svg";
 import themeSVG from "../assets/svg/water.svg";
 import languageSVG from "../assets/svg/language.svg";
-
-
 import "../assets/css/logout_container.css";
-
+import { Link } from "react-router-dom";
+import { store } from "../utils/store";
+import { useDispatch } from "react-redux";
+import { setTheme } from '../features/themeSlice';
 const LogoutContainer = () => {
+    const theme = store.getState().theme.theme;
+    const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { user, logoutUser } = useDashboardContext();
+    const toggleTheme = () => {
+        dispatch(setTheme(theme === "light-theme" ? "dark-theme" : "light-theme"));
+    }
+    useEffect(() => {
+        document.body.className = theme === 'dark-theme' ? 'dark-theme' : 'light-theme';
+    }, [theme]);
+    console.log(theme)
     const handleLogout = () => {
         setIsModalOpen(false);
         logoutUser();
     };
-
     return (
         <Wrapper>
-            <div
-                onClick={() => setIsModalOpen(true)}
-            >
-                <img style={{ width: "2.5rem", height: "2.5rem", cursor: "pointer" }} src={user.avatar ?? personSVG} alt="avatar" className="img" />
+            <div onClick={() => setIsModalOpen(true)}>
+                <img
+                    style={{ width: "2.5rem", height: "2.5rem", cursor: "pointer" }}
+                    src={user.avatar ?? personSVG}
+                    alt="avatar"
+                    className="img"
+                />
             </div>
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
@@ -34,13 +46,17 @@ const LogoutContainer = () => {
                         <p>{user.username}</p>
                     </div>
 
-                    <div className="menu-item" style={{ borderBottom: "1px solid #e5e7eb", padding: " 0.5rem" }}>
-                        <div className="menu-item-container">
+                    <div className="menu-item px-1 my-2">
+                        <Link
+                            to="/user/profile"
+                            onClick={() => setIsModalOpen(false)}
+                            className="menu-item-container"
+                        >
                             <img src={personSVG} alt="personal info" />
                             <p>Thông tin cá nhân</p>
-                        </div>
+                        </Link>
                     </div>
-                    <div style={{ marginTop: "0.5rem" }}>
+                    <div className="py-2" style={{ borderTop: "1px solid #e5e7eb" }}>
                         <div className="menu-item">
                             <div className="menu-item-container">
                                 <img src={settingSVG} alt="settings" />
@@ -49,7 +65,13 @@ const LogoutContainer = () => {
                         </div>
 
                         <div className="menu-item">
-                            <div className="menu-item-container">
+                            <div
+                                onClick={() => {
+                                    toggleTheme();
+                                    setIsModalOpen(false)
+                                }}
+                                className="menu-item-container"
+                            >
                                 <img src={themeSVG} alt="theme" />
                                 <p>Đổi màu chủ đề</p>
                             </div>
@@ -57,11 +79,9 @@ const LogoutContainer = () => {
 
                         <div className="menu-item">
                             <div className="menu-item-container">
-
                                 <img src={languageSVG} alt="languageSVG" />
                                 <p>Chọn ngôn ngữ</p>
                             </div>
-
                         </div>
                         <div onClick={handleLogout} className="menu-item">
                             <div className="menu-item-container">
@@ -71,9 +91,8 @@ const LogoutContainer = () => {
                         </div>
                     </div>
                 </div>
-
-            </Modal >
-        </Wrapper >
+            </Modal>
+        </Wrapper>
     );
 };
 
