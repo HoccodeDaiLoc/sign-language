@@ -88,16 +88,16 @@ const UserCall = () => {
     };
 
     const openUsersDialog = () => {
-        setIsUsersDialogOpen(true); 
+        setIsUsersDialogOpen(true);
     };
 
     const closeUsersDialog = () => {
-        setIsUsersDialogOpen(false); 
+        setIsUsersDialogOpen(false);
     };
 
     return (
-        <div className="container">
-            <div className="video-call-section">
+        <div className="container ">
+            <div className="video-call-section w-3/4" >
                 <div className="video-container" style={{ position: "relative" }}>
                     <div className="thumbnail" style={{ background: "#fafafa" }}>
                         {!isCameraOn ? (
@@ -138,8 +138,8 @@ const UserCall = () => {
                         src="https://img.freepik.com/free-vector/man-headphone-avatar-call-center_18591-16552.jpg?size=338&ext=jpg"
                         alt="User Avatar"
                         style={{
-                            width: "870px",
-                            height: "490px",
+                            width: "100%",
+                            height: "100%",
                             marginLeft: "0px",
                             marginTop: "-210px",
                             position: "relative",
@@ -161,7 +161,7 @@ const UserCall = () => {
                 </div>
             </div>
 
-            <div className="chat-section">
+            <div className="chat-section w-1/4">
                 <div className="chat-messages">
                     {messages.map((msg, index) => (
                         <div
@@ -221,19 +221,19 @@ const UserCall = () => {
                 maxWidth="xs"
                 fullWidth
             >
-                <DialogTitle style={{ color: "#0fc6de" ,marginLeft:"75px" }}>Người dùng đang online</DialogTitle>
+                <DialogTitle style={{ color: "#0fc6de", marginLeft: "75px" }}>Người dùng đang online</DialogTitle>
                 <DialogContent>
                     <List>
                         {onlineUsers.map((user) => (
                             <ListItem key={user.id} >
-                                <div style={{ display: "flex", alignItems: "center" ,marginTop :"10px"}}>
-                                <i className="fas fa-user" style={{ fontSize: "30px", position: "relative" , color: "#102c57"}}></i>
-                                <i className="fas fa-check-circle" style={{ color: "green", marginTop :"20px", fontSize: "12px"}}></i>
+                                <div style={{ display: "flex", alignItems: "center", marginTop: "10px" }}>
+                                    <i className="fas fa-user" style={{ fontSize: "30px", position: "relative", color: "#102c57" }}></i>
+                                    <i className="fas fa-check-circle" style={{ color: "green", marginTop: "20px", fontSize: "12px" }}></i>
                                 </div>
-                                <ListItemText primary={user.name}  style={{marginLeft:"10px" ,marginTop:"25px"}}/>
-                                <i className="fas fa-phone" style={{ fontSize: "22px", color: "#4CAF50" ,marginTop:"11px" }}></i>
-                                <i class="fa-brands fa-rocketchat" style={{ fontSize: "22px", color: "#1e70b8" ,marginLeft :"20px",marginTop:"11px" }}></i>
-                             {/* chat */}
+                                <ListItemText primary={user.name} style={{ marginLeft: "10px", marginTop: "25px" }} />
+                                <i className="fas fa-phone" style={{ fontSize: "22px", color: "#4CAF50", marginTop: "11px" }}></i>
+                                <i class="fa-brands fa-rocketchat" style={{ fontSize: "22px", color: "#1e70b8", marginLeft: "20px", marginTop: "11px" }}></i>
+                                {/* chat */}
 
                             </ListItem>
                         ))}
