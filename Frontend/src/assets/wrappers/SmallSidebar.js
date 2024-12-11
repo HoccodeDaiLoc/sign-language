@@ -50,7 +50,7 @@ const Wrapper = styled.aside`
   .nav-link {
     display: flex;
     align-items: center;
-    color: red;
+    color: var(--text-secondary-color);
     padding: 1rem 0;
     text-transform: capitalize;
     transition: var(--transition);
