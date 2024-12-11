@@ -8,6 +8,8 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  
+  
 }
 
 .modal-header {
@@ -17,12 +19,15 @@
   border-bottom: 1px solid #e5e7eb;
   justify-content: center;
   align-items: center;
+  color:#0f5132;
 }
 
 .modal-header img {
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
+ 
+  
 }
 
 .modal-header p {
@@ -37,10 +42,11 @@
   flex-direction: column;
   padding: 0.25rem;
   border-radius: 10px;
+  
 }
 
 .menu-item:hover {
-  background-color: #f5f5f5;
+  background-color: #81a795;
 }
 
 .menu-item p {
@@ -48,23 +54,27 @@
   font-weight: 500;
   font-size: 0.9rem;
   margin: 0;
+  color: #107846;
 }
 
 .menu-item img {
   width: 1.5rem;
   height: 1.5rem;
   margin-right: 1rem;
+
 }
 .menu-item-container {
   cursor: pointer;
   display: flex;
   align-items: center;
+  color:#107846;
 }
 .logout-item {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   padding: 0.5rem;
+ 
   cursor: pointer;
 }
 
@@ -72,6 +82,7 @@
   width: 2rem;
   height: 2rem;
   margin-right: 1rem;
+  
 }
 
 .logout-item p {
@@ -79,6 +90,8 @@
   font-weight: 500;
   font-size: 0.9rem;
   margin: 0;
+
+  
 }
 
 /* Modal Styles */
