@@ -7,8 +7,8 @@ const Wrapper = styled.section`
     width: 100%;
   }
   .dashboard-page {
-    height:100%;
     background-color: #FFF8F8;
+      height: calc(100vh - 6rem);
     width: 100%;
     border:0.3px solid #DDDFDD;
   }
@@ -16,9 +16,10 @@ const Wrapper = styled.section`
     .dashboard {
       grid-template-columns: auto 1fr;
       width: 100%;
+
     }
     .dashboard-page {
-      height:100%;
+      height: calc(100vh - 6rem);
       width: 100%;
     }
   }

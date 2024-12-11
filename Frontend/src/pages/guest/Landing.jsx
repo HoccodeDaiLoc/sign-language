@@ -9,9 +9,8 @@ import { store } from "../../utils/store";
 import google from "../../assets/svg/google.svg";
 import facebook from "../../assets/svg/facebook.svg";
 import twitter from "../../assets/svg/Twitter X.svg";
-import backgroundImage from "../../assets/images/ASL-cover-image.jpg";
-
-const Login = () => {
+import Logo from '../../assets/images/Logo.png'
+const Landing = () => {
     const {
         register,
         handleSubmit,
@@ -49,7 +48,14 @@ const Login = () => {
         <Wrapper>
             <div className="login-container flex-row relative h-[100vh] w-[100vw]"
             >
-                <div className="form-container text-lg flex flex-col justify-between h-[90vh] w-[100%]" >
+                <div className="w-[50%]  h-[100vh] flex flex-col justify-center items-center  ">
+                    <img src={Logo} style={{ width: "300px", height: "100px", marginRight: "auto", mixBlendMode: "" }} />
+
+                    <span className="w-[85%] text-3xl break-normal pt-6 mr-auto">
+                        HandTalk giúp bạn có thể dễ dàng học tập ngôn ngữ kí hiệu hơn
+                    </span>
+                </div>
+                <div className="form-container text-lg	 flex flex-col justify-between h-[90vh] w-[50%]" style={{ paddingTop: "10vh" }}>
                     <form
                         onSubmit={handleSubmit(onSubmit)}
                         className="form login-form flex-col justify-center w-[100%]"
@@ -115,4 +121,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Landing;
