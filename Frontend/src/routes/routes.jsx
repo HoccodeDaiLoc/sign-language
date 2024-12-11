@@ -6,11 +6,16 @@ import UserCall from "../pages/user/UserCall.jsx";
 import UserProfile from "../pages/user/UserProfile.jsx";
 import UserUploadVideo from "../pages/user/UserUploadVideo.jsx";
 import AdminHome from "../pages/admin/AdminHome.jsx";
+import Landing from "../pages/guest/Landing.jsx";
 
 export const routes = {
     common: [
         {
             path: "/",
+            element: <Landing />,
+        },
+        {
+            path: "/login",
             element: <Login />,
         },
         {
