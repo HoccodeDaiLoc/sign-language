@@ -1,10 +1,7 @@
-
 const UserUploadVideo = () => {
-
-
   return (
     <>
-      <div className="flex h-[100%]">
+      <div className="flex h-[100%] text-[#0f5132]">
         <div className="w-1/4 bg-gray-100 p-4 overflow-y-auto">
           <h2 className="text-xl font-semibold mb-4">Danh sách Video</h2>
           <ul>
@@ -28,7 +25,10 @@ const UserUploadVideo = () => {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <form>
               <div className="mb-4">
-                <label htmlFor="video" className="block text-gray-700 font-semibold mb-2">
+                <label
+                  htmlFor="video"
+                  className="block font-semibold mb-2"
+                >
                   Chọn video để tải lên:
                 </label>
                 <input
@@ -51,7 +51,7 @@ const UserUploadVideo = () => {
           <div className="mt-8">
             <h2 className="text-2xl font-semibold mb-4">Nhận Video</h2>
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <p className="text-gray-700">Video bạn đã tải lên sẽ được hiển thị ở đây.</p>
+              <p>Video bạn đã tải lên sẽ được hiển thị ở đây.</p>
             </div>
           </div>
         </div>

@@ -46,7 +46,7 @@
 }
 
 .menu-item:hover {
-  background-color: #81a795;
+  background-color: #d7e0da;
 }
 
 .menu-item p {
@@ -54,7 +54,7 @@
   font-weight: 500;
   font-size: 0.9rem;
   margin: 0;
-  color: #107846;
+  color: #07391f;
 }
 
 .menu-item img {
