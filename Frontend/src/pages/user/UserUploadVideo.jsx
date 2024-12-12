@@ -1,7 +1,7 @@
 const UserUploadVideo = () => {
   return (
     <>
-      <div className="flex h-[100%] text-[#0f5132]">
+      <div className="flex h-[100%]">
         <div className="w-1/4 bg-gray-100 p-4 overflow-y-auto">
           <h2 className="text-xl font-semibold mb-4">Danh sách Video</h2>
           <ul>

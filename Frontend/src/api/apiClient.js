@@ -28,30 +28,34 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
     (response) => response,
     async (error) => {
-        const originalRequest = error.config;//lưu lỗi vào request
-        console.log(originalRequest)
-        if (
-            error.response &&
-            error.response.status === 400
-            && !originalRequest._retry
-        ) {
-            originalRequest._retry = true;
-            try {
-                const refreshToken = Cookies.get('refreshToken');
-                console.log(refreshToken)
-                const { data } = await axiosClient.post('/get-access-token', {
-                    refreshToken: refreshToken,
-                });
-                console.log(data)
-                Cookies.set('accessToken', data.accessToken);
-                axios.defaults.headers.Authorization = `Bearer ${data.accessToken}`;
-                return axiosClient(originalRequest);
-            }
-            catch (err) {
-                console.log('Condition not met', error.response.status, originalRequest._retry);
-                // Xử lý logout
+        const stateAuth = store.getState().auth;
+        if (stateAuth.user) {
+            const originalRequest = error.config;//lưu lỗi vào request
+            console.log(originalRequest)
+            if (
+                error.response &&
+                error.response.status === 400
+                && !originalRequest._retry
+            ) {
+                originalRequest._retry = true;
+                try {
+                    const refreshToken = Cookies.get('refreshToken');
+                    console.log(refreshToken)
+                    const { data } = await axiosClient.post('/get-access-token', {
+                        refreshToken: refreshToken,
+                    });
+                    console.log(data)
+                    Cookies.set('accessToken', data.accessToken);
+                    axios.defaults.headers.Authorization = `Bearer ${data.accessToken}`;
+                    return axiosClient(originalRequest);
+                }
+                catch (err) {
+                    console.log('Condition not met', error.response.status, originalRequest._retry);
+                    // Xử lý logout
+                }
             }
         }
+
         return Promise.reject(error);
     }
 );

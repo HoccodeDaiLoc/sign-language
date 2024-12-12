@@ -75,10 +75,12 @@ html {
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   /* DARK MODE */
 
-  --dark-mode-bg-color: #333;
-  --dark-mode-text-color: #f0f0f0;
-  --dark-mode-bg-secondary-color: hsl(179, 23%, 40%);
+  --dark-mode-bg-color: #1c1c1c;
+  --dark-mode-text-color: #e2e5e9;
+  --dark-mode-bg-secondary-color: #262729;
   --dark-mode-text-secondary-color: var(--grey-300);
+  --dark-mode-hover-color: #3c3d3f;
+  --hover-color: var(--primary-100);
 
   --background-color: var(--grey-50);
   --text-color: var(--grey-900);
@@ -87,6 +89,8 @@ html {
 }
 
 .dark-theme {
+  --hover-color: var(--dark-mode-hover-color);
+  --button-color: var(--dark-mode-text-color);
   --text-color: var(--dark-mode-text-color);
   --background-color: var(--dark-mode-bg-color);
   --text-secondary-color: var(--dark-mode-text-secondary-color);

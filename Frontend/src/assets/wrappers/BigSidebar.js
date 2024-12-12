@@ -30,19 +30,23 @@ const Wrapper = styled.aside`
       padding-top: 2rem;
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
     .nav-link {
       display: flex;
+      border-radius:10px;
       align-items: center;
       color: var(--text-secondary-color);
       padding: 1rem 0;
+      width:90%;
       padding-left: 2.5rem;
       text-transform: capitalize;
       transition: padding-left 0.3s ease-in-out;
     }
     .nav-link:hover {
       padding-left: 3rem;
-      color: var(--primary-500);
+      background: var(--hover-color);  
+      color: var(--primary-500);  
       transition: var(--transition);
     }
     .icon {
@@ -52,8 +56,12 @@ const Wrapper = styled.aside`
       place-items: center;
     }
     .active {
-      color: var(--primary-500);
+    color: var(--text-secondary-color);
+
+      background: var(--hover-color);  
+      borderRadius:10px;
     }
+    
     .pending {
       background: var(--background-color);
     }

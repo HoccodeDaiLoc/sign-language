@@ -24,7 +24,6 @@
   border-radius: 10px;
   padding: 5px 10px;
   border: none;
-  color: #102c57; /* Đổi màu chữ thành #102c57 */
   transition: border-color 0.3s ease;
 }
 
@@ -54,7 +53,6 @@
   overflow-y: scroll;
   height: 290px;
   scrollbar-width: thin;
-  color: #102c57; /* Đổi màu chữ cho kết quả tìm kiếm */
 }
 
 .search-results:focus {
@@ -69,13 +67,11 @@
   align-items: center;
   width: 100%;
   padding-right: 10px;
-  color: #102c57; /* Đổi màu chữ cho tiêu đề kết quả */
 }
 
 .no-results {
   width: 100%;
   margin: 10px 0 0 10px;
-  color: #102c57; /* Đổi màu chữ khi không có kết quả */
 }
 
 .search-item {
@@ -83,7 +79,6 @@
   flex-direction: column;
   padding: 10px;
   border-top: solid 1px #d0d0d0;
-  color: #102c57; /* Đổi màu chữ cho từng mục tìm kiếm */
 }
 
 ::-webkit-scrollbar {
@@ -99,5 +94,4 @@
   margin-top: 40px;
   width: 65px;
   overflow-y: scroll;
-  color: #102c57; /* Đổi màu chữ trong thanh cuộn */
 }

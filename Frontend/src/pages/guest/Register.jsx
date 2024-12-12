@@ -12,19 +12,15 @@ const Register = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [errMsg, setErrMsg] = useState("");
     const navigate = useNavigate();
-
     const onSubmit = async (data) => {
         setIsLoading(true);
         setErrMsg("");
-
         const { email, username, password, gender, dateOfBirth } = data;
         const formattedDateOfBirth = dateOfBirth ? dateOfBirth.toISOString().split("T")[0] : null;
-
         try {
             const response = await apiClient.post("/signup", {
                 email, username, password, gender, dateOfBirth: formattedDateOfBirth,
             });
-
             if (response.status === 201) {
                 ToastUtil.success("Đăng ký thành công");
                 navigate("/login");
