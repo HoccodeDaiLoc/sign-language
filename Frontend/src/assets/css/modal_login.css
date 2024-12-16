@@ -26,7 +26,7 @@
   position: absolute;
 }
 .modal-container {
-  background: white;
+  background: var(--background-secondary-color);
   padding: 20px;
   border-radius: 8px;
   width: 300px;
@@ -34,7 +34,6 @@
   text-align: center;
 }
 
-/* Close button */
 .modal-close-button {
   position: absolute;
   top: 10px;

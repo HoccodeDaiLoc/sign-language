@@ -45,18 +45,19 @@ const Wrapper = styled.aside`
   .nav-links {
     padding-top: 2rem;
     display: flex;
+
     flex-direction: column;
   }
   .nav-link {
     display: flex;
     align-items: center;
     color: var(--text-secondary-color);
-    padding: 1rem 0;
     text-transform: capitalize;
     transition: var(--transition);
+    border-radius:20px;
   }
   .nav-link:hover {
-    color: var(--primary-500);
+    background: var(--hover-color);  
   }
   .icon {
     font-size: 1.5rem;
@@ -65,7 +66,10 @@ const Wrapper = styled.aside`
     place-items: center;
   }
   .active {
-    color: var(--primary-500);
+    color: var(--text-secondary-color);
+
+    border-radius:20px;
+    background: var(--hover-color);  
   }
 `;
 export default Wrapper;

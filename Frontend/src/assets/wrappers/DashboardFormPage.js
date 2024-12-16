@@ -21,7 +21,7 @@ const Wrapper = styled.section`
   }
 
   .form-input {
-    width: 100%;
+    ${'' /* width: 100%; */}
     padding: 10px;
     margin-top: 5px;
     border: 1px solid #ccc;

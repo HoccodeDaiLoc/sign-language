@@ -9,7 +9,6 @@ import { store } from "../../utils/store";
 import google from "../../assets/svg/google.svg";
 import facebook from "../../assets/svg/facebook.svg";
 import twitter from "../../assets/svg/Twitter X.svg";
-import backgroundImage from "../../assets/images/ASL-cover-image.jpg";
 
 const Login = () => {
     const {
@@ -32,9 +31,7 @@ const Login = () => {
     const onSubmit = async (data) => {
         setIsLoading(true);
         setErrMsg("");
-
         const result = await authServices.login(data, dispatch);
-
         setIsLoading(false);
         if (result.success) {
             ToastUtil.success("Đăng nhập thành công");

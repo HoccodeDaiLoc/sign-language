@@ -13,6 +13,9 @@ const authServices = {
                 dispatch(login({ accessToken, refreshToken, user }));
                 return { success: true, user };
             }
+            else {
+                return { success: false }
+            }
         } catch (err) {
             const errorResponse = {};
             if (!err?.response) {
