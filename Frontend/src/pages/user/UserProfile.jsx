@@ -46,7 +46,7 @@ function UserProfile() {
                     register={register}
                     errors={errors}
                 />
-                <button type="submit" className="btn-submit btn" disabled={isLoading} style={{ marginLeft: "515px", marginTop: "50px", marginBottom: "100px    " }}>
+                <button type="submit" className="btn-submit btn" disabled={isLoading} style={{ marginLeft: "515px", marginTop: "50px", marginBottom: "276px    " }}>
                     {isLoading ? "Đang xử lý..." : "Lưu thông tin"}
                 </button>
                 {errMsg && <p className="error-message">{errMsg}</p>}
