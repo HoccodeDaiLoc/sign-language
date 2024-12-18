@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, List, ListItem, ListItemText } from "@mui/material";
-import './Schedule.scss';
+import './Usercall.scss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,15 +11,17 @@ const UserCall = () => {
     const [inputValue, setInputValue] = useState("");
     const [isCameraOn, setIsCameraOn] = useState(true);
     const [isConfirmingEndCall, setIsConfirmingEndCall] = useState(false);
-    const [isUsersDialogOpen, setIsUsersDialogOpen] = useState(false); // Trạng thái mở/đóng dialog người dùng online
-    const [onlineUsers, setOnlineUsers] = useState([ // Danh sách người dùng giả lập
+    const [isUsersDialogOpen, setIsUsersDialogOpen] = useState(false);
+    const [onlineUsers, setOnlineUsers] = useState([
         { id: 1, name: "Ho Xuan Thanh" },
         { id: 2, name: "Nguyen Cong Phuong" },
         { id: 3, name: "Nguyen Quang Hai" },
         { id: 4, name: "Ho Tan Tai" }
     ]);
+    const [webSocket, setWebSocket] = useState(null);
 
     useEffect(() => {
+        // Webcam setup
         if (isCameraOn) {
             navigator.mediaDevices
                 .getUserMedia({ video: true })
@@ -27,6 +29,23 @@ const UserCall = () => {
                     if (webcamRef.current) {
                         webcamRef.current.srcObject = stream;
                     }
+                    // WebSocket connection
+                    const ws = new WebSocket('ws://localhost:8080?userId=123a');
+                    ws.onopen = () => {
+                        console.log('WebSocket connection established.');
+                        // Initialize WebSocket for sending video data
+                        const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+                        mediaRecorder.ondataavailable = (event) => {
+                            if (event.data.size > 0) {
+                                event.data.arrayBuffer().then((buffer) => {
+                                    ws.send(JSON.stringify({ event: 'video_chunk', data: Array.from(new Uint8Array(buffer)) }));
+                                    console.log(`Sent chunk of size: ${event.data.size}`);
+                                });
+                            }
+                        };
+                        mediaRecorder.start(500); // 0.5-second chunks
+                    };
+                    setWebSocket(ws);
                 })
                 .catch((err) => {
                     console.error("Error accessing webcam: ", err);
@@ -38,20 +57,23 @@ const UserCall = () => {
                 webcamRef.current.srcObject = null;
             }
         }
+
+        return () => {
+            if (webSocket) {
+                webSocket.close();
+            }
+        };
     }, [isCameraOn]);
 
     const handleSendMessage = () => {
         if (inputValue.trim() === "") return;
-
         const newMessage = {
             content: inputValue,
             sender: "me",
             time: new Date().toLocaleTimeString(),
         };
-
         setMessages((prevMessages) => [...prevMessages, newMessage]);
         setInputValue("");
-
         setTimeout(() => {
             const fakeReply = {
                 content: "Thầy ông nội đây con. Con ăn cơm chưa?",
@@ -72,7 +94,6 @@ const UserCall = () => {
 
     const handleEndCall = () => {
         setIsCameraOn(false);
-
         toast.info("Cuộc gọi đã được kết thúc!", {
             position: "top-center",
             autoClose: 3000,
@@ -83,7 +104,6 @@ const UserCall = () => {
             progress: undefined,
             icon: <i className="fas fa-phone" style={{ color: "#2e55af" }}></i>,
         });
-
         setIsConfirmingEndCall(false);
     };
 
@@ -96,8 +116,8 @@ const UserCall = () => {
     };
 
     return (
-        <div className="container ">
-            <div className="video-call-section w-3/4" >
+        <div className="container">
+            <div className="video-call-section w-3/4">
                 <div className="video-container" style={{ position: "relative" }}>
                     <div className="thumbnail" style={{ background: "#fafafa" }}>
                         {!isCameraOn ? (
@@ -156,7 +176,7 @@ const UserCall = () => {
                         <i className="fas fa-phone"></i>
                     </button>
                     <button className="control-button" onClick={openUsersDialog}>
-                        <i className="fas fa-user-friends"></i> {/* Biểu tượng bạn bè hoặc người thân */}
+                        <i className="fas fa-user-friends"></i>
                     </button>
                 </div>
             </div>
@@ -188,7 +208,8 @@ const UserCall = () => {
                                     overflowWrap: "break-word",
                                     marginBottom: "10px",
                                 }}
-                                className="message-content">
+                                className="message-content"
+                            >
                                 <p>{msg.content}</p>
                                 <span style={{ fontSize: "12px", color: "#ccd6dd" }}>{msg.time}</span>
                             </div>
@@ -215,17 +236,12 @@ const UserCall = () => {
             <ToastContainer />
 
             {/* Dialog danh sách người dùng */}
-            <Dialog
-                open={isUsersDialogOpen}
-                onClose={closeUsersDialog}
-                maxWidth="xs"
-                fullWidth
-            >
+            <Dialog open={isUsersDialogOpen} onClose={closeUsersDialog} maxWidth="xs" fullWidth>
                 <DialogTitle style={{ color: "#0fc6de", marginLeft: "75px" }}>Người dùng đang online</DialogTitle>
                 <DialogContent>
                     <List>
                         {onlineUsers.map((user) => (
-                            <ListItem key={user.id} >
+                            <ListItem key={user.id}>
                                 <div style={{ display: "flex", alignItems: "center", marginTop: "10px" }}>
                                     <i className="fas fa-user" style={{ fontSize: "30px", position: "relative", color: "#102c57" }}></i>
                                     <i className="fas fa-check-circle" style={{ color: "green", marginTop: "20px", fontSize: "12px" }}></i>
@@ -233,8 +249,6 @@ const UserCall = () => {
                                 <ListItemText primary={user.name} style={{ marginLeft: "10px", marginTop: "25px" }} />
                                 <i className="fas fa-phone" style={{ fontSize: "22px", color: "#4CAF50", marginTop: "11px" }}></i>
                                 <i className="fa-brands fa-rocketchat" style={{ fontSize: "22px", color: "#1e70b8", marginLeft: "20px", marginTop: "11px" }}></i>
-                                {/* chat */}
-
                             </ListItem>
                         ))}
                     </List>
@@ -244,10 +258,7 @@ const UserCall = () => {
                 </DialogActions>
             </Dialog>
 
-            <Dialog
-                open={isConfirmingEndCall}
-                onClose={() => setIsConfirmingEndCall(false)}
-            >
+            <Dialog open={isConfirmingEndCall} onClose={() => setIsConfirmingEndCall(false)}>
                 <DialogTitle style={{ color: "#0fc6de" }}>Xác nhận kết thúc cuộc gọi</DialogTitle>
                 <DialogContent>
                     <Typography>Bạn có chắc chắn muốn kết thúc cuộc gọi không?</Typography>
