@@ -7,12 +7,14 @@ import UserProfile from "../pages/user/UserProfile.jsx";
 import UserUploadVideo from "../pages/user/UserUploadVideo.jsx";
 import AdminHome from "../pages/admin/AdminHome.jsx";
 import Landing from "../pages/guest/Landing.jsx";
+import UserRecognize from "../pages/user/UserRecognize.jsx";
 
 export const routes = {
     common: [
         {
             path: "/",
             element: <Landing />,
+            index: true,
         },
         {
             path: "/login",
@@ -32,10 +34,10 @@ export const routes = {
         }
     ],
     user: [
-        // {
-        //     path: "/user/home",
-        //     element: <UserHome />
-        // },
+        {
+            path: "/user/",
+            element: <UserRecognize />
+        },
         {
             path: "/user/call",
             element: <UserCall />,
@@ -48,6 +50,7 @@ export const routes = {
             path: "/user/upload",
             element: <UserUploadVideo />,
         },
+
     ],
     admin: [
         {

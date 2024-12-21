@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { store } from '../utils/store'
+import { logOut } from '../features/authSlice';
 
 const axiosClient = axios.create({
     baseURL: 'http://localhost:3000/v1/api',
@@ -30,28 +31,35 @@ axiosClient.interceptors.response.use(
     async (error) => {
         const stateAuth = store.getState().auth;
         if (stateAuth.user) {
-            const originalRequest = error.config;//lưu lỗi vào request
-            console.log(originalRequest)
+            const originalRequest = error.config; // Save the original request to retry
+            console.log(originalRequest);
+
             if (
                 error.response &&
-                error.response.status === 400
-                && !originalRequest._retry
+                error.response.status === 400 &&
+                !originalRequest._retry // Only retry if _retry is not set
             ) {
                 originalRequest._retry = true;
+
                 try {
                     const refreshToken = Cookies.get('refreshToken');
-                    console.log(refreshToken)
                     const { data } = await axiosClient.post('/get-access-token', {
                         refreshToken: refreshToken,
+                    }, {
+                        headers: {
+                            'x-client-id': stateAuth.user._id,
+                        }
                     });
-                    console.log(data)
                     Cookies.set('accessToken', data.accessToken);
                     axios.defaults.headers.Authorization = `Bearer ${data.accessToken}`;
+                    originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
                     return axiosClient(originalRequest);
-                }
-                catch (err) {
-                    console.log('Condition not met', error.response.status, originalRequest._retry);
-                    // Xử lý logout
+                } catch (err) {
+                    console.log('Error during token refresh', err);
+                    Cookies.remove('accessToken');
+                    Cookies.remove('refreshToken');
+                    store.dispatch(logOut());
+                    window.location.href = '/login';
                 }
             }
         }
@@ -59,5 +67,6 @@ axiosClient.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
 
 export default axiosClient;
