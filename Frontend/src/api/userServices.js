@@ -1,34 +1,36 @@
 import apiClient from './apiClient'
 const userServices = {
-    updateUser: async (userid) => {
+    updateUser: async (userId, formData, token) => {
         try {
-            const respone = await apiClient.patch("/users/", {
-                userid
-            })
-            console.log(respone)
-            if (respone.status === 200) {
+            const response = await apiClient.patch(`/users/${userId}`, formData);
+
+            if (response.status === 200) {
                 return { success: true };
+            } else {
+                return { success: false, error: 'Lỗi xảy ra khi cập nhật thông tin' };
             }
-        }
-        catch (err) {
-            console.log("err update >>>", err)
-            return { success: false, error: "Lỗi xảy ra khi cập nhật thông tin" }
+        } catch (err) {
+            console.error("Error updating user:", err);
+            return { success: false, error: "Lỗi xảy ra khi cập nhật thông tin" };
         }
     },
-    changeAvatar: async (userid, files) => {
+
+    // Thay đổi avatar người dùng
+    changeAvatar: async (userId, formData, token) => {
         try {
-            const respone = await apiClient.patch(`/users/${userid}/change-avatar`, {
-                files
-            })
-            console.log(respone)
-            if (respone.status === 200) {
+            const response = await apiClient.patch(`/users/${userId}/change-avatar`, formData);
+
+            if (response.status === 200) {
                 return { success: true };
+            } else {
+                return { success: false, error: 'Lỗi xảy ra khi đổi avatar' };
             }
         } catch (error) {
-            console.log("err update ava>>>", error)
-            return { success: false, error: "Lỗi xảy ra khi đổi avatar" }
+            console.error("Error changing avatar:", error);
+            return { success: false, error: "Lỗi xảy ra khi đổi avatar" };
         }
     },
+
     uploadVideo: async (formdata) => {
         try {
             const respone = await apiClient.post("/recognition", formdata,
