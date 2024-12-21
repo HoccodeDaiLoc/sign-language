@@ -29,16 +29,16 @@ const userServices = {
             return { success: false, error: "Lỗi xảy ra khi đổi avatar" }
         }
     },
-    uploadVideo: async (formdata, onUploadProgress) => {
+    uploadVideo: async (formdata) => {
         try {
             const respone = await apiClient.post("/recognition", formdata,
                 {
                     headers: {
                         "Content-Type": "multipart/form-data"
                     },
-                    onUploadProgress
                 }
             );
+            console.log("respone", respone)
             if (respone.status === 200) {
                 return respone.data
             }

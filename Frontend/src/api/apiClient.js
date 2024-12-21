@@ -31,17 +31,18 @@ axiosClient.interceptors.response.use(
     async (error) => {
         const stateAuth = store.getState().auth;
         if (stateAuth.user) {
-            const originalRequest = error.config; // Lưu lại request gốc để retry
+            const originalRequest = error.config; // Save the original request to retry
             console.log(originalRequest);
+
             if (
                 error.response &&
                 error.response.status === 400 &&
-                !originalRequest._retry
+                !originalRequest._retry // Only retry if _retry is not set
             ) {
                 originalRequest._retry = true;
+
                 try {
                     const refreshToken = Cookies.get('refreshToken');
-                    console.log(refreshToken);
                     const { data } = await axiosClient.post('/get-access-token', {
                         refreshToken: refreshToken,
                     }, {
@@ -49,12 +50,12 @@ axiosClient.interceptors.response.use(
                             'x-client-id': stateAuth.user._id,
                         }
                     });
-                    console.log(data);
                     Cookies.set('accessToken', data.accessToken);
                     axios.defaults.headers.Authorization = `Bearer ${data.accessToken}`;
+                    originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
                     return axiosClient(originalRequest);
                 } catch (err) {
-                    console.log('Condition not met', error.response.status, originalRequest._retry);
+                    console.log('Error during token refresh', err);
                     Cookies.remove('accessToken');
                     Cookies.remove('refreshToken');
                     store.dispatch(logOut());
@@ -66,5 +67,6 @@ axiosClient.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
 
 export default axiosClient;

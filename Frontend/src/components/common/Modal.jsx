@@ -10,7 +10,7 @@ function Modal({ children, isOpen, onClose }) {
                 <div className="modal-box">
                     <div
                         className="modal-container"
-                        onClick={(e) => e.stopPropagation()} // Ngăn chặn sự kiện click bubble lên overlay
+                        onClick={(e) => e.stopPropagation()}
                     >
                         {children}
 

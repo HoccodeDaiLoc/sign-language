@@ -6,6 +6,9 @@ import {
   faExclamationCircle,
   faVideoCamera,
   faComments,
+  faPowerOff,
+  faPlay,
+  faPause
 } from "@fortawesome/free-solid-svg-icons";
 
 const VideoWebSocket = () => {
@@ -13,6 +16,8 @@ const VideoWebSocket = () => {
   const socketRef = useRef(null);
   const [status, setStatus] = useState("Not connected");
   const [messages, setMessages] = useState([]);
+  const [isCamActive, setIsCamActive] = useState(false); // Track webcam status
+  const [isWebSocketConnected, setIsWebSocketConnected] = useState(false); // Track WebSocket connection status
   const fps = 30; // Frames per second
   const batchSize = 30; // Number of frames per batch
   let frameBuffer = useRef([]); // Buffer for batching frames
@@ -36,9 +41,9 @@ const VideoWebSocket = () => {
         // WebSocket setup
         const socket = new WebSocket("ws://localhost:8080?userId=123");
         socketRef.current = socket;
-
         socket.onopen = () => {
           setStatus("Connected");
+          setIsWebSocketConnected(true);
           console.log("WebSocket connection established.");
         };
 
@@ -52,6 +57,7 @@ const VideoWebSocket = () => {
 
         socket.onclose = () => {
           setStatus("Disconnected");
+          setIsWebSocketConnected(false);
         };
 
         // Send frames periodically
@@ -104,36 +110,71 @@ const VideoWebSocket = () => {
     }
   };
 
+  // Handle start/stop webcam
+  const toggleCam = () => {
+    if (isCamActive) {
+      const stream = videoRef.current.srcObject;
+      const tracks = stream.getTracks();
+      tracks.forEach(track => track.stop());
+      videoRef.current.srcObject = null;
+      setIsCamActive(false);
+    } else {
+      navigator.mediaDevices.getUserMedia({
+        video: { width: 720, height: 480 },
+      }).then((stream) => {
+        videoRef.current.srcObject = stream;
+        setIsCamActive(true);
+      }).catch((error) => console.error("Error starting webcam:", error));
+    }
+  };
+
+  // Handle WebSocket disconnection
+  const disconnectWebSocket = () => {
+    if (socketRef.current) {
+      socketRef.current.close();
+      setIsWebSocketConnected(false);
+      setStatus("Disconnected");
+    }
+  };
+
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="w-full mx-auto p-6">
       <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
-        Real-time Video Streaming with WebSocket
+        Nhận diện ngay các kí hiệu ngôn ngữ của bạn
       </h1>
-      <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-        {/* Video Section */}
-        <div className="relative w-full md:w-2/3">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-6 w-full">
+        <div className="relative w-full md:w-3/4">
           <div className="flex items-center justify-center mb-2">
             <FontAwesomeIcon icon={faVideoCamera} className="w-6 h-6 text-gray-500 mr-2" />
-            <span className="text-gray-700 font-semibold">Webcam Feed</span>
+            <span className="text-gray-700 font-semibold">Webcam</span>
           </div>
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            playsInline
-            className="w-full h-auto rounded-lg border-2 border-gray-300 shadow-lg"
-          ></video>
+          <div onClick={toggleCam} className="cursor-pointer">
+            <video
+              ref={videoRef}
+              autoPlay
+              muted
+              playsInline
+              className="w-full h-auto rounded-lg border-2 border-gray-300 shadow-lg"
+            ></video>
+          </div>
           <div className="mt-4 text-center text-sm text-gray-600">
             {statusIcons[status] || null}
             <strong>Status:</strong> {status}
           </div>
+          <button
+            onClick={disconnectWebSocket}
+            disabled={!isWebSocketConnected}
+            className="mt-2 px-4 py-2 text-white bg-red-500 rounded-lg disabled:bg-gray-400"
+          >
+            <FontAwesomeIcon icon={faPowerOff} className="mr-2" />
+            Disconnect WebSocket
+          </button>
         </div>
 
-        {/* WebSocket Messages */}
-        <div className="w-full md:w-1/3 bg-white rounded-lg shadow-lg border border-gray-300 p-4">
+        <div className="w-full md:w-1/4 bg-white rounded-lg shadow-lg border border-gray-300 p-4">
           <div className="flex items-center text-lg font-semibold text-gray-700 mb-3">
             <FontAwesomeIcon icon={faComments} className="w-5 h-5 text-blue-500 mr-2" />
-            WebSocket Messages
+            Ký hiệu được nhận diện
           </div>
           <div className="overflow-y-auto max-h-64 bg-gray-100 rounded-lg p-3 border border-gray-200">
             {messages.length > 0 ? (
