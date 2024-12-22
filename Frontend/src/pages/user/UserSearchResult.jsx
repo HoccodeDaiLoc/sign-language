@@ -3,15 +3,17 @@ import React from 'react';
 const UserSearchResult = () => {
   return (
     <div className="flex justify-start items-start px-8 py-8">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-6xl flex flex-row gap-12">
+      <div className="bg-white rounded-lg shadow-lg p-8 w-full h-full max-w-7xl flex flex-row gap-12">
         {/* Container chính với flex-row để video và nội dung nằm ngang */}
 
         {/* Phần video */}
-        <div className="w-3/4">
+        <div className="w-3/4 h-full">
           <video
             id="video-player"
-            className="w-full h-auto rounded-lg"
+            className="w-full h-full rounded-lg"
             controls
+            autoPlay
+            loop
             poster="/video-poster.jpg"
           >
             <source src="https://www.signingsavvy.com/media2/mp4-ld/24/24851.mp4" type="video/mp4" />
@@ -23,8 +25,8 @@ const UserSearchResult = () => {
         <div className="w-1/4 flex flex-col justify-start">
           <h1 className="text-4xl font-bold mb-6">ký hiệu: Hello</h1>
           <p className="text-lg leading-7">
-          Đưa bàn tay phải lên trán (lòng bàn tay hướng ra ngoài), như thể bạn đang làm động tác chào.
-          Di chuyển tay ra ngoài (khỏi trán) một chút, giống như vẫy chào
+            Đưa bàn tay phải lên trán (lòng bàn tay hướng ra ngoài), như thể bạn đang làm động tác chào.
+            Di chuyển tay ra ngoài (khỏi trán) một chút, giống như vẫy chào
           </p>
         </div>
       </div>
