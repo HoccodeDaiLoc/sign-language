@@ -24,7 +24,7 @@ const Login = () => {
 
     useEffect(() => {
         if (auth) {
-            navigate("/user/call");
+            navigate("/user");
         }
     }, [auth, navigate]);
 
@@ -35,7 +35,7 @@ const Login = () => {
         setIsLoading(false);
         if (result.success) {
             ToastUtil.success("Đăng nhập thành công");
-            navigate("/user/call");
+            navigate("/user");
         } else {
             ToastUtil.error("Có lỗi đã xảy ra");
             setErrMsg(result.error);

@@ -27,7 +27,7 @@ const Landing = () => {
 
     useEffect(() => {
         if (auth) {
-            navigate("/user/call");
+            navigate("/user");
         }
     }, [auth, navigate]);
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import RightArrow from '../../assets/svg/right-arrow.svg'
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import RightArrow from '../../assets/svg/right-arrow.svg';
 import "../../assets/css/SearchBarTransition.css"; // Import file CSS
 
 const SearchBarTransition = ({ size, placeholder }) => {
@@ -7,6 +8,7 @@ const SearchBarTransition = ({ size, placeholder }) => {
     const [active, setActive] = useState(false);
     const testApi = "https://jsonplaceholder.typicode.com/photos";
     const [searchResults, setSearchResults] = useState([]);
+    const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
         const controller = new AbortController();
@@ -38,6 +40,14 @@ const SearchBarTransition = ({ size, placeholder }) => {
         };
     }, [query]);
 
+    useEffect(() => {
+        if (query.toLowerCase() === "hello") {
+            navigate("/user/searchresult", { state: { videoUrl: "https://www.signingsavvy.com/media2/mp4-ld/24/24851.mp4", signName: "Hello" } }); 
+        } else if (query.toLowerCase() === "love") {
+            navigate("/user/searchresult", { state: { videoUrl: "https://www.signingsavvy.com/media2/mp4-ld/23/23180.mp4", signName: "Love" } }); 
+        }
+    }, [query, navigate]);
+
     function focus() {
         setActive(true);
     }
@@ -68,7 +78,7 @@ const SearchBarTransition = ({ size, placeholder }) => {
                         <div className="search-results">
                             <span className="results-header">
                                 <p style={{ fontSize: "large" }}>Ngôn Ngữ kí hiệu</p>
-                                <img style={{ width: "2rem", height: "2rem" }} src={RightArrow}></img>
+                                <img style={{ width: "2rem", height: "2rem" }} src={RightArrow} alt="arrow" />
                             </span>
                             {searchResults.length === 0 ? (
                                 <span className="no-results">

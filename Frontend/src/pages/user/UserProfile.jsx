@@ -21,6 +21,7 @@ function UserProfile() {
         },
     });
 
+
     const avatarFile = watch("avatar");
     const onSubmit = async (data) => {
         setIsLoading(true);
@@ -46,6 +47,9 @@ function UserProfile() {
                 console.error("Lỗi khi đổi avatar:", error);
                 ToastUtil.error(error.message);
             }
+            console.log("Avatar API Response:", avatarResult);
+            console.log("Update API Response:", updateResult);
+            
         }
     
         try {
