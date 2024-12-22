@@ -8,6 +8,7 @@ import UserUploadVideo from "../pages/user/UserUploadVideo.jsx";
 import AdminHome from "../pages/admin/AdminHome.jsx";
 import Landing from "../pages/guest/Landing.jsx";
 import UserRecognize from "../pages/user/UserRecognize.jsx";
+import UserSearchResult from "../pages/user/UserSearchResult.jsx";
 
 export const routes = {
     common: [
@@ -50,6 +51,10 @@ export const routes = {
             path: "/user/upload",
             element: <UserUploadVideo />,
         },
+        {
+            path: "/user/searchresult",
+            element: <UserSearchResult />
+        }
 
     ],
     admin: [
