@@ -9,7 +9,10 @@ import { store } from "../../utils/store";
 import google from "../../assets/svg/google.svg";
 import facebook from "../../assets/svg/facebook.svg";
 import twitter from "../../assets/svg/Twitter X.svg";
-import Logo from '../../assets/images/Logo.png'
+import Logo from '../../assets/images/Logo.png';
+
+import { FaEnvelope, FaMapMarkerAlt, FaFacebook, FaYoutube, FaInstagram, FaPhone } from 'react-icons/fa';
+
 const Landing = () => {
     const {
         register,
@@ -46,20 +49,17 @@ const Landing = () => {
 
     return auth ? null : (
         <Wrapper>
-            <div className="login-container flex-row relative h-[100vh] w-[100vw]"
-            >
-                <div className="w-[50%]  h-[100vh] flex flex-col justify-center items-center  ">
+            <div className="login-container flex-row relative min-h-screen w-full" style={{ marginBottom: "-100px" }}>
+                <div className="w-[50%] h-auto flex flex-col justify-center items-center">
                     <img src={Logo} style={{ width: "300px", height: "100px", marginRight: "auto", mixBlendMode: "" }} />
-
                     <span className="w-[85%] text-3xl break-normal pt-6 mr-auto">
                         HandTalk giúp bạn có thể dễ dàng học tập ngôn ngữ kí hiệu hơn
                     </span>
                 </div>
-                <div className="form-container text-lg	 flex flex-col justify-between h-[90vh] w-[50%]" style={{ paddingTop: "10vh" }}>
+                <div className="form-container text-lg flex flex-col justify-between h-auto w-[50%]" style={{ paddingTop: "20px" }}>
                     <form
                         onSubmit={handleSubmit(onSubmit)}
                         className="form login-form flex-col justify-center w-[100%]"
-                        style={{ flex: "0 0 85%" }}
                         autoComplete="on"
                     >
                         <div className="form-row">
@@ -81,7 +81,7 @@ const Landing = () => {
                             {errors.password && <p className="error-message">{errors.password.message}</p>}
                         </div>
 
-                        <div className=" flex justify-center align-items-center textunderline  py-2">
+                        <div className="flex justify-center align-items-center textunderline py-2">
                             <Link to="/forgot-password" className="forgot-password">
                                 Quên mật khẩu?
                             </Link>
@@ -100,24 +100,70 @@ const Landing = () => {
                                 <img src={facebook} alt="facebook Icon" />
                                 <p>Đăng nhập bằng Facebook</p>
                             </button>
-                            <button className="social-btn">
-                                <img src={twitter} alt="twitter Icon" />
-                                <p>Đăng nhập bằng Twitter</p>
-                            </button>
                         </div>
                     </form>
 
-                    <div className="flex justify-center items-center  w-[100%]" style={{ flex: "0 0 15%" }}>
+                    <div className="flex justify-center items-center w-full">
                         <Link to="/register">
                             <span className="textunderline">Chưa có tài khoản? Đăng ký</span>
                         </Link>
                     </div>
                 </div>
-
             </div>
+
+            {/* Footer */}
+            <footer className="footer bg-gray-800 text-white py-4 mt-3" style={{ width: "1500px" }}>
+                <div className="footer-content flex justify-between px-10">
+                <div className="footer-section logo w-1/3">
+                        <img src={Logo} alt="Logo" className="logo-img" />
+                    </div>
+                    <div className="footer-section about w-1/3" style={{marginLeft:"-320px"}}>
+                        <p style={{fontSize:"20px"}}>Country & Region : SIGN LANGUAGE</p>
+                        <div className="contact mt-4 flex flex-col space-y-2">
+                            <div className="flex items-center space-x-2">
+                                <FaEnvelope />
+                                <a href="mailto:info@example.com">Email: info@example.com</a>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <FaMapMarkerAlt style={{marginBottom:"-50px"}} />
+                                <span style={{marginBottom:"-50px"}}>Địa chỉ: 54 Nguyễn Lương Bằng,  Liên Chiểu, Đà Nẵng</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <FaPhone style={{marginBottom:"-116px"}} />
+                                <span style={{marginBottom:"-116px"}}>Hotline: 0235.222.111</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="footer-section links w-1/3">
+                     
+                        <ul style={{marginLeft:"190px",fontSize:"20px",lineHeight: "40px"}}>
+                        <p> Liên hệ :   </p>  <li className="flex items-center space-x-2">
+                                <FaFacebook />
+                                <a href="https://www.facebook.com/example" target="_blank" rel="noopener noreferrer">Facebook</a>
+                            </li>
+                            <li className="flex items-center space-x-2">
+                                <FaYoutube />
+                                <a href="https://www.youtube.com/example" target="_blank" rel="noopener noreferrer">YouTube</a>
+                            </li>
+                            <li className="flex items-center space-x-2">
+                                <FaInstagram />
+                                <a href="https://www.instagram.com/example" target="_blank" rel="noopener noreferrer">Instagram</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                   
+                </div>
+               
+                    <p style={{marginBottom:"90px" ,marginLeft:"600px"}}>&copy; 2024 HandTalk. Tất cả quyền được bảo lưu.</p>
+                    <div className="flex justify-center mt-2">
+                        <Link to="/privacy-policy" className="text-white mx-4">Chính sách bảo mật</Link>
+                        <Link to="/terms" className="text-white mx-4">Điều khoản sử dụng</Link>
+                    </div>
+                
+            </footer>
         </Wrapper>
-
-
     );
 };
 
