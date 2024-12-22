@@ -9,6 +9,7 @@ export default function ProtectedRoute({ allowedRoles }) {
     if (currentUser && AccessToken && allowedRoles.includes(currentUser.role)) {
         return <Outlet />;
     } else {
-        return <Navigate to="/unauthorized" state={{ from: location }} replace />;
+        return <Outlet />;
+        //return <Navigate to="/unauthorized" state={{ from: location }} replace />;
     }
 }
