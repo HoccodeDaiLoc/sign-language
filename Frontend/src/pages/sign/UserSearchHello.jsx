@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UserSearchResult = () => {
+const UserSearchHello = () => {
   return (
     <div className="flex justify-start items-start px-8 py-8">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full h-full max-w-7xl flex flex-row gap-12">
@@ -23,7 +23,7 @@ const UserSearchResult = () => {
 
         {/* Phần "Cách làm ký hiệu" */}
         <div className="w-1/4 flex flex-col justify-start">
-          <h1 className="text-4xl font-bold mb-6">ký hiệu: Hello</h1>
+          <h1 className="text-4xl font-bold mb-6" style={{color:'#67aaad'}}>ký hiệu: Hello</h1>
           <p className="text-lg leading-7">
             Đưa bàn tay phải lên trán (lòng bàn tay hướng ra ngoài), như thể bạn đang làm động tác chào.
             Di chuyển tay ra ngoài (khỏi trán) một chút, giống như vẫy chào
@@ -34,4 +34,4 @@ const UserSearchResult = () => {
   );
 };
 
-export default UserSearchResult;
+export default UserSearchHello;

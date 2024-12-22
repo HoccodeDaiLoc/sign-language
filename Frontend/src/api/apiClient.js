@@ -60,7 +60,7 @@ axiosClient.interceptors.response.use(
                     Cookies.remove('refreshToken');
                     store.dispatch(logOut());
                     window.location.href = '/login';
-                }
+                }zz
             }
         }
 

@@ -8,7 +8,12 @@ import UserUploadVideo from "../pages/user/UserUploadVideo.jsx";
 import AdminHome from "../pages/admin/AdminHome.jsx";
 import Landing from "../pages/guest/Landing.jsx";
 import UserRecognize from "../pages/user/UserRecognize.jsx";
-import UserSearchResult from "../pages/user/UserSearchResult.jsx";
+import UserSearchHello from "../pages/sign/UserSearchHello.jsx";
+import UserSearchLove from "../pages/sign/UserSearchLove.jsx";
+import UserSearchYou from "../pages/sign/You.jsx";
+import UserSearchHappy from "../pages/sign/Happy.jsx";
+import UserSearchYes from "../pages/sign/Yes.jsx";
+
 
 export const routes = {
     common: [
@@ -53,8 +58,25 @@ export const routes = {
         },
         {
             path: "/user/searchresult",
-            element: <UserSearchResult />
-        }
+            element: <UserSearchHello />
+        },
+        {
+            path: "/user/searchresultLove",
+            element: <UserSearchLove />
+        },
+        {
+            path: "/user/searchresultYou",
+            element: <UserSearchYou />
+        },
+        {
+            path: "/user/searchresultHappy",
+            element: <UserSearchHappy />
+        },
+        {
+            path: "/user/searchresultYes",
+            element: <UserSearchYes />
+        },
+    
 
     ],
     admin: [
