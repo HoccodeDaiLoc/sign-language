@@ -16,7 +16,7 @@ const UserCall = () => {
         { id: 1, name: "Ho Xuan Thanh" },
         { id: 2, name: "Nguyen Cong Phuong" },
         { id: 3, name: "Nguyen Quang Hai" },
-        { id: 4, name: "Ho Tan Tai" }
+        { id: 4, name: "Ho Tan Thanh" }
     ]);
     const [webSocket, setWebSocket] = useState(null);
 
