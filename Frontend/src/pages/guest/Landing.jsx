@@ -8,7 +8,6 @@ import ToastUtil from "../../utils/notiUtils";
 import { store } from "../../utils/store";
 import google from "../../assets/svg/google.svg";
 import facebook from "../../assets/svg/facebook.svg";
-import twitter from "../../assets/svg/Twitter X.svg";
 import Logo from '../../assets/images/Logo.png';
 
 import { FaEnvelope, FaMapMarkerAlt, FaFacebook, FaYoutube, FaInstagram, FaPhone } from 'react-icons/fa';
