@@ -44,16 +44,7 @@ const SearchBarTransition = ({ size, placeholder }) => {
         // Example of navigation when a specific word is typed
         if (query.toLowerCase() === "hello") {
             navigate("/user/searchresult", { state: { videoUrl: "https://www.signingsavvy.com/media2/mp4-ld/24/24851.mp4", signName: "Hello" } }); 
-        } else if (query.toLowerCase() === "love") {
-            navigate("/user/searchresultLove", { state: { videoUrl: "https://www.signingsavvy.com/media2/mp4-ld/23/23180.mp4", signName: "Love" } }); 
-        } else if (query.toLowerCase() === "you") {
-            navigate("/user/searchresultYou", { state: { videoUrl: "https://www.signingsavvy.com/media2/mp4-ld/23/23180.mp4", signName: "You" } }); 
-        } else if (query.toLowerCase() === "happy") {
-            navigate("/user/searchresultHappy", { state: { videoUrl: "https://www.signingsavvy.com/media2/mp4-ld/23/23180.mp4", signName: "Happy" } }); 
-        }
-        else if (query.toLowerCase() === "yes") {
-            navigate("/user/searchresultYes", { state: { videoUrl: "https://www.signingsavvy.com/media2/mp4-ld/23/23180.mp4", signName: "yes" } }); 
-        }
+        } 
     }, [query, navigate]);
 
     function focus() {
@@ -126,7 +117,7 @@ const SearchBarTransition = ({ size, placeholder }) => {
                                             <div>{item.title}</div>
                                         </div>
                                     ))}
-                                    {/* Show predefined suggestions if no search results found */}
+
                                     {searchResults.length === 0 && filteredSuggestions.length > 0 && (
                                         <div className="suggestions">
                                             {filteredSuggestions.map((suggestion, index) => (
