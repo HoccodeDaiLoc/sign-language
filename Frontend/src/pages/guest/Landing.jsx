@@ -9,7 +9,7 @@ import { store } from "../../utils/store";
 import google from "../../assets/svg/google.svg";
 import facebook from "../../assets/svg/facebook.svg";
 import Logo from "../../assets/images/Logo.png";
-import { FaEnvelope, FaMapMarkerAlt, FaFacebook, FaYoutube, FaInstagram, FaPhone } from "react-icons/fa";
+import { FaEnvelope, FaMapMarkerAlt, FaFacebook, FaYoutube, FaInstagram, FaPhone, FaUser} from "react-icons/fa";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
@@ -89,14 +89,14 @@ const Landing = () => {
 
     return auth ? null : (
         <Wrapper>
-            <div className="login-container flex-row relative min-h-screen w-full" style={{ marginBottom: "-100px" }}>
+            <div className="login-container flex-row relative min-h-screen w-full" style={{ marginBottom: "180px" }}>
                 <div className="w-[50%] h-auto flex flex-col justify-center items-center">
                     <img src={Logo} style={{ width: "300px", height: "100px", marginRight: "auto" }} />
                     <span className="w-[85%] text-3xl break-normal pt-6 mr-auto">
                         HandTalk giúp bạn có thể dễ dàng học tập ngôn ngữ kí hiệu hơn
                     </span>
                 </div>
-                <div className="form-container text-lg flex flex-col justify-between h-auto w-[50%]" style={{ paddingTop: "20px" }}>
+                <div className="form-container text-lg flex flex-col justify-between h-auto w-[50%]" style={{ paddingTop: "80px" }}>
                     <form
                         onSubmit={handleSubmit(onSubmit)}
                         className="form login-form flex-col justify-center w-[100%]"
@@ -148,7 +148,7 @@ const Landing = () => {
                             </button>
                         </div>
                     </form>
-
+                    <br />
                     <div className="flex justify-center items-center w-full">
                         <Link to="/register">
                             <span className="textunderline">Chưa có tài khoản? Đăng ký</span>
@@ -158,13 +158,14 @@ const Landing = () => {
             </div>
 
             <Modal open={isModalOpen} onClose={closeGoogleLoginModal}>
-                
+
                 <Box
                     sx={{
                         ...modalStyle,
-                        width: "600px",
+                        width: "800px",
+                        height: "400px",
                         textAlign: "center",
-                        marginTop:"-180px",
+                        marginTop: "-160px",
                     }}
                 >
                     <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px" }}>
@@ -195,7 +196,7 @@ const Landing = () => {
                                             alt="Google Icon"
                                             style={{ width: "40px", height: "40px", marginRight: "10px" }}
                                         />
-                                        Google đăng xử lý .....
+                                        Google đang xử lý.....
                                     </div>
                                 );
                                 setTimeout(() => {
@@ -262,15 +263,28 @@ const Landing = () => {
                                 <span style={{ fontSize: "12px", display: "block", color: "gray", marginTop: "8px", marginLeft: "2px" }}>thanhho1212@gmail.com</span>
                             </div>
                         </button>
-                        <div className="use-other-account mt-4">
-                            <span
-                                onClick={closeGoogleLoginModal}  
-                                style={{ cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center" }}
-                            >
-                                <i className="fas fa-user" style={{ marginRight: "8px", fontSize: "16px" ,marginLeft:"155px" ,marginBottom:"5px"}}></i>
-                                Sử dụng một tài khoản Google khác
-                            </span>
+                        <div
+                            className="fake-account-btn flex items-center space-x-4 p-3 rounded transition hover:bg-gray-300"
+                            style={{
+                                backgroundColor: "#f1f1f1",
+                                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                                cursor: "pointer",
+                            }}
+                            onClick={closeGoogleLoginModal}
+                        >
+                            <FaUser
+        style={{
+            fontSize: "20px",
+            color: "#555",
+        }}
+    />
+                            <div style={{ textAlign: "center" }}>
+                                <span style={{ fontSize: "16px", display: "block", marginRight: "70px" }}>
+                                    Sử dụng một tài khoản Google khác
+                                </span>
+                            </div>
                         </div>
+
 
 
                     </div>
@@ -281,8 +295,7 @@ const Landing = () => {
                             color: "white",
                             padding: "8px 16px",
                             borderRadius: "6px",
-                            marginTop: "10px",
-                            marginBottom: "-10px",
+                            marginTop: "30px",
                             fontSize: "16px",
                             border: "none",
                             cursor: "pointer",
@@ -294,55 +307,6 @@ const Landing = () => {
                 </Box>
             </Modal>
 
-
-            {/* Footer */}
-            <footer className="footer bg-gray-800 text-white py-4 mt-3" style={{ width: "1500px" }}>
-                <div className="footer-content flex justify-between px-10">
-                    <div className="footer-section logo w-1/3">
-                        <img src={Logo} alt="Logo" className="logo-img" />
-                    </div>
-                    <div className="footer-section about w-1/3" style={{ marginLeft: "-320px" }}>
-                        <p style={{ fontSize: "20px" }}>Country & Region : SIGN LANGUAGE</p>
-                        <div className="contact mt-4 flex flex-col space-y-2">
-                            <div className="flex items-center space-x-2">
-                                <FaEnvelope />
-                                <a href="mailto:info@example.com">Email: info@example.com</a>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <FaMapMarkerAlt />
-                                <span>Địa chỉ: 54 Nguyễn Lương Bằng, Liên Chiểu, Đà Nẵng</span>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <FaPhone />
-                                <span>Hotline: 0235.222.111</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="footer-section links w-1/3">
-                        <ul style={{ marginLeft: "190px", fontSize: "20px", lineHeight: "40px" }}>
-                            <p> Liên hệ : </p>
-                            <li className="flex items-center space-x-2">
-                                <FaFacebook />
-                                <a href="https://www.facebook.com/example" target="_blank" rel="noopener noreferrer">Facebook</a>
-                            </li>
-                            <li className="flex items-center space-x-2">
-                                <FaYoutube />
-                                <a href="https://www.youtube.com/example" target="_blank" rel="noopener noreferrer">YouTube</a>
-                            </li>
-                            <li className="flex items-center space-x-2">
-                                <FaInstagram />
-                                <a href="https://www.instagram.com/example" target="_blank" rel="noopener noreferrer">Instagram</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <p style={{ marginBottom: "90px", marginLeft: "600px" }}>&copy; 2024 HandTalk. Tất cả quyền được bảo lưu.</p>
-                <div className="flex justify-center mt-2">
-                    <Link to="/privacy-policy" className="text-white mx-4">Chính sách bảo mật</Link>
-                    <Link to="/terms" className="text-white mx-4">Điều khoản sử dụng</Link>
-                </div>
-            </footer>
         </Wrapper>
     );
 };
