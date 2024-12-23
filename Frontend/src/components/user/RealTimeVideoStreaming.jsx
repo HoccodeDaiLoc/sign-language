@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircle,
@@ -7,8 +7,6 @@ import {
   faVideoCamera,
   faComments,
   faPowerOff,
-  faPlay,
-  faPause
 } from "@fortawesome/free-solid-svg-icons";
 
 const VideoWebSocket = () => {

@@ -41,11 +41,20 @@ const Landing = () => {
     const dispatch = useDispatch();
     const auth = store.getState().auth.isAuthenticated;
 
+    const user = store.getState().auth.user;
     useEffect(() => {
-        if (auth) {
-            navigate("/user");
+        if (auth && user.role === "user") {
+            navigate("/user/call");
+        } if (auth && user.role === "admin") {
+
+            navigate("/admin/home");
+            if (auth) {
+                navigate("/user");
+            }
+
         }
-    }, [auth, navigate]);
+    }, [auth, navigate, user]);
+
 
     const onSubmit = async (data) => {
         setIsLoading(true);
@@ -56,6 +65,12 @@ const Landing = () => {
         setIsLoading(false);
         if (result.success) {
             ToastUtil.success("Đăng nhập thành công");
+            if (user.role === "user") {
+                navigate("/user/call");
+            } if (user.role === "admin") {
+
+                navigate("/admin/home");
+            }
             navigate("/user");
         } else {
             ToastUtil.error("Có lỗi đã xảy ra");
@@ -158,13 +173,13 @@ const Landing = () => {
             </div>
 
             <Modal open={isModalOpen} onClose={closeGoogleLoginModal}>
-                
+
                 <Box
                     sx={{
                         ...modalStyle,
                         width: "600px",
                         textAlign: "center",
-                        marginTop:"-180px",
+                        marginTop: "-180px",
                     }}
                 >
                     <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px" }}>
@@ -264,10 +279,10 @@ const Landing = () => {
                         </button>
                         <div className="use-other-account mt-4">
                             <span
-                                onClick={closeGoogleLoginModal}  
+                                onClick={closeGoogleLoginModal}
                                 style={{ cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center" }}
                             >
-                                <i className="fas fa-user" style={{ marginRight: "8px", fontSize: "16px" ,marginLeft:"155px" ,marginBottom:"5px"}}></i>
+                                <i className="fas fa-user" style={{ marginRight: "8px", fontSize: "16px", marginLeft: "155px", marginBottom: "5px" }}></i>
                                 Sử dụng một tài khoản Google khác
                             </span>
                         </div>

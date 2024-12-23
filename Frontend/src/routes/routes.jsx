@@ -6,6 +6,7 @@ import UserCall from "../pages/user/UserCall.jsx";
 import UserProfile from "../pages/user/UserProfile.jsx";
 import UserUploadVideo from "../pages/user/UserUploadVideo.jsx";
 import AdminHome from "../pages/admin/AdminHome.jsx";
+import AdminSign from "../pages/admin/AdminSign.jsx";
 import Landing from "../pages/guest/Landing.jsx";
 import UserRecognize from "../pages/user/UserRecognize.jsx";
 import UserSearchHello from "../pages/sign/UserSearchHello.jsx";
@@ -84,5 +85,9 @@ export const routes = {
             path: "/admin/home",
             element: <AdminHome />,
         },
+        {
+            path: "/admin/sign",
+            element: <AdminSign />,
+        }
     ]
 }

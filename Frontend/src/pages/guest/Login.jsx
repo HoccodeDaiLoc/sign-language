@@ -21,12 +21,16 @@ const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const auth = store.getState().auth.isAuthenticated;
-
+    const user = store.getState().auth.user;
     useEffect(() => {
-        if (auth) {
-            navigate("/user");
+        if (auth && user.role === "user") {
+            navigate("/user/call");
+        } if (auth && user.role === "admin") {
+
+            navigate("/admin/home");
         }
-    }, [auth, navigate]);
+
+    }, [auth, navigate, user]);
 
     const onSubmit = async (data) => {
         setIsLoading(true);
@@ -35,7 +39,12 @@ const Login = () => {
         setIsLoading(false);
         if (result.success) {
             ToastUtil.success("Đăng nhập thành công");
-            navigate("/user");
+            if (user.role === "user") {
+                navigate("/user/call");
+            } if (user.role === "admin") {
+
+                navigate("/admin/home");
+            }
         } else {
             ToastUtil.error("Có lỗi đã xảy ra");
             setErrMsg(result.error);
