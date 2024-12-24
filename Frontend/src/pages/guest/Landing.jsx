@@ -26,7 +26,6 @@ const modalStyle = {
     borderRadius: "8px",
 };
 
-
 const Landing = () => {
     const {
         register,
@@ -46,11 +45,9 @@ const Landing = () => {
         if (auth && user?.role === "user") {
             navigate("/user/upload");
         } if (auth && user?.role === "admin") {
-
-            navigate("/admin/home")
+            navigate("/admin/home");
         }
     }, [auth, navigate, user]);
-
 
     const onSubmit = async (data) => {
         setIsLoading(true);
@@ -89,6 +86,31 @@ const Landing = () => {
 
     const closeGoogleLoginModal = () => {
         setIsModalOpen(false);
+    };
+
+    const handleFakeAccountLogin = (fakeUser) => {
+        // Điền thông tin giả vào form và tự động gọi onSubmit để đăng nhập
+        setValue("email", fakeUser.email);
+        setValue("password", fakeUser.password);
+        ToastUtil.success(
+            <div style={{ display: "flex", alignItems: "center" }}>
+                <img src={google} alt="Google Icon" style={{ width: "40px", height: "40px", marginRight: "10px" }} />
+                 Đang xử lý thông tin ...
+            </div>,
+            {
+                autoClose: 1500, 
+                hideProgressBar: true, 
+                closeButton: false, 
+            }
+        );
+        
+
+        setTimeout(() => {
+            handleSubmit(onSubmit)({
+                email: fakeUser.email,
+                password: fakeUser.password,
+            });
+        }, 2000); 
     };
 
     return auth ? null : (
@@ -160,159 +182,132 @@ const Landing = () => {
                     </div>
                 </div>
             </div>
-
             <Modal open={isModalOpen} onClose={closeGoogleLoginModal}>
-
                 <Box
                     sx={{
-                        ...modalStyle,
-                        width: "800px",
-                        height: "400px",
-                        textAlign: "center",
-                        marginTop: "-160px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "#dae5e7",
+                        height: "100vh",
+                        padding: "20px",
                     }}
                 >
-                    <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px" }}>
-                        Đăng nhập bằng Google
-                    </h2>
-                    <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-                        Vui lòng chọn tài khoản:
-                    </p>
-                    <div className="fake-accounts flex flex-col space-y-4">
-                        <button
-                            className="fake-account-btn flex items-center space-x-4 p-3 rounded transition hover:bg-gray-300"
-                            style={{
-                                backgroundColor: "#f1f1f1",
-                                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                            }}
-                            onClick={() => {
-                                const fakeUser1 = {
+                    <Box
+                        sx={{
+                            ...modalStyle,
+                            width: "550px",
+                            height: "400px",
+                            textAlign: "center",
+                            marginTop: "-0px",
+                            backgroundColor: "white",
+                            borderRadius: "8px",
+                            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                            padding: "20px",
+                        }}
+                    >
+                        <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px" }}>
+                            Đăng nhập bằng Google
+                        </h2>
+                        <p style={{ fontSize: "16px", marginBottom: "24px" }}>
+                            Vui lòng chọn tài khoản:
+                        </p>
+                        <div className="fake-accounts flex flex-col space-y-4">
+                            <button
+                                className="fake-account-btn flex items-center space-x-4 p-3 rounded transition hover:bg-gray-300"
+                                style={{ backgroundColor: "#f1f1f1", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}
+                                onClick={() => handleFakeAccountLogin({
                                     email: "customer1@gmail.com",
-                                    password: "1234",
-                                };
-                                setValue("email", fakeUser1.email);
-                                setValue("password", fakeUser1.password);
+                                    password: "1234"
+                                })}
+                            >
+                                <img src={google} alt="Google Icon" style={{ width: "30px", height: "30px" }} />
+                                <div style={{ textAlign: "center" }}>
+                                    <span style={{ fontSize: "16px", display: "block" }}>Nguyen Quang Hai</span>
+                                    <span
+                                        style={{
+                                            fontSize: "12px",
+                                            display: "block",
+                                            color: "gray",
+                                            marginTop: "8px",
+                                            marginLeft: "-10px",
+                                        }}
+                                    >
+                                        customer1@gmail.com
+                                    </span>
+                                </div>
+                            </button>
 
-                                ToastUtil.success(
-                                    <div style={{ display: "flex", alignItems: "center" }}>
-                                        <img
-                                            src={google}
-                                            alt="Google Icon"
-                                            style={{ width: "40px", height: "40px", marginRight: "10px" }}
-                                        />
-                                        Google đang xử lý.....
-                                    </div>
-                                );
-                                setTimeout(() => {
-                                    handleSubmit(onSubmit)({
-                                        email: fakeUser1.email,
-                                        password: fakeUser1.password,
-                                    });
-                                    closeGoogleLoginModal();
-                                }, 5200);
-                            }}
-                        >
-                            <img
-                                src={google}
-                                alt="Google Icon"
-                                style={{ width: "30px", height: "30px" }}
-                            />
-                            <div style={{ textAlign: "center" }}>
-                                <span style={{ fontSize: "16px", display: "block" }}>Nguyen Quang Hai</span>
-                                <span style={{ fontSize: "12px", display: "block", color: "gray", marginTop: "8px", marginLeft: "-10px" }}>customer1@gmail.com</span>
+                            <button
+                                className="fake-account-btn flex items-center space-x-4 p-3 rounded transition hover:bg-gray-300"
+                                style={{ backgroundColor: "#f1f1f1", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}
+                                onClick={() => handleFakeAccountLogin({
+                                    email: "vietnam1122@gmail.com",
+                                    password: "1234"
+                                })}
+                            >
+                                <img src={google} alt="Google Icon" style={{ width: "30px", height: "30px" }} />
+                                <div style={{ textAlign: "center" }}>
+                                    <span style={{ fontSize: "16px", display: "block",  marginRight: "68px", }}>Thanh Ho</span>
+                                    <span
+                                        style={{
+                                            fontSize: "12px",
+                                            display: "block",
+                                            color: "gray",
+                                            marginTop: "8px",
+                                            marginLeft: "2px",
+                                        }}
+                                    >
+                                        thanhho1212@gmail.com
+                                    </span>
+                                </div>
+                            </button>
+
+                            <div
+                                className="fake-account-btn flex items-center space-x-4 p-3 rounded transition hover:bg-gray-300"
+                                style={{
+                                    backgroundColor: "#f1f1f1",
+                                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                                    cursor: "pointer",
+                                }}
+                                onClick={closeGoogleLoginModal}
+                            >
+                                <FaUser
+                                    style={{
+                                        fontSize: "20px",
+                                        color: "#555",
+                                    }}
+                                />
+                                <div style={{ textAlign: "center" }}>
+                                    <span style={{ fontSize: "16px", display: "block", marginRight: "70px" }}>
+                                        Sử dụng một tài khoản Google khác
+                                    </span>
+                                </div>
                             </div>
-
-                        </button>
+                        </div>
 
                         <button
-                            className="fake-account-btn flex items-center space-x-4 p-3 rounded transition hover:bg-gray-300"
+                            className="mt-4"
                             style={{
-                                backgroundColor: "#f1f1f1",
-                                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                            }}
-                            onClick={() => {
-                                const fakeUser2 = {
-                                    email: "vietnam1122@gmail.com",
-                                    password: "1234",
-                                };
-                                setValue("email", fakeUser2.email);
-                                setValue("password", fakeUser2.password);
-                                ToastUtil.success(
-                                    <div style={{ display: "flex", alignItems: "center" }}>
-                                        <img
-                                            src={google}
-                                            alt="Google Icon"
-                                            style={{ width: "40px", height: "40px", marginRight: "10px" }}
-                                        />
-                                        Google đăng xử lý .....
-                                    </div>
-                                );
-
-                                setTimeout(() => {
-                                    handleSubmit(onSubmit)({
-                                        email: fakeUser2.email,
-                                        password: fakeUser2.password,
-                                    });
-                                    closeGoogleLoginModal();
-                                }, 5200); // Đợi 5.2 giây
-                            }}
-                        >
-                            <img
-                                src={google}
-                                alt="Google Icon"
-                                style={{ width: "30px", height: "30px" }}
-                            />
-                            <div style={{ textAlign: "center" }}>
-                                <span style={{ fontSize: "16px", display: "block", marginRight: "70px" }}>Thanh Ho</span>
-                                <span style={{ fontSize: "12px", display: "block", color: "gray", marginTop: "8px", marginLeft: "2px" }}>thanhho1212@gmail.com</span>
-                            </div>
-                        </button>
-                        <div
-                            className="fake-account-btn flex items-center space-x-4 p-3 rounded transition hover:bg-gray-300"
-                            style={{
-                                backgroundColor: "#f1f1f1",
-                                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                                backgroundColor: "#ff4d4f",
+                                color: "white",
+                                padding: "8px 16px",
+                                borderRadius: "6px",
+                                marginTop: "30px",
+                                fontSize: "16px",
+                                border: "none",
                                 cursor: "pointer",
                             }}
                             onClick={closeGoogleLoginModal}
                         >
-                            <FaUser
-                                style={{
-                                    fontSize: "20px",
-                                    color: "#555",
-                                }}
-                            />
-                            <div style={{ textAlign: "center" }}>
-                                <span style={{ fontSize: "16px", display: "block", marginRight: "70px" }}>
-                                    Sử dụng một tài khoản Google khác
-                                </span>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                    <button
-                        className="mt-4"
-                        style={{
-                            backgroundColor: "#ff4d4f",
-                            color: "white",
-                            padding: "8px 16px",
-                            borderRadius: "6px",
-                            marginTop: "30px",
-                            fontSize: "16px",
-                            border: "none",
-                            cursor: "pointer",
-                        }}
-                        onClick={closeGoogleLoginModal}
-                    >
-                        Đóng
-                    </button>
+                            Đóng
+                        </button>
+                    </Box>
                 </Box>
             </Modal>
-
         </Wrapper>
     );
 };
+
 
 export default Landing;
