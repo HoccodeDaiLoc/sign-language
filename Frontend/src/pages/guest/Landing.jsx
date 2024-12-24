@@ -43,15 +43,11 @@ const Landing = () => {
 
     const user = store.getState().auth.user;
     useEffect(() => {
-        if (auth && user.role === "user") {
-            navigate("/user/call");
-        } if (auth && user.role === "admin") {
+        if (auth && user?.role === "user") {
+            navigate("/user/upload");
+        } if (auth && user?.role === "admin") {
 
-            navigate("/admin/home");
-            if (auth) {
-                navigate("/user");
-            }
-
+            navigate("/admin/home")
         }
     }, [auth, navigate, user]);
 
@@ -65,13 +61,6 @@ const Landing = () => {
         setIsLoading(false);
         if (result.success) {
             ToastUtil.success("Đăng nhập thành công");
-            if (user.role === "user") {
-                navigate("/user/call");
-            } if (user.role === "admin") {
-
-                navigate("/admin/home");
-            }
-            navigate("/user");
         } else {
             ToastUtil.error("Có lỗi đã xảy ra");
             setErrMsg(result.error);
@@ -311,7 +300,7 @@ const Landing = () => {
 
 
             {/* Footer */}
-            <footer className="footer bg-gray-800 text-white py-4 mt-3" style={{ width: "1500px" }}>
+            {/* <footer className="footer bg-gray-800 text-white py-4 mt-3" style={{ width: "1500px" }}>
                 <div className="footer-content flex justify-between px-10">
                     <div className="footer-section logo w-1/3">
                         <img src={Logo} alt="Logo" className="logo-img" />
@@ -357,7 +346,7 @@ const Landing = () => {
                     <Link to="/privacy-policy" className="text-white mx-4">Chính sách bảo mật</Link>
                     <Link to="/terms" className="text-white mx-4">Điều khoản sử dụng</Link>
                 </div>
-            </footer>
+            </footer> */}
         </Wrapper>
     );
 };

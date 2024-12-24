@@ -7,7 +7,7 @@ import { store } from '../utils/store';
 
 const NavLinks = ({ isBigSidebar = false }) => {
     const { toggleSidebar } = useDashboardContext();
-    const role = store.getState().auth.user.role
+    const role = store.getState().auth.user.role ?? null;
     return (
         <div className='nav-links'>
             {role === "admin" ? (
