@@ -117,7 +117,6 @@ function UserProfile() {
                             accept="image/*"
                             {...register("data.avatar")}
                             onChange={handleAvatarChange}
-                            className="hidden"
                         />
                     </div>
                 </div>
