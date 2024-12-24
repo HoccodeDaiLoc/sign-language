@@ -17,21 +17,32 @@ function UserProfile() {
         defaultValues: {
             username: currentUser.username,
             email: currentUser.email,
-            avatar: currentUser.avatar,
         },
     });
 
-
     const onSubmit = async (data) => {
         setIsLoading(true);
-        console.log("Dữ liệu người dùng:", data);
-        const avatar = data.avatar ?? null;
-        if (avatar) {
-            try {
+        setErrMsg("");
+
+        try {
+            // Kiểm tra và lấy file từ FileList
+            const avatar = data.avatar && data.avatar.length > 0 ? data.avatar[0] : null;
+            console.log("anhr gui len data:", data.avatar);
+            if (avatar) {
+
                 const avatarFormData = new FormData();
-                avatarFormData.append("avatar", avatar);
-                const avatarResult = await userServices.changeAvatar(currentUser._id, avatarFormData);
-                console.log("Kết quả đổi avatar:", avatarResult);
+                avatarFormData.append("file", avatar);
+
+                console.log("Dữ liệu avatar FormData:", avatarFormData);
+
+
+                const avatarResult = await userServices.changeAvatar(
+                    currentUser._id,
+                    avatarFormData,
+                    currentUser.token
+                );
+
+                console.log("Kết quả API đổi avatar:", avatarResult);
 
                 if (avatarResult.success) {
                     ToastUtil.success("Đổi avatar thành công");
@@ -39,19 +50,19 @@ function UserProfile() {
                 } else {
                     throw new Error(avatarResult.error || "Có lỗi xảy ra khi đổi avatar");
                 }
-            } catch (error) {
-                console.error("Lỗi khi đổi avatar:", error);
-                ToastUtil.error(error.message);
-            }
-        }
 
-        try {
+            }
+
             const formData = new FormData();
             formData.append("username", data.username);
             formData.append("email", data.email);
+            console.log("Dữ liệu gửi lên updateUser:", formData);
 
-            const updateResult = await userServices.updateUser(currentUser._id, formData);
-            console.log("Kết quả cập nhật người dùng:", updateResult);
+            const updateResult = await userServices.updateUser(
+                currentUser._id,
+                formData,
+                currentUser.token
+            );
 
             if (updateResult.success) {
                 ToastUtil.success("Lưu thông tin thành công");
@@ -59,25 +70,25 @@ function UserProfile() {
                 throw new Error(updateResult.error || "Có lỗi xảy ra khi cập nhật thông tin");
             }
         } catch (error) {
-            console.error("Lỗi khi cập nhật thông tin:", error);
-            ToastUtil.error(error.message);
+            console.error("Lỗi khi xử lý:", error);
+            ToastUtil.error(error.message || "Đã xảy ra lỗi không xác định");
+            setErrMsg(error.message);
         } finally {
             setIsLoading(false);
         }
     };
 
-
-    const handleAvatarChange = (event) => {
-        const file = event.target.files[0];
+    const handleAvatarChange = (e) => {
+        const file = e.target.files[0];
         if (file) {
             setAvatarPreview(URL.createObjectURL(file));
+            setValue("avatar", file); // Cập nhật file vào trong form
             console.log("Dữ liệu file đã chọn:", file);
             setValue("avatar", file); // Update form state with the file
         } else {
             console.log("Không có tệp tin avatar được chọn.");
         }
     };
-
 
     return (
         <Wrapper>
@@ -104,13 +115,13 @@ function UserProfile() {
                             type="file"
                             className="hidden"
                             accept="image/*"
-                            {...register("avatar")}
-                            onChange={(event) => {
-                                handleAvatarChange(event)
-                            }}
+                            {...register("data.avatar")}
+                            onChange={handleAvatarChange}
+                            className="hidden"
                         />
                     </div>
                 </div>
+
                 <FormField
                     label="Họ và tên:"
                     name="username"
