@@ -37,7 +37,7 @@ axiosClient.interceptors.response.use(
             if (
                 error.response &&
                 error.response.status === 400 &&
-                !originalRequest._retry // Only retry if _retry is not set
+                !originalRequest._retry
             ) {
                 originalRequest._retry = true;
 
@@ -50,17 +50,18 @@ axiosClient.interceptors.response.use(
                             'x-client-id': stateAuth.user._id,
                         }
                     });
+                    console.log("headers", stateAuth.user._id)
                     Cookies.set('accessToken', data.accessToken);
                     axios.defaults.headers.Authorization = `Bearer ${data.accessToken}`;
                     originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
                     return axiosClient(originalRequest);
                 } catch (err) {
-                    console.log('Error during token refresh', err);
-                    Cookies.remove('accessToken');
-                    Cookies.remove('refreshToken');
-                    store.dispatch(logOut());
-                    window.location.href = '/login';
-                }zz
+                    // console.log('Error during token refresh', err);
+                    // Cookies.remove('accessToken');
+                    // Cookies.remove('refreshToken');
+                    // store.dispatch(logOut());
+                    // window.location.href = '/login';
+                }
             }
         }
 

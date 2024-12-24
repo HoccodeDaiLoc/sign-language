@@ -1,6 +1,6 @@
 import Wrapper from '../assets/wrappers/Navbar';
 import { FaAlignLeft } from 'react-icons/fa';
-import { useDashboardContext } from '../layouts/UserLayout';
+import { useDashboardContext } from '../layouts/Layout';
 import LogoutContainer from './LogoutContainer';
 import SearchBarTransition from './common/SearchBarTransition';
 

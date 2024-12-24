@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Wrapper from "../assets/wrappers/LogoutContainer";
 import Modal from "../components/common/Modal";
-import { useDashboardContext } from "../layouts/UserLayout";
+import { useDashboardContext } from "../layouts/Layout";
 import logoutSVG from "../assets/svg/signout.svg";
 import personSVG from "../assets/svg/person.svg";
 import settingSVG from "../assets/svg/setting.svg";

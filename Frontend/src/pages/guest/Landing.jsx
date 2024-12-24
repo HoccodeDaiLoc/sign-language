@@ -9,7 +9,7 @@ import { store } from "../../utils/store";
 import google from "../../assets/svg/google.svg";
 import facebook from "../../assets/svg/facebook.svg";
 import Logo from "../../assets/images/Logo.png";
-import { FaEnvelope, FaMapMarkerAlt, FaFacebook, FaYoutube, FaInstagram, FaPhone, FaUser} from "react-icons/fa";
+import { FaEnvelope, FaMapMarkerAlt, FaFacebook, FaYoutube, FaInstagram, FaPhone, FaUser } from "react-icons/fa";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
@@ -41,11 +41,16 @@ const Landing = () => {
     const dispatch = useDispatch();
     const auth = store.getState().auth.isAuthenticated;
 
+    const user = store.getState().auth.user;
     useEffect(() => {
-        if (auth) {
-            navigate("/user");
+        if (auth && user?.role === "user") {
+            navigate("/user/upload");
+        } if (auth && user?.role === "admin") {
+
+            navigate("/admin/home")
         }
-    }, [auth, navigate]);
+    }, [auth, navigate, user]);
+
 
     const onSubmit = async (data) => {
         setIsLoading(true);
@@ -56,7 +61,6 @@ const Landing = () => {
         setIsLoading(false);
         if (result.success) {
             ToastUtil.success("Đăng nhập thành công");
-            navigate("/user");
         } else {
             ToastUtil.error("Có lỗi đã xảy ra");
             setErrMsg(result.error);
@@ -273,11 +277,11 @@ const Landing = () => {
                             onClick={closeGoogleLoginModal}
                         >
                             <FaUser
-        style={{
-            fontSize: "20px",
-            color: "#555",
-        }}
-    />
+                                style={{
+                                    fontSize: "20px",
+                                    color: "#555",
+                                }}
+                            />
                             <div style={{ textAlign: "center" }}>
                                 <span style={{ fontSize: "16px", display: "block", marginRight: "70px" }}>
                                     Sử dụng một tài khoản Google khác

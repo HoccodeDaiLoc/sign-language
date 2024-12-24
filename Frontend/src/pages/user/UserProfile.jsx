@@ -13,7 +13,7 @@ function UserProfile() {
     const [isLoading, setIsLoading] = useState(false);
     const [avatarPreview, setAvatarPreview] = useState(currentUser.avatar || null);
 
-    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm({
         defaultValues: {
             username: currentUser.username,
             email: currentUser.email,
@@ -23,7 +23,7 @@ function UserProfile() {
     const onSubmit = async (data) => {
         setIsLoading(true);
         setErrMsg("");
-        
+
         try {
             // Kiểm tra và lấy file từ FileList
             const avatar = data.avatar && data.avatar.length > 0 ? data.avatar[0] : null;
@@ -31,39 +31,39 @@ function UserProfile() {
             if (avatar) {
 
                 const avatarFormData = new FormData();
-                avatarFormData.append("file", avatar); 
+                avatarFormData.append("file", avatar);
 
                 console.log("Dữ liệu avatar FormData:", avatarFormData);
-    
-                
+
+
                 const avatarResult = await userServices.changeAvatar(
                     currentUser._id,
                     avatarFormData,
                     currentUser.token
                 );
-                
+
                 console.log("Kết quả API đổi avatar:", avatarResult);
-                
+
                 if (avatarResult.success) {
                     ToastUtil.success("Đổi avatar thành công");
                     setAvatarPreview(URL.createObjectURL(avatar));
                 } else {
                     throw new Error(avatarResult.error || "Có lỗi xảy ra khi đổi avatar");
                 }
-                
+
             }
-    
+
             const formData = new FormData();
             formData.append("username", data.username);
             formData.append("email", data.email);
             console.log("Dữ liệu gửi lên updateUser:", formData);
-    
+
             const updateResult = await userServices.updateUser(
                 currentUser._id,
                 formData,
                 currentUser.token
             );
-    
+
             if (updateResult.success) {
                 ToastUtil.success("Lưu thông tin thành công");
             } else {
@@ -84,11 +84,12 @@ function UserProfile() {
             setAvatarPreview(URL.createObjectURL(file));
             setValue("avatar", file); // Cập nhật file vào trong form
             console.log("Dữ liệu file đã chọn:", file);
+            setValue("avatar", file); // Update form state with the file
         } else {
             console.log("Không có tệp tin avatar được chọn.");
         }
     };
-    
+
     return (
         <Wrapper>
             <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -98,20 +99,21 @@ function UserProfile() {
                         src={avatarPreview || "/default-avatar.png"}
                         alt="User Avatar"
                         className="w-20 h-20 rounded-full object-cover mb-2"
-                        
+
                     />
                     <div>
                         <label
                             htmlFor="avatar"
                             className="btn text-sm px-3 py-1 bg-gray-600 text-white rounded cursor-pointer"
-                            style={{ backgroundColor: "#808080" ,fontSize:"10px",height:"30px"}}
-                           
+                            style={{ backgroundColor: "#808080", fontSize: "10px", height: "30px" }}
+
                         >
                             Chọn ảnh
                         </label>
                         <input
                             id="avatar"
                             type="file"
+                            className="hidden"
                             accept="image/*"
                             {...register("data.avatar")}
                             onChange={handleAvatarChange}
@@ -119,7 +121,7 @@ function UserProfile() {
                         />
                     </div>
                 </div>
-   
+
                 <FormField
                     label="Họ và tên:"
                     name="username"
@@ -134,8 +136,8 @@ function UserProfile() {
                 />
                 <button
                     type="submit"
-                    className={ `btn-submit btn block mt-12 ml-auto mr-40 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
-                    style={{marginLeft:"525px",marginBottom:"200px"}}
+                    className={`btn-submit btn block mt-12 ml-auto mr-40 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                    style={{ marginLeft: "525px", marginBottom: "200px" }}
                 >
                     {isLoading ? "Đang xử lý..." : "Lưu thông tin"}
                 </button>

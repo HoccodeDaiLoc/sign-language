@@ -1,6 +1,6 @@
 import apiClient from './apiClient'
 const userServices = {
-    updateUser: async (userId, formData, token) => {
+    updateUser: async (userId, formData) => {
         try {
             const response = await apiClient.patch(`/users/${userId}`, formData);
 
@@ -16,10 +16,10 @@ const userServices = {
     },
 
     // Thay đổi avatar người dùng
-    changeAvatar: async (userId, formData, token) => {
+    changeAvatar: async (userId, formData) => {
         try {
             const response = await apiClient.patch(`/users/${userId}/change-avatar`, formData);
-
+            console.log("response", response)
             if (response.status === 200) {
                 return { success: true };
             } else {
@@ -27,7 +27,7 @@ const userServices = {
             }
         } catch (error) {
             console.error("Error changing avatar:", error);
-            return { success: false, error: "Lỗi xảy ra khi đổi avatar" };
+            return { success: false, error: "Lỗi xảy ra khi đổi avatar", };
         }
     },
 
