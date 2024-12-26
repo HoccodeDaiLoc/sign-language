@@ -115,14 +115,14 @@ const Landing = () => {
 
     return auth ? null : (
         <Wrapper>
-            <div className="login-container flex-row relative min-h-screen w-full" style={{ marginBottom: "180px" }}>
+            <div className="login-container flex-row relative min-h-screen w-full" >
                 <div className="w-[50%] h-auto flex flex-col justify-center items-center">
                     <img src={Logo} style={{ width: "300px", height: "100px", marginRight: "auto" }} />
                     <span className="w-[85%] text-3xl break-normal pt-6 mr-auto">
                         HandTalk giúp bạn có thể dễ dàng học tập ngôn ngữ kí hiệu hơn
                     </span>
                 </div>
-                <div className="form-container text-lg flex flex-col justify-between h-auto w-[50%]" style={{ paddingTop: "80px" }}>
+                <div className="form-container text-lg flex flex-col justify-between h-auto w-[50%]">
                     <form
                         onSubmit={handleSubmit(onSubmit)}
                         className="form login-form flex-col justify-center w-[100%]"

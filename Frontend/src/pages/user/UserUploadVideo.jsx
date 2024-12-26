@@ -10,11 +10,12 @@ import videojs from "video.js";
 import video from "../../assets/svg/video.svg"
 import uploadvideo from "../../assets/svg/upload.svg"
 import closeIcon from "../../assets/svg/close_icon.svg"
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './Usercall.scss';
-import { Link } from "react-router-dom";
 import ModalVideo from "../../components/common/ModalVideoUpload.jsx";
 import ToastUtil from "../../utils/notiUtils.js";
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 
 const UserUploadVideo = () => {
   const numberItemRender = 5;
@@ -27,18 +28,22 @@ const UserUploadVideo = () => {
   const user = store.getState().auth.user;
   const testapi = `https://pokeapi.co/api/v2/ability/?offset=${offset}&limit=${numberItemRender}`;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [downloadUrl, setDownloadUrl] = useState("");
+
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedVideoName, setSelectedVideoName] = useState(null);
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      video: null, // Ensure the initial value is null or undefined
+      video: null,
     },
   });
-  const videoPlayerRef = useRef(null); // Reference for Video.js player
+  const videoPlayerRef = useRef(null);
 
   useEffect(() => {
     const couting = async (currentPage) => {
       if (currentPage > 0) {
-        setOffset((currentPage - 1) * numberItemRender); // Adjust offset calculation
+        setOffset((currentPage - 1) * numberItemRender);
       }
     };
     couting(currentPage);
@@ -50,8 +55,7 @@ const UserUploadVideo = () => {
     };
     getData();
   }, [currentPage]);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const [selectedVideoName, setSelectedVideoName] = useState(null);
+
   useEffect(() => {
     if (videoPlayerRef.current && uploadedVideoUrl) {
       const player = videojs(videoPlayerRef.current, {
@@ -69,7 +73,24 @@ const UserUploadVideo = () => {
           }
         ]
       });
-
+      const mergeToVtt = async () => {
+        const ffmpeg = createFFmpeg({ log: true });
+        await ffmpeg.load();
+        ffmpeg.FS("writeFile", "video.mp4", await fetchFile(uploadedVideoUrl));
+        ffmpeg.FS("writeFile", "subtitles.vtt", await fetchFile(uploadedVideoUrl));
+        await ffmpeg.run(
+          "-i",
+          "video.mp4",
+          "-vf",
+          "subtitles=subtitles.vtt",
+          "output.mp4"
+        );
+        const data = ffmpeg.FS("readFile", "output.mp4");
+        const videoBlob = new Blob([data.buffer], { type: "video/mp4" });
+        const videoUrlWithSubtitles = URL.createObjectURL(videoBlob);
+        setDownloadUrl(videoUrlWithSubtitles);
+      }
+      mergeToVtt()
       return () => {
         if (player) {
           player.dispose();
@@ -77,6 +98,7 @@ const UserUploadVideo = () => {
       };
     }
   }, [uploadedVideoUrl, captionUrl]);
+
   const handleNextPage = () => {
     setCurrentPage((prev) => prev + 1);
   };
@@ -92,14 +114,14 @@ const UserUploadVideo = () => {
       formData.append("video", data.video[0]);
       formData.append("userId", user._id);
       try {
-        console.log(formData.get("video"))
+        setLoading(true)
+        setIsModalOpen(false)
         const result = await userServices.uploadVideo(formData);
-        console.log("Video URL:", result.metadata.url);
         const txtLink = result.metadata.result;
         setCaptionURL(txtLink);
-        console.log(txtLink)
         setUploadedVideoUrl(result.metadata.url);
         ToastUtil.success("Đã xử lý xong video");
+        setLoading(false)
       } catch (error) {
         ToastUtil.error("Upload video thất bại");
 
@@ -110,8 +132,8 @@ const UserUploadVideo = () => {
     }
   };
   const removeUploadedVideo = () => {
-    setUploadedVideoUrl(null); // Xóa URL của video
-    setCaptionURL(null); // Xóa URL của caption
+    setUploadedVideoUrl(null);
+    setCaptionURL(null);
   };
 
   const handleFileChange = (event) => {
@@ -128,8 +150,6 @@ const UserUploadVideo = () => {
       <ModalVideo isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <form onSubmit={handleSubmit(onSubmit)} className="bg-white text-black rounded-2xl shadow-lg w-[60%] h-[80%] sm:max-w-full md:max-w-[80%] mx-auto">
           <div className="flex flex-col justify-between items-center p-4 h-full">
-
-            {/* Header remains the same */}
             <div className="flex items-center justify-between w-full border-b border-gray-300 pb-4">
               <span className="text-xl">{selectedVideo ? selectedVideoName : 'Tải video lên'}</span>
               <img
@@ -139,8 +159,9 @@ const UserUploadVideo = () => {
               />
             </div>
             {loading ? (
-              <div className="flex flex-col items-center justify-center w-full h-full">
+              <div className="flex flex-row items-center justify-center w-full h-full" >
                 Đang xử lý video, xin chờ một lát
+                <FontAwesomeIcon icon={faSpinner} spin className="text-xl via-blue-300 ml-4" />
               </div>
             ) : (
               selectedVideo ? (
@@ -148,7 +169,7 @@ const UserUploadVideo = () => {
                   <video
                     src={selectedVideo}
                     controls
-                    className="w-[40%] h-[40%] object-contain rounded-md"
+                    className="w-[60%] h-[60%] object-contain rounded-md"
                   />
                   <button
                     type="submit"
@@ -164,7 +185,6 @@ const UserUploadVideo = () => {
                   </button>
                 </div>
               ) : (
-                // Upload interface when no video is selected
                 <div className="flex flex-col items-center justify-center mt-6 border-b border-gray-300 w-full h-full">
                   <img
                     src={uploadvideo}
@@ -175,6 +195,7 @@ const UserUploadVideo = () => {
                   <div className="mt-4 text-center">
                     <span className="block mb-2">Chọn tệp video để được xử lý</span>
                     <span className="block mb-4">Video sẽ được thêm subtitles cho ngôn ngữ ký hiệu</span>
+
                     <input
                       type="file"
                       id="video"
@@ -237,72 +258,78 @@ const UserUploadVideo = () => {
 
         <div className="w-3/4 p-6">
           <div className="bg-white p-6 rounded-lg shadow-md h-[80vh] flex flex-col justify-center items-center">
-            {uploadedVideoUrl ? (
-              <>
-                <div className="mt-4 flex flex-row items-center justify-between w-full">
-                  <button
-                    type="button"
-                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200"
-                    onClick={removeUploadedVideo}
-                  >
-                    Hãy thử với video khác
-                  </button>
-                  <a
-                    href={uploadedVideoUrl}
-                    download="video.mp4"
-                    className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200"
-                  >
-                    Tải video xuống
-                  </a>
-                </div>
-                <div className="flex flex-col justify-center items-center mt-6 w-full h-full">
-                  <div className=" w-1/2 h-1/2">
-                    <video
-                      ref={videoPlayerRef}
-                      className="video-js vjs-default-skin vjs-16-9"
-                      controls
-                      preload="auto"
-                      src={uploadedVideoUrl}
-                    />
-                    <track
-                      kind="subtitles"
-                      src={captionUrl}
-                      srcLang="en"
-                      label="English"
-                      default
-                    />
-                  </div>
-                </div>
-
-              </>
-            ) : (
-              <>
-                <div className="flex flex-col justify-center items-center border border-dashed rounded-md border-black w-full h-full p-6">
-                  <div className="">
-                    <h1 className="text-4xl font-bold text-gray-900">Video của bạn sẽ được nhận </h1>
-                  </div>
-                  <div className="mb-4">
-                    <img src={video} alt="video-placeholder" className="w-60 h-60" />
-                  </div>
-                  <div className="text-lg text-center mb-4">
-                    <span>
-                      Hãy đăng tải video lên để nhận lại video mới đã được thêm
-                      subtitles với Ngôn Ngữ Kí Hiệu
-                    </span>
-                  </div>
-                  <div className="flex flex-col justify-center items-center space-y-4">
+            {loading ? (
+              <div className="flex justify-center items-center w-full h-full">
+                Đang xử lý video, xin chờ một lát
+                <FontAwesomeIcon icon={faSpinner} spin className="text-xl via-blue-300 ml-4" />
+              </div>
+            ) :
+              uploadedVideoUrl ? (
+                <>
+                  <div className="mt-4 flex flex-row items-center justify-between w-full">
                     <button
                       type="button"
-                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
-                      onClick={() => setIsModalOpen(true)}
+                      className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200"
+                      onClick={removeUploadedVideo}
                     >
-                      Tải video lên
+                      Hãy thử với video khác
                     </button>
-                    <p className="text-red-500 text-sm mt-2">Vui lòng chọn video</p>
+                    <a
+                      href={downloadUrl}
+                      download="video_with_subtitles.mp4"
+                      className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200"
+                    >
+                      Tải video xuống
+                    </a>
                   </div>
-                </div>
-              </>
-            )}
+                  <div className="flex flex-col justify-center items-center mt-6 w-full h-full">
+                    <div className=" w-2/3 h-2/3">
+                      <video
+                        ref={videoPlayerRef}
+                        className="video-js vjs-default-skin vjs-16-9"
+                        controls
+                        preload="auto"
+                        src={uploadedVideoUrl}
+                      />
+                      <track
+                        kind="subtitles"
+                        src={captionUrl}
+                        srcLang="en"
+                        label="English"
+                        default
+                      />
+                    </div>
+                  </div>
+
+                </>
+              ) : (
+                <>
+                  <div className="flex flex-col justify-center items-center border border-dashed rounded-md border-black w-full h-full p-6">
+                    <div className="">
+                      <h1 className="text-4xl font-bold text-gray-900">Video của bạn sẽ được nhận </h1>
+                    </div>
+                    <div className="mb-4">
+                      <img src={video} alt="video-placeholder" className="w-60 h-60" />
+                    </div>
+                    <div className="text-lg text-center mb-4">
+                      <span>
+                        Hãy đăng tải video lên để nhận lại video mới đã được thêm
+                        subtitles với Ngôn Ngữ Kí Hiệu
+                      </span>
+                    </div>
+                    <div className="flex flex-col justify-center items-center space-y-4">
+                      <button
+                        type="button"
+                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
+                        onClick={() => setIsModalOpen(true)}
+                      >
+                        Tải video lên
+                      </button>
+                      <p className="text-red-500 text-sm mt-2">Vui lòng chọn video</p>
+                    </div>
+                  </div>
+                </>
+              )}
           </div>
         </div>
 
