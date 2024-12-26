@@ -223,14 +223,14 @@ const Landing = () => {
                             >
                                 <img src={google} alt="Google Icon" style={{ width: "30px", height: "30px" }} />
                                 <div style={{ textAlign: "center" }}>
-                                    <span style={{ fontSize: "16px", display: "block" }}>Nguyen Quang Hai</span>
+                                    <span style={{ fontSize: "16px", display: "block" ,marginRight:"33px"}}>Xuan Thanh</span>
                                     <span
                                         style={{
                                             fontSize: "12px",
                                             display: "block",
                                             color: "gray",
                                             marginTop: "8px",
-                                            marginLeft: "-10px",
+                                            marginLeft: "3px",
                                         }}
                                     >
                                         customer1@gmail.com
