@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { REHYDRATE } from "redux-persist";
 import { store } from '../utils/store';
-
+// Array<number>.reduce(callbackfn: (previousValue: number, currentValue: number,
+//      currentIndex: number, array: number[]) => number)
 const initialState = {
     user: null, 
     isAuthenticated: false,
