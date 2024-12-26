@@ -3,12 +3,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import userServices from "../../api/userServices";
 import { useSelector, useDispatch } from "react-redux";
-import { selectCurrentUser, updateUserInfo } from "../../features/authSlice"; // Import action updateUserInfo
+import { selectCurrentUser, updateUserInfo } from "../../features/authSlice";
 import ToastUtil from "../../utils/notiUtils";
 import FormField from "../../components/common/FormField";
 
 function UserProfile() {
-    const dispatch = useDispatch(); // Get dispatch function
+    const dispatch = useDispatch();
     const currentUser = useSelector(selectCurrentUser);
     const [errMsg, setErrMsg] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,6 @@ function UserProfile() {
         setErrMsg("");
 
         try {
-            // Kiểm tra và lấy file từ FileList
             const avatar = data.avatar && data.avatar.length > 0 ? data.avatar[0] : null;
             if (avatar) {
 
@@ -47,13 +46,11 @@ function UserProfile() {
                 }
             }
 
-            // Cập nhật thông tin user trong Redux sau khi thành công
             dispatch(updateUserInfo({
                 username: data.username,
                 email: data.email,
             }));
 
-            // Cập nhật thông tin người dùng trên server
             const formData = new FormData();
             formData.append("username", data.username);
             formData.append("email", data.email);
@@ -121,7 +118,7 @@ function UserProfile() {
                     errors={errors}
                 />
 
-<div className="flex items-center space-x-2 mb-4">
+                <div className="flex items-center space-x-2 mb-4">
                     <label className="form-label text-sm font-medium text-gray-700" style={{ fontSize: "18px", marginLeft: "255px", marginTop: "19px" }}>Email:</label>
                     <input
                         style={{ fontSize: "17px", width: "500px", height: "35px", marginLeft: "48px" }}
