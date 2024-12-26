@@ -3,18 +3,16 @@ import Cookies from 'js-cookie';
 import { REHYDRATE } from "redux-persist";
 import { store } from '../utils/store';
 
-// Array<number>.reduce(callbackfn: (previousValue: number, currentValue: number,
-//      currentIndex: number, array: number[]) => number)
-
 const initialState = {
-    user: null, isAuthenticated: false
+    user: null, 
+    isAuthenticated: false,
 };
+
 const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
         login(state, action) {
-            console.log("action", action)
             state.user = action.payload.user;
             state.role = action.payload.role;
             state.isAuthenticated = true;
@@ -27,6 +25,11 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
             Cookies.remove('accessToken');
             Cookies.remove('refreshToken');
+        },
+        updateUserInfo(state, action) {
+            if (state.user) {
+                state.user = { ...state.user, ...action.payload }; // Cập nhật thông tin user
+            }
         }
     },
     extraReducers: (builder) => {
@@ -34,11 +37,11 @@ const authSlice = createSlice({
             if (state.user) {
                 state.isAuthenticated = true;
             }
-        })
+        });
     }
-})
+});
 
-export const { login, logOut } = authSlice.actions;
+export const { login, logOut, updateUserInfo } = authSlice.actions;
 
 export default authSlice.reducer;
 

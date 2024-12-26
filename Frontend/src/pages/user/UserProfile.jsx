@@ -2,12 +2,13 @@ import Wrapper from "../../assets/wrappers/DashboardFormPage";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import userServices from "../../api/userServices";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../../features/authSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectCurrentUser, updateUserInfo } from "../../features/authSlice"; // Import action updateUserInfo
 import ToastUtil from "../../utils/notiUtils";
 import FormField from "../../components/common/FormField";
 
 function UserProfile() {
+    const dispatch = useDispatch(); // Get dispatch function
     const currentUser = useSelector(selectCurrentUser);
     const [errMsg, setErrMsg] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -27,14 +28,10 @@ function UserProfile() {
         try {
             // Kiểm tra và lấy file từ FileList
             const avatar = data.avatar && data.avatar.length > 0 ? data.avatar[0] : null;
-            console.log("anhr gui len data:", data.avatar);
             if (avatar) {
 
                 const avatarFormData = new FormData();
                 avatarFormData.append("file", avatar);
-
-                console.log("Dữ liệu avatar FormData:", avatarFormData);
-
 
                 const avatarResult = await userServices.changeAvatar(
                     currentUser._id,
@@ -42,21 +39,24 @@ function UserProfile() {
                     currentUser.token
                 );
 
-                console.log("Kết quả API đổi avatar:", avatarResult);
-
                 if (avatarResult.success) {
                     ToastUtil.success("Đổi avatar thành công");
                     setAvatarPreview(URL.createObjectURL(avatar));
                 } else {
                     throw new Error(avatarResult.error || "Có lỗi xảy ra khi đổi avatar");
                 }
-
             }
 
+            // Cập nhật thông tin user trong Redux sau khi thành công
+            dispatch(updateUserInfo({
+                username: data.username,
+                email: data.email,
+            }));
+
+            // Cập nhật thông tin người dùng trên server
             const formData = new FormData();
             formData.append("username", data.username);
             formData.append("email", data.email);
-            console.log("Dữ liệu gửi lên updateUser:", formData);
 
             const updateResult = await userServices.updateUser(
                 currentUser._id,
@@ -83,10 +83,6 @@ function UserProfile() {
         if (file) {
             setAvatarPreview(URL.createObjectURL(file));
             setValue("avatar", file); // Cập nhật file vào trong form
-            console.log("Dữ liệu file đã chọn:", file);
-            setValue("avatar", file); // Update form state with the file
-        } else {
-            console.log("Không có tệp tin avatar được chọn.");
         }
     };
 
@@ -99,14 +95,11 @@ function UserProfile() {
                         src={avatarPreview || "/default-avatar.png"}
                         alt="User Avatar"
                         className="w-20 h-20 rounded-full object-cover mb-2"
-
                     />
                     <div>
                         <label
                             htmlFor="avatar"
                             className="btn text-sm px-3 py-1 bg-gray-600 text-white rounded cursor-pointer"
-                            style={{ backgroundColor: "#808080", fontSize: "10px", height: "30px" }}
-
                         >
                             Chọn ảnh
                         </label>
@@ -115,7 +108,7 @@ function UserProfile() {
                             type="file"
                             className="hidden"
                             accept="image/*"
-                            {...register("data.avatar")}
+                            {...register("avatar")}
                             onChange={handleAvatarChange}
                         />
                     </div>
@@ -127,12 +120,18 @@ function UserProfile() {
                     register={register}
                     errors={errors}
                 />
-                <FormField
-                    label="Email"
-                    name="email"
-                    register={register}
-                    errors={errors}
-                />
+
+<div className="flex items-center space-x-2 mb-4">
+                    <label className="form-label text-sm font-medium text-gray-700" style={{ fontSize: "18px", marginLeft: "255px", marginTop: "19px" }}>Email:</label>
+                    <input
+                        style={{ fontSize: "17px", width: "500px", height: "35px", marginLeft: "48px" }}
+                        type="text"
+                        value={currentUser.email}
+                        readOnly
+                        className="form-input bg-gray-100 cursor-not-allowed border border-gray-300 rounded-md px-3 py-1 text-sm"
+                    />
+                </div>
+
                 <button
                     type="submit"
                     className={`btn-submit btn block mt-12 ml-auto mr-40 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
