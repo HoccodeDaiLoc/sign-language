@@ -220,7 +220,7 @@ const AdminSign = () => {
             <div className="flex h-[100vh]">
                 <div className="w-1/4 bg-gray-100 p-6 overflow-y-auto flex flex-col items-center">
                     <div className="w-full flex flex-row justify-between mb-6">
-                        <h2 className="text-xl font-semibold">Videos</h2>
+                        <h2 className="text-xl font-semibold">Danh sách ngôn ngữ kí hiệu</h2>
                     </div>
                     <div className="w-full space-y-2">
                         {listVideo.map((video, index) => (

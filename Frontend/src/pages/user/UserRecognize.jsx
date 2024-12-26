@@ -7,7 +7,7 @@ const UserRecognize = () => {
 
 
     return (
-        <div className="container ">
+        <div>
             <RealTimeVideoStreaming></RealTimeVideoStreaming>
         </div>
     );
