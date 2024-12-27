@@ -22,46 +22,56 @@ function UserProfile() {
     });
 
     const onSubmit = async (data) => {
+        console.log("Dữ liệu form:", data); 
         setIsLoading(true);
         setErrMsg("");
-
+    
         try {
             const avatar = data.avatar && data.avatar.length > 0 ? data.avatar[0] : null;
             if (avatar) {
-
                 const avatarFormData = new FormData();
-                avatarFormData.append("file", avatar);
-
+                avatarFormData.append("file", avatar); 
+    
                 const avatarResult = await userServices.changeAvatar(
                     currentUser._id,
                     avatarFormData,
                     currentUser.token
                 );
-
+    
+                console.log("Kết quả Avatar:", avatarResult);
+    
                 if (avatarResult.success) {
+                    const avatarUrl = avatarResult.avatarUrl; 
                     ToastUtil.success("Đổi avatar thành công");
-                    setAvatarPreview(URL.createObjectURL(avatar));
+
+                    setAvatarPreview(avatarUrl);
+
+                    dispatch(updateUserInfo({
+                        avatar: avatarUrl,
+                    }));
                 } else {
                     throw new Error(avatarResult.error || "Có lỗi xảy ra khi đổi avatar");
                 }
             }
-
-            dispatch(updateUserInfo({
-                username: data.username,
-                email: data.email,
-            }));
+    
 
             const formData = new FormData();
             formData.append("username", data.username);
             formData.append("email", data.email);
-
+    
             const updateResult = await userServices.updateUser(
                 currentUser._id,
                 formData,
                 currentUser.token
             );
-
+    
+            console.log("Kết quả cập nhật:", updateResult);
+    
             if (updateResult.success) {
+                dispatch(updateUserInfo({
+                    username: data.username,
+                    email: data.email,
+                }));
                 ToastUtil.success("Lưu thông tin thành công");
             } else {
                 throw new Error(updateResult.error || "Có lỗi xảy ra khi cập nhật thông tin");
@@ -74,12 +84,13 @@ function UserProfile() {
             setIsLoading(false);
         }
     };
-
+    
+    
     const handleAvatarChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             setAvatarPreview(URL.createObjectURL(file));
-            setValue("avatar", file); // Cập nhật file vào trong form
+            setValue("avatar", file); 
         }
     };
 
@@ -96,7 +107,8 @@ function UserProfile() {
                     <div>
                         <label
                             htmlFor="avatar"
-                            className="btn text-sm px-3 py-1 bg-gray-600 text-white rounded cursor-pointer"
+                            style={{ fontSize: "12px",backgroundColor: "gray", color: "white", padding: "5px", borderRadius: "5px" ,marginLeft: "5px" }}
+                            className="btn text-xs px-2 py-1 bg-gray-600 text-white rounded cursor-pointer "
                         >
                             Chọn ảnh
                         </label>
