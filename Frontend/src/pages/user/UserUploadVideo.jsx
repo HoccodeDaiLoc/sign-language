@@ -12,7 +12,8 @@ import uploadvideo from "../../assets/svg/upload.svg"
 import closeIcon from "../../assets/svg/close_icon.svg"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './Usercall.scss';
-import ModalVideo from "../../components/common/ModalVideoUpload.jsx";
+import Modal from "../../components/common/Modal.jsx";
+
 import ToastUtil from "../../utils/notiUtils.js";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
@@ -29,7 +30,6 @@ const UserUploadVideo = () => {
   const testapi = `https://pokeapi.co/api/v2/ability/?offset=${offset}&limit=${numberItemRender}`;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState("");
-
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedVideoName, setSelectedVideoName] = useState(null);
 
@@ -107,8 +107,6 @@ const UserUploadVideo = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log("Form Data:", data);
-
     if (data.video && data.video[0]) {
       const formData = new FormData();
       formData.append("video", data.video[0]);
@@ -147,8 +145,8 @@ const UserUploadVideo = () => {
   };
   return (
     <>
-      <ModalVideo isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <form onSubmit={handleSubmit(onSubmit)} className="bg-white text-black rounded-2xl shadow-lg w-[60%] h-[80%] sm:max-w-full md:max-w-[80%] mx-auto">
+      <Modal component="videoupload" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="bg-white text-black rounded-2xl shadow-lg w-[60%] h-full sm:max-w-full md:max-w-[80%] mx-auto">
           <div className="flex flex-col justify-between items-center p-4 h-full">
             <div className="flex items-center justify-between w-full border-b border-gray-300 pb-4">
               <span className="text-xl">{selectedVideo ? selectedVideoName : 'Tải video lên'}</span>
@@ -195,7 +193,6 @@ const UserUploadVideo = () => {
                   <div className="mt-4 text-center">
                     <span className="block mb-2">Chọn tệp video để được xử lý</span>
                     <span className="block mb-4">Video sẽ được thêm subtitles cho ngôn ngữ ký hiệu</span>
-
                     <input
                       type="file"
                       id="video"
@@ -205,9 +202,20 @@ const UserUploadVideo = () => {
                         onChange: (event) => {
                           handleFileChange(event);
                         },
+                        required: "Vui lòng chọn một tệp video",
+                        validate: {
+                          isVideo: (fileList) => {
+                            const file = fileList?.[0];
+                            if (!file) return "Vui lòng tải lên một tệp";
+                            const validVideoTypes = ["video/mp4", "video/avi", "video/mkv", "video/webm"];
+                            return validVideoTypes.includes(file.type) || "Tệp phải là video hợp lệ (mp4, avi, mkv, webm)";
+                          },
+                        },
                       })}
                     />
+                    {errors.video && <p className="text-sm text-red-500">{errors.video.message}</p>}
                   </div>
+
                 </div>
               )
             )}
@@ -219,10 +227,10 @@ const UserUploadVideo = () => {
 
           </div>
         </form>
-      </ModalVideo>
+      </Modal>
 
 
-      <div className="flex h-[100vh]">
+      <div className="flex h-full">
 
         <div className="w-1/4 bg-gray-100 p-6 overflow-y-auto flex flex-col items-center">
           <div className="w-full flex flex-row justify-between mb-6">
@@ -325,7 +333,6 @@ const UserUploadVideo = () => {
                       >
                         Tải video lên
                       </button>
-                      <p className="text-red-500 text-sm mt-2">Vui lòng chọn video</p>
                     </div>
                   </div>
                 </>

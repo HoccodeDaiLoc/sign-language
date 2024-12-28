@@ -19,13 +19,13 @@ const authServices = {
         } catch (err) {
             const errorResponse = {};
             if (!err?.response) {
-                errorResponse.message = "No Server Response";
+                errorResponse.message = "Server không phản hồi";
             } else if (err.response.status === 400) {
-                errorResponse.message = "Missing Email or Password";
+                errorResponse.message = "Không tìm thấy email hoặc mật khẩu";
             } else if (err.response.status === 401) {
-                errorResponse.message = "Unauthorized";
+                errorResponse.message = "Bạn không được cấp quyền để thực hiện điều này";
             } else {
-                errorResponse.message = "Login Failed";
+                errorResponse.message = "Đăng nhập thất bại";
             }
             return { success: false, error: errorResponse.message };
         }

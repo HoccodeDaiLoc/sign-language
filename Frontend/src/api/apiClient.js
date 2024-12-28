@@ -32,8 +32,6 @@ axiosClient.interceptors.response.use(
         const stateAuth = store.getState().auth;
         if (stateAuth.user) {
             const originalRequest = error.config; // Save the original request to retry
-            console.log(originalRequest);
-
             if (
                 error.response &&
                 error.response.status === 400 &&
@@ -50,7 +48,6 @@ axiosClient.interceptors.response.use(
                             'x-client-id': stateAuth.user._id,
                         }
                     });
-                    console.log("headers", stateAuth.user._id)
                     Cookies.set('accessToken', data.accessToken);
                     axios.defaults.headers.Authorization = `Bearer ${data.accessToken}`;
                     originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;

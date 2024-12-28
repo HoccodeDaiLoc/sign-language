@@ -32,7 +32,7 @@ function AdminHome() {
                 {listUser.map((user) => (
                     <div
                         key={user._id}
-                        className="flex items-center p-5 border rounded-lg shadow-sm bg-white space-x-5"
+                        className="flex items-center p-5 border rounded-lg shadow-sm bg-white space-x-5 m-3"
                     >
                         <img
                             src={user?.avatar ?? defaultava}

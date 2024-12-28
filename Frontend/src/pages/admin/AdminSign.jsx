@@ -11,8 +11,8 @@ import video from "../../assets/svg/video.svg";
 import uploadvideo from "../../assets/svg/upload.svg";
 import closeIcon from "../../assets/svg/close_icon.svg";
 import '../user/Usercall.scss';
-import ModalVideo from "../../components/common/ModalVideoUpload.jsx";
 import ToastUtil from "../../utils/notiUtils.js";
+import Modal from "../../components/common/Modal.jsx";
 
 const AdminSign = () => {
     const numberItemRender = 5;
@@ -96,8 +96,6 @@ const AdminSign = () => {
     };
 
     const onSubmit = async (data) => {
-        console.log("Form Data:", data);
-
         if (data.video && data.video[0]) {
             const formData = new FormData();
             formData.append("video", data.video[0]);
@@ -140,8 +138,8 @@ const AdminSign = () => {
 
     return (
         <>
-            <ModalVideo isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <form onSubmit={handleSubmit(onSubmit)} className="bg-white text-black rounded-2xl shadow-lg w-[60%] h-[80%] sm:max-w-full md:max-w-[80%] mx-auto">
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <form onSubmit={handleSubmit(onSubmit)} className="bg-white text-black rounded-2xl shadow-lg w-[60%] h-full sm:max-w-full md:max-w-[80%] mx-auto">
                     <div className="flex flex-col justify-between items-center p-4 h-full">
                         <div className="flex items-center justify-between w-full border-b border-gray-300 pb-4">
                             <span className="text-xl">{selectedVideo ? selectedVideoName : 'Tải video lên'}</span>
@@ -215,9 +213,9 @@ const AdminSign = () => {
                         )}
                     </div>
                 </form>
-            </ModalVideo>
+            </Modal>
 
-            <div className="flex h-[100vh]">
+            <div className="flex h-full">
                 <div className="w-1/4 bg-gray-100 p-6 overflow-y-auto flex flex-col items-center">
                     <div className="w-full flex flex-row justify-between mb-6">
                         <h2 className="text-xl font-semibold">Danh sách ngôn ngữ kí hiệu</h2>

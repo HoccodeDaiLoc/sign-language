@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 import RightArrow from '../../assets/svg/right-arrow.svg';
 import "../../assets/css/SearchBarTransition.css"; // Import file CSS
 
-const SearchBarTransition = ({ size, placeholder }) => {
+const SearchBarTransition = ({ size, placeholder, content }) => {
     const [query, setQuery] = useState("");
     const [active, setActive] = useState(false);
     const testApi = "https://jsonplaceholder.typicode.com/photos";
@@ -32,7 +32,7 @@ const SearchBarTransition = ({ size, placeholder }) => {
         if (query) {
             fetchData();
         } else {
-            setSearchResults([]); // If there's no query, reset search results
+            setSearchResults([]);
         }
 
         return function () {
@@ -41,10 +41,9 @@ const SearchBarTransition = ({ size, placeholder }) => {
     }, [query]);
 
     useEffect(() => {
-        // Example of navigation when a specific word is typed
         if (query.toLowerCase() === "hello") {
-            navigate("/user/searchresult", { state: { videoUrl: "https://www.signingsavvy.com/media2/mp4-ld/24/24851.mp4", signName: "Hello" } }); 
-        } 
+            navigate("/user/searchresult", { state: { videoUrl: "https://www.signingsavvy.com/media2/mp4-ld/24/24851.mp4", signName: "Hello" } });
+        }
     }, [query, navigate]);
 
     function focus() {
@@ -72,7 +71,7 @@ const SearchBarTransition = ({ size, placeholder }) => {
 
     const predefinedSuggestions = ["hello", "love", "you", "happy", "yes"];
 
-    const filteredSuggestions = predefinedSuggestions.filter(item => 
+    const filteredSuggestions = predefinedSuggestions.filter(item =>
         item.toLowerCase().includes(query.toLowerCase())
     );
 
@@ -103,15 +102,15 @@ const SearchBarTransition = ({ size, placeholder }) => {
                                 </span>
                             ) : (
                                 <>
-                              
+
                                     {searchResults.map((item) => (
                                         <div
                                             key={item.id}
                                             className="search-item"
                                             onClick={() => {
                                                 navigate("/user/searchresult", { state: { videoUrl: item.url, signName: item.title } });
-                                                setActive(false);  
-                                                setQuery("");  
+                                                setActive(false);
+                                                setQuery("");
                                             }}
                                         >
                                             <div>{item.title}</div>
@@ -126,8 +125,8 @@ const SearchBarTransition = ({ size, placeholder }) => {
                                                     className="search-item"
                                                     onClick={() => {
                                                         navigate(`/user/searchresult${suggestion.charAt(0).toUpperCase() + suggestion.slice(1)}`, { state: { videoUrl: "https://www.signingsavvy.com/media2/mp4-ld/23/23180.mp4", signName: suggestion } });
-                                                        setActive(false);  
-                                                        setQuery("");  
+                                                        setActive(false);
+                                                        setQuery("");
                                                     }}
                                                 >
                                                     <div>{suggestion}</div>

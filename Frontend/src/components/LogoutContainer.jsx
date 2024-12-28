@@ -16,14 +16,14 @@ const LogoutContainer = () => {
     const theme = store.getState().theme.theme;
     const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { user, logoutUser } = useDashboardContext();
+    const { logoutUser } = useDashboardContext();
     const toggleTheme = () => {
         dispatch(setTheme(theme === "light-theme" ? "dark-theme" : "light-theme"));
     }
+    const user = store.getState().auth.user;
     useEffect(() => {
         document.body.className = theme === 'dark-theme' ? 'dark-theme' : 'light-theme';
     }, [theme]);
-    console.log(theme)
     const handleLogout = () => {
         setIsModalOpen(false);
         logoutUser();
@@ -34,16 +34,20 @@ const LogoutContainer = () => {
                 <div onClick={() => setIsModalOpen(true)}>
                     <img
                         style={{ width: "2.5rem", height: "2.5rem", cursor: "pointer" }}
-                        src={user.avatar ?? personSVG}
+                        src={user.avatar != null ? user.avatar : personSVG}
                         alt="avatar"
                         className="img"
                     />
+
                 </div>
 
-                <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <Modal component="logout" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                     <div className="modal-content">
                         <div className="modal-header">
-                            <img src={user.avatar ?? personSVG} alt="user avatar" />
+                            <img
+                                src={user.avatar != null ? user.avatar : personSVG}
+
+                                alt="user avatar" />
                             <p>{user.username}</p>
                         </div>
 

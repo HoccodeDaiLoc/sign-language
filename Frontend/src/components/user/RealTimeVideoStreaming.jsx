@@ -15,7 +15,6 @@ const VideoWebSocket = () => {
   const [isCamActive, setIsCamActive] = useState(false);
   const [showPermissionDialog, setShowPermissionDialog] = useState(false);
   const [permissionGranted, setPermissionGranted] = useState(false);
-  const [isWebSocketConnected, setIsWebSocketConnected] = useState(false);
   const socketRef = useRef(null);
   const fps = 30;
   const batchSize = 30;
@@ -53,7 +52,6 @@ const VideoWebSocket = () => {
         socketRef.current = null;
       }
       setIsCamActive(false);
-      setIsWebSocketConnected(false);
     } else {
       // Bật camera
       try {
@@ -98,7 +96,6 @@ const VideoWebSocket = () => {
 
         socket.onopen = () => {
           setStatus("Connected");
-          setIsWebSocketConnected(true);
           console.log("WebSocket connection established.");
         };
 
@@ -112,7 +109,6 @@ const VideoWebSocket = () => {
 
         socket.onclose = () => {
           setStatus("Disconnected");
-          setIsWebSocketConnected(false);
         };
       };
 
@@ -146,9 +142,7 @@ const VideoWebSocket = () => {
   }, [isCamActive]);
 
   return (
-    <div className="w-full mx-auto p-6">
-
-
+    <div className="w-full mx-auto p-6 h-full">
       <div className="flex flex-col md:flex-row items-start gap-6">
         <div className="flex flex-col h-[80vh]  w-3/4 items-center">
           <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
@@ -173,7 +167,7 @@ const VideoWebSocket = () => {
         </div>
         <div className="h-[80vh] w-1/4">
 
-          <div className="mt-4 flex items-center justify-center">
+          <div className="mb-6 flex items-center justify-center">
             <FontAwesomeIcon icon={faVideoCamera} className="w-6 h-6 text-gray-500 mr-2" />
             <button
               onClick={toggleCam}

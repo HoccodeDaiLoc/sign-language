@@ -7,7 +7,6 @@ const Wrapper = styled.section`
     width: 100%;
   }
   .dashboard-page {
-  overflow: hidden;
 
     background-color: #FFF8F8;
       height: calc(100vh - 6rem);
@@ -23,7 +22,6 @@ const Wrapper = styled.section`
     .dashboard-page {
       height: calc(100vh - 6rem);
       width: 100%;
-      overflow: hidden;
 
     }
   }

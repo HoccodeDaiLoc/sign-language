@@ -9,7 +9,7 @@ import { store } from "../../utils/store";
 import google from "../../assets/svg/google.svg";
 import facebook from "../../assets/svg/facebook.svg";
 import Logo from "../../assets/images/Logo.png";
-import { FaEnvelope, FaMapMarkerAlt, FaFacebook, FaYoutube, FaInstagram, FaPhone, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 
@@ -95,22 +95,22 @@ const Landing = () => {
         ToastUtil.success(
             <div style={{ display: "flex", alignItems: "center" }}>
                 <img src={google} alt="Google Icon" style={{ width: "40px", height: "40px", marginRight: "10px" }} />
-                 Đang xử lý thông tin ...
+                Đang xử lý thông tin ...
             </div>,
             {
-                autoClose: 1500, 
-                hideProgressBar: true, 
-                closeButton: false, 
+                autoClose: 1500,
+                hideProgressBar: true,
+                closeButton: false,
             }
         );
-        
+
 
         setTimeout(() => {
             handleSubmit(onSubmit)({
                 email: fakeUser.email,
                 password: fakeUser.password,
             });
-        }, 2000); 
+        }, 2000);
     };
 
     return auth ? null : (
@@ -148,7 +148,7 @@ const Landing = () => {
                                 type="password"
                                 placeholder="Mật khẩu"
                                 className="form-input"
-                                {...register("password", { required: "Password is required" })}
+                                {...register("password", { required: "Hãy nhập mật khẩu" })}
                             />
                             {errors.password && <p className="error-message">{errors.password.message}</p>}
                         </div>
@@ -158,17 +158,17 @@ const Landing = () => {
                                 Quên mật khẩu?
                             </Link>
                         </div>
-                        <button type="submit" className="btn-submit" disabled={isLoading}>
+                        <button type="submit" className="btn-submit w-full" disabled={isLoading}>
                             {isLoading ? "Đang xử lý..." : "Đăng nhập"}
                         </button>
                         {errMsg && <p className="error-message">{errMsg}</p>}
 
-                        <div className="social-login">
-                            <button className="social-btn" onClick={openGoogleLoginModal}>
+                        <div className="social-login  w-full">
+                            <button className="social-btn w-full" onClick={openGoogleLoginModal}>
                                 <img src={google} alt="google Icon" />
                                 <p>Đăng nhập bằng Google</p>
                             </button>
-                            <button className="social-btn" onClick={mockFacebookLogin}>
+                            <button className="social-btn w-full" onClick={mockFacebookLogin}>
                                 <img src={facebook} alt="facebook Icon" />
                                 <p>Đăng nhập bằng Facebook</p>
                             </button>
@@ -223,7 +223,7 @@ const Landing = () => {
                             >
                                 <img src={google} alt="Google Icon" style={{ width: "30px", height: "30px" }} />
                                 <div style={{ textAlign: "center" }}>
-                                    <span style={{ fontSize: "16px", display: "block" ,marginRight:"33px"}}>Xuan Thanh</span>
+                                    <span style={{ fontSize: "16px", display: "block", marginRight: "33px" }}>Xuan Thanh</span>
                                     <span
                                         style={{
                                             fontSize: "12px",
@@ -248,7 +248,7 @@ const Landing = () => {
                             >
                                 <img src={google} alt="Google Icon" style={{ width: "30px", height: "30px" }} />
                                 <div style={{ textAlign: "center" }}>
-                                    <span style={{ fontSize: "16px", display: "block",  marginRight: "68px", }}>Thanh Ho</span>
+                                    <span style={{ fontSize: "16px", display: "block", marginRight: "68px", }}>Thanh Ho</span>
                                     <span
                                         style={{
                                             fontSize: "12px",
