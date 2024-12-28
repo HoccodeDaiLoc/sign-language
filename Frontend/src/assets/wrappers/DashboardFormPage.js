@@ -30,6 +30,9 @@ const Wrapper = styled.section`
 
   .error-message {
     color: red;
+    text-align: left;
+    padding-top:0.2rem;
+
     font-size: 12px;
   }
   .btn-submit {

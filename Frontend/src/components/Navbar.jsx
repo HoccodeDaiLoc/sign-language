@@ -3,8 +3,12 @@ import { FaAlignLeft } from 'react-icons/fa';
 import { useDashboardContext } from '../layouts/Layout';
 import LogoutContainer from './LogoutContainer';
 import SearchBarTransition from './common/SearchBarTransition';
+import { store } from '../utils/store';
+import Logo from './common/Logo';
 
 const Navbar = () => {
+    const role = store.getState().auth.user.role;
+
     const { toggleSidebar } = useDashboardContext();
     return (
         <Wrapper>
@@ -13,7 +17,15 @@ const Navbar = () => {
                     <FaAlignLeft />
                 </button>
                 <div style={{ width: "80%" }}>
-                    <SearchBarTransition size="80%"></SearchBarTransition>
+                    {
+                        role === "user" ? (
+                            <SearchBarTransition size="80%"></SearchBarTransition>
+
+                        ) :
+                            (
+                                <Logo></Logo>
+                            )
+                    }
                 </div>
                 <div className='btn-container'>
                     <LogoutContainer />

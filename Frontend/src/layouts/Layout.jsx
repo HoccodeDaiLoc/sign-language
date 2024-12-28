@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import { store } from '../utils/store';
 import authServices from "../api/authServices";
 import ToastUtil from '../utils/notiUtils';
-import Cookies from 'js-cookie';
 
 const DashboardContext = createContext();
 
@@ -19,8 +18,6 @@ const Layout = () => {
         setShowSidebar(!showSidebar);
     };
     const logoutUser = async () => {
-        console.log(user);
-        console.log(Cookies.get("accessToken"));
         const result = await authServices.logOut(dispatch);
         if (result.success) {
             ToastUtil.success("Đăng xuất thành công");

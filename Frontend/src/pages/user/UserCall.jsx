@@ -29,17 +29,13 @@ const UserCall = () => {
                     if (webcamRef.current) {
                         webcamRef.current.srcObject = stream;
                     }
-                    // WebSocket connection
                     const ws = new WebSocket('ws://localhost:8080?userId=123a');
                     ws.onopen = () => {
-                        console.log('WebSocket connection established.');
-                        // Initialize WebSocket for sending video data
                         const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
                         mediaRecorder.ondataavailable = (event) => {
                             if (event.data.size > 0) {
                                 event.data.arrayBuffer().then((buffer) => {
                                     ws.send(JSON.stringify({ event: 'video_chunk', data: Array.from(new Uint8Array(buffer)) }));
-                                    console.log(`Sent chunk of size: ${event.data.size}`);
                                 });
                             }
                         };

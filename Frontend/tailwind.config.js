@@ -4,7 +4,14 @@ export default {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      maxHeightLogOutContainer: {
+        'custom': 'calc(100% - 58px - 3rem)',
+      },
+      transitionTimingFunction: {
+        'custom': 'cubic-bezier(0, 1.2, 1, 1)',
+      },
+    },
   },
   plugins: [],
 }

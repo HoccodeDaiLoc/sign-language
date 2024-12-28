@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import backgroundImage from "../../assets/images/ASL-cover-image.jpg"; // Import your image
 
 const Wrapper = styled.section`
   display: flex;
@@ -29,6 +28,8 @@ const Wrapper = styled.section`
   }
 
   .login-form {
+    align-items: center;
+
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -40,19 +41,21 @@ const Wrapper = styled.section`
 
   .form-row {
     margin-bottom: 15px;
+    
   }
 
   .form-input {
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
   }
 
   .error-message {
+    padding-top:0.2rem;
     color: red;
+    text-align: left;
     font-size: 12px;
+    line-height:normal;
   }
 
   .btn-submit {
@@ -105,6 +108,8 @@ const Wrapper = styled.section`
     }
     .login-form {
       width: 100%;
+      align-items: center;
+
     }
 
     .social-login {
