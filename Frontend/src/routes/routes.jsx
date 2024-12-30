@@ -8,7 +8,8 @@ import AdminHome from "../pages/admin/AdminHome.jsx";
 import AdminSign from "../pages/admin/AdminSign.jsx";
 import Landing from "../pages/guest/Landing.jsx";
 import UserRecognize from "../pages/user/UserRecognize.jsx";
-import UserSearchResult from "../pages/user/UserSearchHello.jsx";
+import UserSearchResult from "../pages/user/UserSearchResult.jsx";
+import AdminSearchResult from "../pages/admin/AdminSearchResult.jsx";
 
 
 
@@ -53,9 +54,6 @@ export const routes = {
             path: "/user/searchresult",
             element: <UserSearchResult />
         },
-
-
-
     ],
     admin: [
         {
@@ -65,6 +63,10 @@ export const routes = {
         {
             path: "/admin/sign",
             element: <AdminSign />,
-        }
+        },
+        {
+            path: "/admin/searchresult",
+            element: <AdminSearchResult />
+        },
     ]
 }

@@ -1,60 +1,53 @@
-import React, { useRef, useEffect } from "react";
-import videojs from "video.js"; // Thư viện Video.js
-import "video.js/dist/video-js.css"; // CSS mặc định của Video.js
-import "@videojs/themes/dist/forest/index.css"; // Tùy chọn thêm theme Video.js
+import { useEffect, useRef } from "react";
+import videojs from "video.js";
+import "video.js/dist/video-js.css";
 
-const VideoPlayer = ({ options }) => {
-    const videoRef = useRef(null); // Tham chiếu DOM cho video element
-    const playerRef = useRef(null); // Tham chiếu player của Video.js
+const VideoPlayer = ({ videoSource, subtitlesSource }) => {
+    const videoPlayerRef = useRef(null);
+    const playerRef = useRef(null);
 
     useEffect(() => {
-        // Khởi tạo Video.js player
-        if (videoRef.current && !playerRef.current) {
-            playerRef.current = videojs(videoRef.current, options, () => {
-                console.log("Video.js player is ready!");
-            });
-        }
+        const timeoutId = setTimeout(() => {
+            if (videoPlayerRef.current) {
+                playerRef.current = videojs(videoPlayerRef.current, {
+                    controls: false,
+                    autoplay: false,
+                    preload: "auto",
+                    fluid: true,
+                    bigPlayButton: false,
+                    sources: [{ src: videoSource, type: "video/mp4" }],
+                    tracks: [
+                        {
+                            kind: "subtitles",
+                            src: subtitlesSource,
+                            srclang: "en",
+                            label: "English",
+                        },
+                    ],
+                });
+
+                playerRef.current.on("play", () => {
+                    playerRef.current.pause();
+                });
+            }
+        }, 0);
 
         return () => {
-            // Hủy player khi component bị unmount
+            clearTimeout(timeoutId);
             if (playerRef.current) {
                 playerRef.current.dispose();
-                playerRef.current = null;
             }
         };
-    }, [options]);
-
-    return (
-        <div data-vjs-player>
-            <video
-                ref={videoRef}
-                className="video-js vjs-theme-forest" // Theme mặc định
-            />
-        </div>
-    );
-};
-
-const App = () => {
-    const videoJsOptions = {
-        controls: true,
-        autoplay: false,
-        preload: "auto",
-        responsive: true,
-        fluid: true,
-        sources: [
-            {
-                src: "https://vjs.zencdn.net/v/oceans.mp4", // Đường dẫn đến file video
-                type: "video/mp4",
-            },
-        ],
-    };
+    }, [videoSource, subtitlesSource]);
 
     return (
         <div>
-            <h1>React Video.js Example</h1>
-            <VideoPlayer options={videoJsOptions} />
+            <video
+                ref={videoPlayerRef}
+                className="video-js vjs-default-skin w-32 h-32 shadow-lg rounded-2xl"
+            ></video>
         </div>
     );
 };
 
-export default App;
+export default VideoPlayer;

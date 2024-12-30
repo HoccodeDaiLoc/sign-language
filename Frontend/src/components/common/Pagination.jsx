@@ -1,5 +1,4 @@
-function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }) {
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
+function Pagination({ totalPages, currentPage, onPageChange }) {
 
     const handlePageChange = (page) => {
         if (page >= 1 && page <= totalPages) {
@@ -12,11 +11,11 @@ function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }) {
             <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className={`px-4 py-2 rounded-md 
+                className={`px-4 py-2 rounded-md
                     ${currentPage === 1
                         ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                        : "bg-blue-100 text-blue-600 hover:bg-blue-200"} 
-                    transition`}
+                        : "bg-blue-100 text-blue-600 hover:bg-blue-200"
+                    }`}
             >
                 Previous
             </button>
@@ -25,7 +24,7 @@ function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }) {
                 <button
                     key={index + 1}
                     onClick={() => handlePageChange(index + 1)}
-                    className={`px-3 py-2 rounded-md border transition
+                    className={`px-3 py-2 rounded-md border
                         ${currentPage === index + 1
                             ? "bg-blue-500 text-white border-blue-500"
                             : "bg-white text-blue-600 border-gray-300 hover:bg-blue-100"
@@ -38,11 +37,11 @@ function Pagination({ totalItems, itemsPerPage, currentPage, onPageChange }) {
             <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className={`px-4 py-2 rounded-md 
+                className={`px-4 py-2 rounded-md
                     ${currentPage === totalPages
                         ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                        : "bg-blue-100 text-blue-600 hover:bg-blue-200"} 
-                    transition`}
+                        : "bg-blue-100 text-blue-600 hover:bg-blue-200"
+                    }`}
             >
                 Next
             </button>

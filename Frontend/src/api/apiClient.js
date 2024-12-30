@@ -1,19 +1,19 @@
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { store } from '../utils/store'
-import { logOut } from '../features/authSlice';
+import axios from "axios";
+import Cookies from "js-cookie";
+import { store } from "../utils/store";
+import { logOut } from "../features/authSlice";
 
 const axiosClient = axios.create({
-    baseURL: 'http://localhost:3000/v1/api',
+    baseURL: "http://localhost:3000/v1/api",
     withCredentials: true,
     headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
     },
 });
 
 axiosClient.interceptors.request.use(
     (config) => {
-        const token = Cookies.get('accessToken');
+        const token = Cookies.get("accessToken");
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -30,34 +30,45 @@ axiosClient.interceptors.response.use(
     (response) => response,
     async (error) => {
         const stateAuth = store.getState().auth;
+
         if (stateAuth.user) {
-            const originalRequest = error.config; // Save the original request to retry
+            const originalRequest = error.config;
+
             if (
                 error.response &&
-                error.response.status === 400 &&
+                error.response.status === 401 &&
                 !originalRequest._retry
             ) {
                 originalRequest._retry = true;
-
                 try {
-                    const refreshToken = Cookies.get('refreshToken');
-                    const { data } = await axiosClient.post('/get-access-token', {
-                        refreshToken: refreshToken,
-                    }, {
-                        headers: {
-                            'x-client-id': stateAuth.user._id,
+                    const refreshToken = Cookies.get("refreshToken");
+                    if (!refreshToken) {
+                        throw new Error("Refresh token not available");
+                    }
+                    const oldAccessToken = Cookies.get("accessToken");
+                    const { data } = await axiosClient.post(
+                        "/get-access-token",
+                        { refreshToken: refreshToken },
+                        {
+                            headers: {
+                                "x-client-id": stateAuth.user._id,
+                                Authorization: oldAccessToken,
+                            },
                         }
-                    });
-                    Cookies.set('accessToken', data.accessToken);
-                    axios.defaults.headers.Authorization = `Bearer ${data.accessToken}`;
-                    originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
+                    );
+                    console.log(data)
+                    Cookies.set("accessToken", data.metadata.accessToken);
+                    axiosClient.defaults.headers.Authorization = `Bearer ${data.metadata.accessToken}`;
+                    originalRequest.headers[
+                        "Authorization"
+                    ] = `Bearer ${data.accessToken}`;
+
                     return axiosClient(originalRequest);
                 } catch (err) {
-                    // console.log('Error during token refresh', err);
-                    // Cookies.remove('accessToken');
-                    // Cookies.remove('refreshToken');
-                    // store.dispatch(logOut());
-                    // window.location.href = '/login';
+                    Cookies.remove("accessToken");
+                    Cookies.remove("refreshToken");
+                    store.dispatch(logOut());
+                    window.location.href = "/login";
                 }
             }
         }
@@ -65,6 +76,5 @@ axiosClient.interceptors.response.use(
         return Promise.reject(error);
     }
 );
-
 
 export default axiosClient;
