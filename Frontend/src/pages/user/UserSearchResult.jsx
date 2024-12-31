@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import adminServices from "../../api/adminServices";
 import videojs from "video.js";
-
+import BackButton from '../../components/common/BackButton';
 const UserSearchResult = () => {
     const location = useLocation();
     const itemName = location.state?.itemName;
@@ -76,6 +76,8 @@ const UserSearchResult = () => {
     return (
         <div className="flex justify-start items-start px-8 py-8">
             <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-6xl flex flex-row gap-12">
+                <BackButton></BackButton>
+
                 <div className="w-3/4">
                     <div data-vjs-player>
                         <video

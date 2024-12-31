@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import historyServices from '../api/historyServices'
 import { store } from "../utils/store";
 import adminServices from "../api/adminServices";
-const UseHistory = (pageNum = 1) => {
+const UseHistory = (pageNum = 1, refresh) => {
     const [results, setResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -12,39 +12,40 @@ const UseHistory = (pageNum = 1) => {
     const user = store.getState().auth.user;
 
     useEffect(() => {
+        const controller = new AbortController();
+        const { signal } = controller;
 
         async function getHistory() {
-            const controller = new AbortController()
-            const { signal } = controller;
             try {
                 setIsLoading(true);
                 setIsError(false);
                 setError({});
-                let result
+                let result;
                 if (user.role === "user") {
-                    result = await historyServices.getUploadedHistory(user._id, pageNum, limit, { signal })
+                    result = await historyServices.getUploadedHistory(user._id, pageNum, limit, { signal });
                 }
                 if (user.role === "admin") {
-                    result = await adminServices.getAllSign(pageNum, 1)
+                    result = await adminServices.getAllSign(pageNum, 1);
                 }
                 const data = result.response.data.metadata;
-                setResults(prev => [...prev, ...data]);
+                setResults((prev) => [...prev, ...data]);
                 setHasNextPage(Boolean(data.length));
-                setIsLoading(false);
-                return () => controller.abort();
             } catch (error) {
+                if (!signal.aborted) {
+                    setIsError(true);
+                    setError({ message: error.message });
+                }
+            } finally {
                 setIsLoading(false);
-                if (signal.abort)
-                    return
-                setIsError(true);
-                setError({
-                    message: error.message
-                })
             }
         }
-        getHistory()
 
-    }, [pageNum, user._id]);
+        getHistory();
+
+        return () => {
+            controller.abort();
+        };
+    }, [pageNum, user._id, refresh]);
 
     return { isLoading, isError, error, results, hasNextPage }
 }

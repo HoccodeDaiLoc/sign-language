@@ -2,9 +2,9 @@ import { useRef, useState, useCallback } from "react";
 import UseHistory from "../../hooks/UseHistory";
 import VideoItem from "./VideoItem";
 
-const VideoItemResults = ({ onSelectVideo }) => {
+const VideoItemResults = ({ onSelectVideo, refresh }) => {
     const [pageNum, setPageNum] = useState(1);
-    const { isLoading, isError, error, results, hasNextPage } = UseHistory(pageNum);
+    const { isLoading, isError, error, results, hasNextPage } = UseHistory(pageNum, refresh);
 
     const firstItemRef = useRef();
     const intObserver = useRef();

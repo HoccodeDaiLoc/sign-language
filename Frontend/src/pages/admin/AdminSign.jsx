@@ -116,16 +116,17 @@ const AdminSign = () => {
 
                     {videos && Array.isArray(videos) && videos.map((video) => (
                         <div
-                            style={{ cursor: "pointer" }}
-                            onClick={() => {
-                                navigate("/admin/searchresult", {
-                                    state: { itemName: video.name }
-                                });
-                            }}
+
                             key={video._id}
                             className="p-4 bg-white shadow rounded-lg flex flex-col items-center"
                         >
                             <p
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                    navigate("/admin/searchresult", {
+                                        state: { itemName: video.name }
+                                    });
+                                }}
                                 className="text-lg text-black truncate w-full text-center overflow-hidden text-ellipsis whitespace-nowrap pb-3"
                             >
                                 {video.name}

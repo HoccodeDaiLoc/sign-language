@@ -13,6 +13,7 @@ import ToastUtil from "../../utils/notiUtils.js";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import VideoItemResults from "../../components/user/VideoItemResults.jsx";
 const UserUploadVideo = () => {
+  const [refresh, setRefresh] = useState(0);
   const [loading, setLoading] = useState(false);
   const user = store.getState().auth.user;
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,13 +55,13 @@ const UserUploadVideo = () => {
   }, [selectedHistoryVideo]);
 
   useEffect(() => {
-    if (videoPlayerRef.current && uploadedVideo.videoName) {
+    if (videoPlayerRef.current && uploadedVideo.url) {
       const player = videojs(videoPlayerRef.current, {
         controls: true,
         autoplay: false,
         preload: "auto",
         fluid: true,
-        sources: [{ src: uploadedVideo.videoName, type: "video/mp4" }],
+        sources: [{ src: uploadedVideo.url, type: "video/mp4" }],
         tracks: [
           {
             kind: 'subtitles',
@@ -77,8 +78,11 @@ const UserUploadVideo = () => {
         }
       };
     }
-  }, [uploadedVideo]);
 
+  }, [uploadedVideo]);
+  useEffect(() => {
+    setRefresh((prev) => prev + 1);
+  }, [uploadedVideo]);
 
   const onSubmit = async (data) => {
     if (data.video && data.video[0]) {
@@ -207,7 +211,7 @@ const UserUploadVideo = () => {
             <h2 className="text-xl font-semibold">Videos</h2>
           </div>
           <div className="w-full space-y-2">
-            <VideoItemResults onSelectVideo={setSelectedHistoryVideo} />
+            <VideoItemResults refresh={refresh} onSelectVideo={setSelectedHistoryVideo} />
           </div>
         </div>
 
@@ -262,7 +266,7 @@ const UserUploadVideo = () => {
                       className="video-js vjs-default-skin vjs-16-9"
                       controls
                       preload="auto"
-                      src={uploadedVideo.videoName}
+                      src={uploadedVideo.url}
                     />
                     <track
                       kind="subtitles"
