@@ -42,60 +42,83 @@ const LogoutContainer = () => {
                 </div>
 
                 <Modal component="logout" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <img
-                                src={user.avatar != null ? user.avatar : personSVG}
+                    {user.role === "admin" ?
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <img
+                                    src={user.avatar != null ? user.avatar : personSVG}
 
-                                alt="user avatar" />
-                            <p>{user.username}</p>
-                        </div>
-
-                        <div className="menu-item px-1 my-2">
-                            <Link
-                                to="/user/profile"
-                                onClick={() => setIsModalOpen(false)}
-                                className="menu-item-container"
-                            >
-                                <img src={personSVG} alt="personal info" />
-                                <p>Thông tin cá nhân</p>
-                            </Link>
-                        </div>
-                        <div className="py-2" style={{ borderTop: "1px solid #e5e7eb" }}>
-                            <div className="menu-item">
-                                <div className="menu-item-container">
-                                    <img src={settingSVG} alt="settings" />
-                                    <p>Cài đặt</p>
-                                </div>
+                                    alt="user avatar" />
+                                <p>{user.username}</p>
                             </div>
 
-                            <div className="menu-item">
-                                <div
-                                    onClick={() => {
-                                        toggleTheme();
-                                        setIsModalOpen(false)
-                                    }}
+                            <div className="py-2" style={{ borderTop: "1px solid #e5e7eb" }}>
+                                <div onClick={handleLogout} className="menu-item">
+                                    <div className="menu-item-container">
+                                        <img src={logoutSVG} alt="logout" />
+                                        <p>Đăng xuất</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> :
+
+
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <img
+                                    src={user.avatar != null ? user.avatar : personSVG}
+
+                                    alt="user avatar" />
+                                <p>{user.username}</p>
+                            </div>
+
+                            <div className="menu-item px-1 my-2">
+                                <Link
+                                    to="/user/profile"
+                                    onClick={() => setIsModalOpen(false)}
                                     className="menu-item-container"
                                 >
-                                    <img src={themeSVG} alt="theme" />
-                                    <p>Đổi màu chủ đề</p>
-                                </div>
+                                    <img src={personSVG} alt="personal info" />
+                                    <p>Thông tin cá nhân</p>
+                                </Link>
                             </div>
+                            <div className="py-2" style={{ borderTop: "1px solid #e5e7eb" }}>
+                                <div className="menu-item">
+                                    <div className="menu-item-container">
+                                        <img src={settingSVG} alt="settings" />
+                                        <p>Cài đặt</p>
+                                    </div>
+                                </div>
 
-                            <div className="menu-item">
-                                <div className="menu-item-container">
-                                    <img src={languageSVG} alt="languageSVG" />
-                                    <p>Chọn ngôn ngữ</p>
+                                <div className="menu-item">
+                                    <div
+                                        onClick={() => {
+                                            toggleTheme();
+                                            setIsModalOpen(false)
+                                        }}
+                                        className="menu-item-container"
+                                    >
+                                        <img src={themeSVG} alt="theme" />
+                                        <p>Đổi màu chủ đề</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div onClick={handleLogout} className="menu-item">
-                                <div className="menu-item-container">
-                                    <img src={logoutSVG} alt="logout" />
-                                    <p>Đăng xuất</p>
+
+                                <div className="menu-item">
+                                    <div className="menu-item-container">
+                                        <img src={languageSVG} alt="languageSVG" />
+                                        <p>Chọn ngôn ngữ</p>
+                                    </div>
+                                </div>
+                                <div onClick={handleLogout} className="menu-item">
+                                    <div className="menu-item-container">
+                                        <img src={logoutSVG} alt="logout" />
+                                        <p>Đăng xuất</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
+
                 </Modal>
             </Wrapper>
     );

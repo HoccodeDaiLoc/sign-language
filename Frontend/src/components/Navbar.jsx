@@ -4,11 +4,9 @@ import { useDashboardContext } from '../layouts/Layout';
 import LogoutContainer from './LogoutContainer';
 import SearchBarTransition from './common/SearchBarTransition';
 import { store } from '../utils/store';
-import Logo from './common/Logo';
 
 const Navbar = () => {
-    const role = store.getState().auth.user.role;
-
+    const user = store.getState().auth.user;
     const { toggleSidebar } = useDashboardContext();
     return (
         <Wrapper>
@@ -17,15 +15,12 @@ const Navbar = () => {
                     <FaAlignLeft />
                 </button>
                 <div style={{ width: "80%" }}>
-                    {
-                        role === "user" ? (
-                            <SearchBarTransition size="80%"></SearchBarTransition>
-
-                        ) :
-                            (
-                                <Logo></Logo>
-                            )
-                    }
+                    {user.role === "user" &&
+                        <SearchBarTransition
+                            search="sign"
+                            size="80%"
+                            placeholder="Tìm kiếm..."
+                        />}
                 </div>
                 <div className='btn-container'>
                     <LogoutContainer />

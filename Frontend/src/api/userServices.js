@@ -15,7 +15,6 @@ const userServices = {
         }
     },
 
-    // Thay đổi avatar người dùng
     changeAvatar: async (userId, formData) => {
         try {
             const response = await apiClient.patch(`/users/${userId}/change-avatar`, formData);

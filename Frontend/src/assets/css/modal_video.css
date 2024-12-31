@@ -1,6 +1,3 @@
-/* modal_video.css */
-
-/* Lớp cho phần nền của modal (cùng màu trắng với modal-content) */
 .modal-overlay {
   position: fixed;
   top: 0;

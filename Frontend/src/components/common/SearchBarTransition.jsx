@@ -1,31 +1,39 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
 import RightArrow from '../../assets/svg/right-arrow.svg';
-import "../../assets/css/SearchBarTransition.css"; // Import file CSS
+import { store } from "../../utils/store";
+import adminServices from "../../api/adminServices";
+import { Link } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
 
-const SearchBarTransition = ({ size, placeholder, content }) => {
+const SearchBarTransition = ({ size, placeholder, search }) => {
     const [query, setQuery] = useState("");
     const [active, setActive] = useState(false);
-    const testApi = "https://jsonplaceholder.typicode.com/photos";
     const [searchResults, setSearchResults] = useState([]);
-    const navigate = useNavigate(); // Initialize useNavigate
+    const user = store.getState().auth.user;
 
     useEffect(() => {
-        const controller = new AbortController();
         async function fetchData() {
-            try {
-                const res = await fetch(testApi, { signal: controller.signal });
-                if (!res.ok) {
-                    throw new Error("Fetching Error");
+            if (query.length >= 3) {
+                if (search === "sign") {
+                    try {
+                        const userResults = await adminServices.getSign(query);
+                        console.log(userResults.response.data.metadata);
+                        setSearchResults(userResults.response.data.metadata);
+                    } catch (error) {
+                        console.error("Error fetching data:", error.message);
+                        setSearchResults([]);
+                    }
                 }
-                const data = await res.json();
-                setSearchResults(
-                    data.filter((item) => {
-                        return item.title.toLowerCase().includes(query.toLowerCase());
-                    })
-                );
-            } catch (error) {
-                if (error.name !== "AbortError") console.log(error.message);
+                if (search === "account") {
+                    try {
+                        const userResults = await adminServices.getUserByEmail(query);
+                        console.log(userResults.response.data.metadata.data);
+                        setSearchResults(userResults.response.data.metadata.data);
+                    } catch (error) {
+                        console.error("Error fetching data:", error.message);
+                        setSearchResults([]);
+                    }
+                }
             }
         }
 
@@ -34,17 +42,7 @@ const SearchBarTransition = ({ size, placeholder, content }) => {
         } else {
             setSearchResults([]);
         }
-
-        return function () {
-            controller.abort();
-        };
-    }, [query]);
-
-    useEffect(() => {
-        if (query.toLowerCase() === "hello") {
-            navigate("/user/searchresult", { state: { videoUrl: "https://www.signingsavvy.com/media2/mp4-ld/24/24851.mp4", signName: "Hello" } });
-        }
-    }, [query, navigate]);
+    }, [query, user.role]);
 
     function focus() {
         setActive(true);
@@ -56,90 +54,90 @@ const SearchBarTransition = ({ size, placeholder, content }) => {
 
     function clearQuery() {
         setQuery("");
+        setSearchResults([]);
+        setActive(false);
     }
 
-    const handleKeyDown = (e) => {
-        if (e.key === "Enter") {
-            // Navigate to the appropriate result and close the search
-            if (searchResults.length > 0) {
-                navigate("/user/searchresult", { state: { videoUrl: searchResults[0].url, signName: searchResults[0].title } });
-            }
-            setActive(false);  // Close the search suggestions
-            setQuery("");  // Clear the input field
-        }
-    };
-
-    const predefinedSuggestions = ["hello", "love", "you", "happy", "yes"];
-
-    const filteredSuggestions = predefinedSuggestions.filter(item =>
-        item.toLowerCase().includes(query.toLowerCase())
-    );
+    function handleLinkClick() {
+        setActive(false);
+        setQuery("");
+    }
 
     return (
-        <div className="search-bar-container" style={{ width: size }}>
+        <div className={`relative w-${size} h-${size}`}>
             <div
-                className={`search-input-wrapper ${active ? "active" : ""}`}
-                onFocus={focus}
-                onBlur={blur}
+                className={`border border-gray-300 rounded-lg p-2 transition-all ${active ? "border-blue-500 shadow-lg" : ""}`}
             >
                 <input
-                    className="search-input"
+                    className="w-full p-2 text-gray-700 placeholder-gray-400 outline-none"
                     placeholder={placeholder ?? "Tìm kiếm"}
                     onChange={(e) => setQuery(e.target.value)}
                     value={query}
-                    onKeyDown={handleKeyDown}  // Handle the "Enter" key press
+                    onFocus={focus}
+                    onBlur={blur}
                 />
-                {query.length >= 1 && active && (
-                    <div className="search-results-container">
-                        <div className="search-results">
-                            <span className="results-header">
-                                <p style={{ fontSize: "large" }}>Ngôn Ngữ kí hiệu</p>
-                                <img style={{ width: "2rem", height: "2rem" }} src={RightArrow} alt="arrow" />
-                            </span>
-                            {searchResults.length === 0 && filteredSuggestions.length === 0 ? (
-                                <span className="no-results">
-                                    <p style={{ fontSize: "medium" }}>Không tìm thấy ngôn ngữ kí hiệu này</p>
-                                </span>
+                {query.length >= 3 && (
+                    <div className="absolute left-0 top-full mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-md z-10">
+                        <div className="p-4 overflow-x-scroll h-[70vh] flex flex-col items-start">
+                            <div className="flex flex-row items-center  justify-between mb-4 ">
+                                <p className="font-medium text-lg">Ngôn Ngữ Kí Hiệu</p>
+                                <img
+                                    className="w-8 h-8 ml-2"
+                                    src={RightArrow}
+                                    alt="Right Arrow"
+                                />
+                            </div>
+                            {searchResults.length === 0 ? (
+                                <div className="text-gray-500 text-center">
+                                    Không tìm thấy kết quả
+                                </div>
                             ) : (
-                                <>
+                                <div className="">
+                                    {searchResults && Array.isArray(searchResults) && searchResults.map((result, index) => (
+                                        <Link
+                                            key={index}
+                                            to={`/${user.role}/searchresult/`}
+                                            className="flex items-center font-semibold text-gray-800 border-black "
+                                            onClick={handleLinkClick}
+                                            state={{ itemName: result.name }}
 
-                                    {searchResults.map((item) => (
-                                        <div
-                                            key={item.id}
-                                            className="search-item"
-                                            onClick={() => {
-                                                navigate("/user/searchresult", { state: { videoUrl: item.url, signName: item.title } });
-                                                setActive(false);
-                                                setQuery("");
-                                            }}
                                         >
-                                            <div>{item.title}</div>
-                                        </div>
-                                    ))}
+                                            {console.log(result)}
+                                            {search === "account" ? (
+                                                <>
+                                                    {result.avatar && (
+                                                        <img
+                                                            src={result.avatar}
+                                                            alt="User Avatar"
+                                                            className="w-16 h-16 rounded-full mr-4"
+                                                        />
+                                                    )}
+                                                    <div className="flex flex-col mr-2">
+                                                        <span className="text-sm font-medium">{result.username}</span>
+                                                        <span className="text-xs text-gray-500">{result.email}</span>
+                                                    </div>
 
-                                    {searchResults.length === 0 && filteredSuggestions.length > 0 && (
-                                        <div className="suggestions">
-                                            {filteredSuggestions.map((suggestion, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="search-item"
-                                                    onClick={() => {
-                                                        navigate(`/user/searchresult${suggestion.charAt(0).toUpperCase() + suggestion.slice(1)}`, { state: { videoUrl: "https://www.signingsavvy.com/media2/mp4-ld/23/23180.mp4", signName: suggestion } });
-                                                        setActive(false);
-                                                        setQuery("");
-                                                    }}
-                                                >
-                                                    <div>{suggestion}</div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </>
+                                                </>
+                                            ) : (
+                                                <span className="text-lg font-semibold text-gray-800 p-1 rounded-md">
+                                                    {result.name}
+                                                </span>)}
+                                        </Link>
+                                    ))}
+                                </div>
                             )}
                         </div>
                     </div>
                 )}
             </div>
+            {query && (
+                <button
+                    onClick={clearQuery}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                >
+                    <FaTimes className="text-2xl" />
+                </button>
+            )}
         </div>
     );
 };

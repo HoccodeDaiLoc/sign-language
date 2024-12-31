@@ -1,7 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import leftArrow from "../../assets/svg/left-arrow-list.svg";
-import rightArrow from "../../assets/svg/right-arrow-list.svg";
-import Image from "../../components/common/Image";
 import { useForm } from "react-hook-form";
 import userServices from "../../api/userServices";
 import { store } from "../../utils/store";
@@ -11,100 +8,81 @@ import video from "../../assets/svg/video.svg"
 import uploadvideo from "../../assets/svg/upload.svg"
 import closeIcon from "../../assets/svg/close_icon.svg"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './Usercall.scss';
 import Modal from "../../components/common/Modal.jsx";
-
 import ToastUtil from "../../utils/notiUtils.js";
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
-
+import VideoItemResults from "../../components/user/VideoItemResults.jsx";
 const UserUploadVideo = () => {
-  const numberItemRender = 5;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [listVideo, setListVideo] = useState([]);
-  const [uploadedVideoUrl, setUploadedVideoUrl] = useState(null);
-  const [captionUrl, setCaptionURL] = useState(""); // Store the caption data
-  const [offset, setOffset] = useState(0);
+  const [refresh, setRefresh] = useState(0);
   const [loading, setLoading] = useState(false);
   const user = store.getState().auth.user;
-  const testapi = `https://pokeapi.co/api/v2/ability/?offset=${offset}&limit=${numberItemRender}`;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [downloadUrl, setDownloadUrl] = useState("");
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedVideoName, setSelectedVideoName] = useState(null);
-
+  const [selectedHistoryVideo, setSelectedHistoryVideo] = useState(null);
+  const [uploadedVideo, setUploadedVideo] = useState(null);
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       video: null,
     },
   });
-  const videoPlayerRef = useRef(null);
-
+  const videoPlayerRef = useRef(null)
+  const videoPlayerRef1 = useRef(null)
   useEffect(() => {
-    const couting = async (currentPage) => {
-      if (currentPage > 0) {
-        setOffset((currentPage - 1) * numberItemRender);
-      }
-    };
-    couting(currentPage);
-
-    const getData = async () => {
-      const response = await fetch(testapi);
-      const result = await response.json();
-      setListVideo(result.results);
-    };
-    getData();
-  }, [currentPage]);
-
-  useEffect(() => {
-    if (videoPlayerRef.current && uploadedVideoUrl) {
-      const player = videojs(videoPlayerRef.current, {
+    if (videoPlayerRef1.current && selectedHistoryVideo.videoName) {
+      const player = videojs(videoPlayerRef1.current, {
         controls: true,
         autoplay: false,
         preload: "auto",
         fluid: true,
-        sources: [{ src: uploadedVideoUrl, type: "video/mp4" }],
+        sources: [{ src: selectedHistoryVideo.videoName, type: "video/mp4" }],
         tracks: [
           {
             kind: 'subtitles',
-            src: captionUrl,
+            src: selectedHistoryVideo.result,
             srclang: 'en',
             label: 'English'
           }
         ]
       });
-      const mergeToVtt = async () => {
-        const ffmpeg = createFFmpeg({ log: true });
-        await ffmpeg.load();
-        ffmpeg.FS("writeFile", "video.mp4", await fetchFile(uploadedVideoUrl));
-        ffmpeg.FS("writeFile", "subtitles.vtt", await fetchFile(uploadedVideoUrl));
-        await ffmpeg.run(
-          "-i",
-          "video.mp4",
-          "-vf",
-          "subtitles=subtitles.vtt",
-          "output.mp4"
-        );
-        const data = ffmpeg.FS("readFile", "output.mp4");
-        const videoBlob = new Blob([data.buffer], { type: "video/mp4" });
-        const videoUrlWithSubtitles = URL.createObjectURL(videoBlob);
-        setDownloadUrl(videoUrlWithSubtitles);
-      }
-      mergeToVtt()
+
       return () => {
         if (player) {
           player.dispose();
         }
       };
     }
-  }, [uploadedVideoUrl, captionUrl]);
+  }, [selectedHistoryVideo]);
 
-  const handleNextPage = () => {
-    setCurrentPage((prev) => prev + 1);
-  };
-  const handlePreviousPage = () => {
-    setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
-  };
+  useEffect(() => {
+    if (videoPlayerRef.current && uploadedVideo.url) {
+      const player = videojs(videoPlayerRef.current, {
+        controls: true,
+        autoplay: false,
+        preload: "auto",
+        fluid: true,
+        sources: [{ src: uploadedVideo.url, type: "video/mp4" }],
+        tracks: [
+          {
+            kind: 'subtitles',
+            src: uploadedVideo.result,
+            srclang: 'en',
+            label: 'English'
+          }
+        ]
+      });
+
+      return () => {
+        if (player) {
+          player.dispose();
+        }
+      };
+    }
+
+  }, [uploadedVideo]);
+  useEffect(() => {
+    setRefresh((prev) => prev + 1);
+  }, [uploadedVideo]);
 
   const onSubmit = async (data) => {
     if (data.video && data.video[0]) {
@@ -115,14 +93,12 @@ const UserUploadVideo = () => {
         setLoading(true)
         setIsModalOpen(false)
         const result = await userServices.uploadVideo(formData);
-        const txtLink = result.metadata.result;
-        setCaptionURL(txtLink);
-        setUploadedVideoUrl(result.metadata.url);
+        setUploadedVideo(result.metadata)
+        console.log(result.metadata)
         ToastUtil.success("Đã xử lý xong video");
         setLoading(false)
       } catch (error) {
         ToastUtil.error("Upload video thất bại");
-
         console.error("Error uploading video:", error);
       }
     } else {
@@ -130,8 +106,7 @@ const UserUploadVideo = () => {
     }
   };
   const removeUploadedVideo = () => {
-    setUploadedVideoUrl(null);
-    setCaptionURL(null);
+    setUploadedVideo(null)
   };
 
   const handleFileChange = (event) => {
@@ -231,36 +206,12 @@ const UserUploadVideo = () => {
 
 
       <div className="flex h-full">
-
-        <div className="w-1/4 bg-gray-100 p-6 overflow-y-auto flex flex-col items-center">
+        <div className="w-1/4 bg-gray-100 p-6 overflow-x-hidden flex flex-col items-center">
           <div className="w-full flex flex-row justify-between mb-6">
             <h2 className="text-xl font-semibold">Videos</h2>
           </div>
           <div className="w-full space-y-2">
-            {listVideo.map((video, index) => (
-              <div
-                key={index}
-                className="p-3 bg-white rounded shadow-md hover:bg-gray-50 transition duration-200"
-              >
-                <span>{video.name}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="w-full flex items-center justify-between mt-6 p-2 bg-slate-100 border-solid border-slate-200 rounded-[15px]">
-            <div
-              className="hover:cursor-pointer"
-              onClick={handlePreviousPage}
-            >
-              <Image size="32px" imgsrc={leftArrow} imgAlt="leftArrow" />
-            </div>
-            <p className="text-xl">Trang {currentPage}</p>
-            <div
-              className="hover:cursor-pointer"
-              onClick={handleNextPage}
-            >
-              <Image size="32px" imgsrc={rightArrow} imgAlt="rightArrow" />
-            </div>
+            <VideoItemResults refresh={refresh} onSelectVideo={setSelectedHistoryVideo} />
           </div>
         </div>
 
@@ -271,72 +222,89 @@ const UserUploadVideo = () => {
                 Đang xử lý video, xin chờ một lát
                 <FontAwesomeIcon icon={faSpinner} spin className="text-xl via-blue-300 ml-4" />
               </div>
-            ) :
-              uploadedVideoUrl ? (
-                <>
-                  <div className="mt-4 flex flex-row items-center justify-between w-full">
+            ) : selectedHistoryVideo ? (
+              <div className="flex flex-col justify-center items-center mt-6 w-full h-full">
+                <div className="w-2/3 h-2/3">
+                  <video
+                    ref={videoPlayerRef1}
+                    className="video-js vjs-default-skin vjs-16-9"
+                    controls
+                    preload="auto"
+                    src={selectedHistoryVideo.videoName}
+                  >
+                    <track
+                      kind="subtitles"
+                      src={selectedHistoryVideo.result}
+                      srcLang="en"
+                      label="English"
+                      default
+                    />
+                  </video>
+                </div>
+                <button
+                  onClick={() => setSelectedHistoryVideo(null)}
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                >
+                  Trở về
+                </button>
+              </div>
+            ) : uploadedVideo ? (
+              <>
+                <div className="mt-4 flex flex-row items-center justify-between w-full">
+                  <button
+                    type="button"
+                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200"
+                    onClick={removeUploadedVideo}
+                  >
+                    Hãy thử với video khác
+                  </button>
+                </div>
+                <div className="flex flex-col justify-center items-center mt-6 w-full h-full">
+                  <div className="w-2/3 h-2/3">
+                    <video
+                      ref={videoPlayerRef}
+                      className="video-js vjs-default-skin vjs-16-9"
+                      controls
+                      preload="auto"
+                      src={uploadedVideo.url}
+                    />
+                    <track
+                      kind="subtitles"
+                      src={uploadedVideo.result}
+                      srcLang="en"
+                      label="English"
+                      default
+                    />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex flex-col justify-center items-center border border-dashed rounded-md border-black w-full h-full p-6">
+                  <>
+                    <h1 className="text-4xl font-bold text-gray-900">Video của bạn sẽ được nhận </h1>
+                  </>
+                  <div className="mb-4">
+                    <img src={video} alt="video-placeholder" className="w-60 h-60" />
+                  </div>
+                  <div className="text-lg text-center mb-4">
+                    <span>
+                      Hãy đăng tải video lên để nhận lại video mới đã được thêm
+                      subtitles với Ngôn Ngữ Kí Hiệu
+                    </span>
+                  </div>
+                  <div className="flex flex-col justify-center items-center space-y-4">
                     <button
                       type="button"
-                      className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200"
-                      onClick={removeUploadedVideo}
+                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
+                      onClick={() => setIsModalOpen(true)}
                     >
-                      Hãy thử với video khác
+                      Tải video lên
                     </button>
-                    <a
-                      href={downloadUrl}
-                      download="video_with_subtitles.mp4"
-                      className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200"
-                    >
-                      Tải video xuống
-                    </a>
                   </div>
-                  <div className="flex flex-col justify-center items-center mt-6 w-full h-full">
-                    <div className=" w-2/3 h-2/3">
-                      <video
-                        ref={videoPlayerRef}
-                        className="video-js vjs-default-skin vjs-16-9"
-                        controls
-                        preload="auto"
-                        src={uploadedVideoUrl}
-                      />
-                      <track
-                        kind="subtitles"
-                        src={captionUrl}
-                        srcLang="en"
-                        label="English"
-                        default
-                      />
-                    </div>
-                  </div>
-
-                </>
-              ) : (
-                <>
-                  <div className="flex flex-col justify-center items-center border border-dashed rounded-md border-black w-full h-full p-6">
-                    <div className="">
-                      <h1 className="text-4xl font-bold text-gray-900">Video của bạn sẽ được nhận </h1>
-                    </div>
-                    <div className="mb-4">
-                      <img src={video} alt="video-placeholder" className="w-60 h-60" />
-                    </div>
-                    <div className="text-lg text-center mb-4">
-                      <span>
-                        Hãy đăng tải video lên để nhận lại video mới đã được thêm
-                        subtitles với Ngôn Ngữ Kí Hiệu
-                      </span>
-                    </div>
-                    <div className="flex flex-col justify-center items-center space-y-4">
-                      <button
-                        type="button"
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
-                        onClick={() => setIsModalOpen(true)}
-                      >
-                        Tải video lên
-                      </button>
-                    </div>
-                  </div>
-                </>
-              )}
+                </div>
+              </>
+            )}
           </div>
         </div>
 

@@ -125,7 +125,13 @@ h4 {
 h5 {
   font-size: clamp(0.875rem, 1.5vw, 1.5rem); /* Tiny heading */
 }
+.video-js .vjs-tech {
+  border-radius: inherit !important; /* Kế thừa giá trị border-radius của lớp cha */
+}
 
+.video-js {
+  border-radius: 1rem !important; /* Hoặc bạn có thể đặt kích thước cụ thể, ví dụ rounded-2xl */
+}
 /* BIGGER FONTS */
 /* h1 {
   font-size: clamp(3rem, 6vw, 6rem);

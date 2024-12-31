@@ -5,6 +5,9 @@ export default {
   ],
   theme: {
     extend: {
+      // backgroundSecondaryColor: {
+      //   'custom-var': 'var(--background-color)',
+      // },
       maxHeightLogOutContainer: {
         'custom': 'calc(100% - 58px - 3rem)',
       },

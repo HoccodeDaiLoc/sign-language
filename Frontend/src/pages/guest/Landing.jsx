@@ -9,38 +9,22 @@ import { store } from "../../utils/store";
 import google from "../../assets/svg/google.svg";
 import facebook from "../../assets/svg/facebook.svg";
 import Logo from "../../assets/images/Logo.png";
-import { FaUser } from "react-icons/fa";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-
-const modalStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-    borderRadius: "8px",
-};
+import axios from "axios";
 
 const Landing = () => {
     const {
         register,
         handleSubmit,
-        setValue,
         formState: { errors },
     } = useForm();
     const [errMsg, setErrMsg] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const auth = store.getState().auth.isAuthenticated;
-
     const user = store.getState().auth.user;
+    const googleLoginUrl = "https://bright-boss-grouper.ngrok-free.app/v1/api/google";
+
     useEffect(() => {
         if (auth && user?.role === "user") {
             navigate("/user/upload");
@@ -48,6 +32,31 @@ const Landing = () => {
             navigate("/admin/home");
         }
     }, [auth, navigate, user]);
+    const [userData, setUserData] = useState(null);
+    const [isLoginGoogle, setIsLoginGoogle] = useState(false);
+    useEffect(() => {
+        const handleGoogleLogin = async () => {
+            try {
+                console.log("day ne")
+                const response = await axios.get("https://bright-boss-grouper.ngrok-free.app/v1/api/google/callback", {
+                    withCredentials: true,
+                });
+                console.log("response", response);
+                if (response.data.status === 200) {
+                    setUserData(response.data.metadata);
+                    console.log("User Data:", response.data.metadata);
+                } else {
+                    console.error("Unexpected response:", response.data);
+                }
+                setIsLoginGoogle(false)
+            } catch (error) {
+                console.error("Error during Google login:", error.response?.data || error.message);
+            }
+        }
+        handleGoogleLogin()
+    }, [isLoginGoogle])
+
+
 
     const onSubmit = async (data) => {
         setIsLoading(true);
@@ -62,55 +71,6 @@ const Landing = () => {
             ToastUtil.error("Có lỗi đã xảy ra");
             setErrMsg(result.error);
         }
-    };
-
-    const mockFacebookLogin = () => {
-        const FacebookUser = {
-            email: "pnhan0195@gmail.com",
-            password: "1234",
-        };
-
-        setValue("email", FacebookUser.email);
-        setValue("password", FacebookUser.password);
-        ToastUtil.success(
-            <div style={{ display: "flex", alignItems: "center" }}>
-                <img src={facebook} alt="Facebook Icon" style={{ width: "40px", height: "40px", marginRight: "10px" }} />
-                Đăng nhập bằng Facebook thành công
-            </div>
-        );
-    };
-
-    const openGoogleLoginModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const closeGoogleLoginModal = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleFakeAccountLogin = (fakeUser) => {
-        // Điền thông tin giả vào form và tự động gọi onSubmit để đăng nhập
-        setValue("email", fakeUser.email);
-        setValue("password", fakeUser.password);
-        ToastUtil.success(
-            <div style={{ display: "flex", alignItems: "center" }}>
-                <img src={google} alt="Google Icon" style={{ width: "40px", height: "40px", marginRight: "10px" }} />
-                Đang xử lý thông tin ...
-            </div>,
-            {
-                autoClose: 1500,
-                hideProgressBar: true,
-                closeButton: false,
-            }
-        );
-
-
-        setTimeout(() => {
-            handleSubmit(onSubmit)({
-                email: fakeUser.email,
-                password: fakeUser.password,
-            });
-        }, 2000);
     };
 
     return auth ? null : (
@@ -164,11 +124,16 @@ const Landing = () => {
                         {errMsg && <p className="error-message">{errMsg}</p>}
 
                         <div className="social-login  w-full">
-                            <button className="social-btn w-full" onClick={openGoogleLoginModal}>
+                            <button className="social-btn w-full" onClick={() => {
+                                setIsLoginGoogle(true);
+                                window.open(googleLoginUrl, "_blank");
+                            }}>
                                 <img src={google} alt="google Icon" />
                                 <p>Đăng nhập bằng Google</p>
                             </button>
-                            <button className="social-btn w-full" onClick={mockFacebookLogin}>
+
+
+                            <button className="social-btn w-full" >
                                 <img src={facebook} alt="facebook Icon" />
                                 <p>Đăng nhập bằng Facebook</p>
                             </button>
@@ -182,129 +147,7 @@ const Landing = () => {
                     </div>
                 </div>
             </div>
-            <Modal open={isModalOpen} onClose={closeGoogleLoginModal}>
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        backgroundColor: "#dae5e7",
-                        height: "100vh",
-                        padding: "20px",
-                    }}
-                >
-                    <Box
-                        sx={{
-                            ...modalStyle,
-                            width: "550px",
-                            height: "400px",
-                            textAlign: "center",
-                            marginTop: "-0px",
-                            backgroundColor: "white",
-                            borderRadius: "8px",
-                            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                            padding: "20px",
-                        }}
-                    >
-                        <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px" }}>
-                            Đăng nhập bằng Google
-                        </h2>
-                        <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-                            Vui lòng chọn tài khoản:
-                        </p>
-                        <div className="fake-accounts flex flex-col space-y-4">
-                            <button
-                                className="fake-account-btn flex items-center space-x-4 p-3 rounded transition hover:bg-gray-300"
-                                style={{ backgroundColor: "#f1f1f1", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}
-                                onClick={() => handleFakeAccountLogin({
-                                    email: "customer1@gmail.com",
-                                    password: "1234"
-                                })}
-                            >
-                                <img src={google} alt="Google Icon" style={{ width: "30px", height: "30px" }} />
-                                <div style={{ textAlign: "center" }}>
-                                    <span style={{ fontSize: "16px", display: "block", marginRight: "33px" }}>Xuan Thanh</span>
-                                    <span
-                                        style={{
-                                            fontSize: "12px",
-                                            display: "block",
-                                            color: "gray",
-                                            marginTop: "8px",
-                                            marginLeft: "3px",
-                                        }}
-                                    >
-                                        customer1@gmail.com
-                                    </span>
-                                </div>
-                            </button>
 
-                            <button
-                                className="fake-account-btn flex items-center space-x-4 p-3 rounded transition hover:bg-gray-300"
-                                style={{ backgroundColor: "#f1f1f1", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}
-                                onClick={() => handleFakeAccountLogin({
-                                    email: "vietnam1122@gmail.com",
-                                    password: "1234"
-                                })}
-                            >
-                                <img src={google} alt="Google Icon" style={{ width: "30px", height: "30px" }} />
-                                <div style={{ textAlign: "center" }}>
-                                    <span style={{ fontSize: "16px", display: "block", marginRight: "68px", }}>Thanh Ho</span>
-                                    <span
-                                        style={{
-                                            fontSize: "12px",
-                                            display: "block",
-                                            color: "gray",
-                                            marginTop: "8px",
-                                            marginLeft: "2px",
-                                        }}
-                                    >
-                                        thanhho1212@gmail.com
-                                    </span>
-                                </div>
-                            </button>
-
-                            <div
-                                className="fake-account-btn flex items-center space-x-4 p-3 rounded transition hover:bg-gray-300"
-                                style={{
-                                    backgroundColor: "#f1f1f1",
-                                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                                    cursor: "pointer",
-                                }}
-                                onClick={closeGoogleLoginModal}
-                            >
-                                <FaUser
-                                    style={{
-                                        fontSize: "20px",
-                                        color: "#555",
-                                    }}
-                                />
-                                <div style={{ textAlign: "center" }}>
-                                    <span style={{ fontSize: "16px", display: "block", marginRight: "70px" }}>
-                                        Sử dụng một tài khoản Google khác
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button
-                            className="mt-4"
-                            style={{
-                                backgroundColor: "#ff4d4f",
-                                color: "white",
-                                padding: "8px 16px",
-                                borderRadius: "6px",
-                                marginTop: "30px",
-                                fontSize: "16px",
-                                border: "none",
-                                cursor: "pointer",
-                            }}
-                            onClick={closeGoogleLoginModal}
-                        >
-                            Đóng
-                        </button>
-                    </Box>
-                </Box>
-            </Modal>
         </Wrapper>
     );
 };

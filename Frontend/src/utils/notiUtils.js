@@ -1,4 +1,6 @@
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const ToastUtil = {
     //={} => trong đây là giá trị default 
     success: (message, options = {}) => toast.success(message, options),
